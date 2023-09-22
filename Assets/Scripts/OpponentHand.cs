@@ -17,7 +17,7 @@ public class OpponentHand : MonoBehaviour
         MoveCard();
 
         if(Input.GetKeyDown("u"))
-            StartCoroutine(OpenCard(1, 1));
+            OpenCard(1, 1);
     }
 
     public void MoveCard()
@@ -33,7 +33,12 @@ public class OpponentHand : MonoBehaviour
         cards = transform.GetComponentsInChildren<Card>();
     }
 
-    public IEnumerator OpenCard(int card_idx, int card_cord)
+    public void OpenCard(int card_idx, int card_cord)
+    {
+        StartCoroutine(OpenCardAnimation(card_idx, card_cord));
+    }
+
+    public IEnumerator OpenCardAnimation(int card_idx, int card_cord)
     {
         Card card = cards[card_idx];
         

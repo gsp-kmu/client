@@ -22,37 +22,39 @@ public class Reaper : Card
     static IEnumerator BattleCrySchedule(Digit digit)
     {
         GameController controller = GameController.GetInstance();
-        List<Card> depard;
-        List<Card> arrive;
+        Card select_card = null;
+        BattleFieldCards receive_cards;
 
         controller.curStep = GameController.Step.SelectOpponentCard;
+
         if(digit == Digit.One)
-            arrive = controller.ten_cards;
+            receive_cards = controller.player_ten;
         else
-            arrive = controller.one_cards;
+            receive_cards = controller.player_one;
 
         while(true)
         {
-            if(Input.GetMouseButtonDown(0))
-            {
-                Vector3 mouse_point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                if(mouse_point.x > 0 && mouse_point.y > 0)
-                {  
-                    depard = controller.opponent_one_cards;
-                    break;
-                }
-                else if(mouse_point.x < 0 && mouse_point.y > 0)
-                {
-                    depard = controller.opponent_ten_cards;
-                    break;
-                }
-            }
-
             yield return new WaitForSeconds(0.0f);
+            if(Input.GetMouseButtonDown(0))
+            {   
+                Vector3 mouse_point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Collider2D hit = Physics2D.OverlapPoint(mouse_point);
+
+                Debug.Log(hit);
+                if(hit == null)
+                    continue;
+                
+                BattleFieldCards send_cards = hit.transform.GetComponentInParent<BattleFieldCards>();
+                if(send_cards == null)
+                    continue;
+
+                select_card = send_cards.transform.GetChild(send_cards.transform.childCount - 1).GetComponent<Card>();
+                break;
+            }
         }
 
-        controller.CardSwap(depard, arrive);
-        
+        receive_cards.ReceiveCard(select_card);
+
         yield return new WaitForSeconds(0.5f);
 
         controller.curStep = GameController.Step.BetFromCardHand;

@@ -21,6 +21,9 @@ public class BattleFieldCards : MonoBehaviour
     {
         card.transform.parent = transform;
         
+        SpriteRenderer sprite = card.GetComponent<SpriteRenderer>();
+        sprite.sortingOrder = 1000 + transform.childCount;
+        
         while(true)
         {
             card.transform.localPosition = Vector3.Lerp(card.transform.localPosition, Vector3.zero, Time.deltaTime * 5);

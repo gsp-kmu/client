@@ -38,10 +38,13 @@ public class GameController : MonoBehaviour
     
 
     public Card select_card;
+    public int select_card_hand_idx;
 
+    public PlayerHand player_hand;
+    public BattleFieldCards player_ten;
+    public BattleFieldCards player_one;
     public OpponentHand opponent_hand;
     public BattleFieldCards opponent_ten;
-
     public BattleFieldCards opponent_one;
 
     void Start()
@@ -54,6 +57,19 @@ public class GameController : MonoBehaviour
     {
         ControllCard();
         HandCardSort();
+
+        if(Input.GetKeyDown("i"))
+        {
+            opponent_hand.OpenCard(1, 1);
+            opponent_one.ReceiveCard(opponent_hand.cards[1]);
+            opponent_hand.UpdateCard();
+        }
+        if(Input.GetKeyDown("o"))
+        {
+            opponent_hand.OpenCard(1, 1);
+            opponent_ten.ReceiveCard(opponent_hand.cards[1]);
+            opponent_hand.UpdateCard();
+        }
     }
 
     void ControllCard()
@@ -68,13 +84,23 @@ public class GameController : MonoBehaviour
         {
             Collider2D hit = Physics2D.OverlapPoint(mouse_point);
 
-            if(hit)
-            {
-                select_card = hit.transform.GetComponent<Card>();
+            if(!hit)
+                return;
+            
+            PlayerHand is_hand = hit.GetComponentInParent<PlayerHand>();
 
-                if(!hand_cards.Contains(select_card))
-                    select_card = null;
+            if(!is_hand)
+                return;
+            
+            select_card = hit.GetComponent<Card>();
+
+            Card[] cards = player_hand.GetComponentsInChildren<Card>();
+            for(int i = 0; i < cards.Length; i++)
+            {
+                if(cards[i] == select_card)
+                    select_card_hand_idx = i;
             }
+            select_card.transform.parent = transform;
         }
 
         if(select_card)
@@ -87,55 +113,35 @@ public class GameController : MonoBehaviour
             if(select_card == null)
                 return;
 
-            if(mouse_point.y > -40.0 && mouse_point.y < 0)
+            Collider2D[] hits = Physics2D.OverlapPointAll(mouse_point);
+
+            foreach(Collider2D hit in hits)
             {
-                if(mouse_point.x < 0)
-                {
-                    select_card.digit = Card.Digit.Ten;
-                    ten_cards.Add(select_card);
-
-                    select_card.GetComponent<SpriteRenderer>().sortingOrder = 1000 + ten_cards.Count; 
-                }
-                else
-                {
+                BattleFieldCards battleField = hit.transform.GetComponent<BattleFieldCards>();
+                if(battleField == null)
+                    continue;
+                if(battleField == player_one)
                     select_card.digit = Card.Digit.One;
-                    one_cards.Add(select_card);
-
-                    select_card.GetComponent<SpriteRenderer>().sortingOrder = 1000 + one_cards.Count;
-                }
-
-                hand_cards.Remove(select_card);
+                else if(battleField == player_ten)
+                    select_card.digit = Card.Digit.Ten;
+                
+                battleField.ReceiveCard(select_card);
+                select_card.BattleCry(select_card.digit);
+                select_card = null;
+                break;
             }
 
-            select_card.BattleCry(select_card.digit);
-
-
-            select_card = null;
-
+            if(select_card)
+            {
+                select_card.transform.parent = player_hand.transform;
+                select_card.transform.SetSiblingIndex(select_card_hand_idx);
+                select_card = null;
+            }
         }
     }
 
     void HandCardSort()
     {
-        for(int i = 0; i < hand_cards.Count; i++)
-        {
-            if(hand_cards[i] == select_card)
-                continue;
-
-            hand_cards[i].transform.position = Vector3.Lerp(hand_cards[i].transform.position, new Vector3(i * 8.0f - hand_cards.Count * 8.0f * 0.5f + 4.0f, -40.0f, 0),Time.deltaTime * 5);
-        }
-
-        for(int i = 0; i < one_cards.Count; i++)
-        {
-            one_cards[i].transform.position = Vector3.Lerp(one_cards[i].transform.position, new Vector3(10.0f, -15.0f, 0),Time.deltaTime * 5);
-        }
-
-
-        for(int i = 0; i < ten_cards.Count; i++)
-        {
-            ten_cards[i].transform.position = Vector3.Lerp(ten_cards[i].transform.position, new Vector3(-10.0f, -15.0f, 0),Time.deltaTime * 5);
-        }
-
         for (int i = 0; i < remove_cards.Count; i++)
         {
             remove_cards[i].transform.position = Vector3.Lerp(remove_cards[i].transform.position, new Vector3(30.0f, 0, 0), Time.deltaTime * 5);
