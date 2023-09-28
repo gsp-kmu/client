@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class Reaper : Card
 {
+    public static GameObject reaperEffect;
+
     void Start()
     {
+        reaperEffect = Resources.Load<GameObject>("Prefebs/Effect/ReaperEffect");
     }
 
     void Update()
@@ -27,10 +30,20 @@ public class Reaper : Card
         BattleFieldCards receive_cards;
         Card select_card = null;
 
+        string givePos = "";
+        string receivePos = "";
+
         if (digit == Digit.One)
+        {
             receive_cards = controller.player_ten;
+            receivePos = "Ten";
+        }
         else
+        {
             receive_cards = controller.player_one;
+            receivePos = "One";
+        }
+
 
         if (controller.opponent_one.transform.childCount + controller.opponent_ten.transform.childCount == 2)
         {
@@ -56,21 +69,41 @@ public class Reaper : Card
                     if (send_cards == null)
                         continue;
 
+                    if (send_cards.transform.name == "OpponentTen")
+                        givePos = "Ten";
+                    else
+                        givePos = "One";
+
                     select_card = send_cards.transform.GetChild(send_cards.transform.childCount - 1).GetComponent<Card>();
+
                     break;
                 }
             }
+            GameObject effect = Instantiate(reaperEffect);
+            Animator animator = effect.GetComponent<Animator>();
+            animator.Play(givePos + "To" + receivePos);
+            Destroy(effect, 2f);
 
-            receive_cards.ReceiveCard(select_card);
+            yield return new WaitForSeconds(1.0f);
 
-            Debug.Log("사신효과 " + select_card.transform.name + " 이동 " + receive_cards.transform.name);
-
+            Transform card_pos = effect.transform.Find("CardPos");
+            select_card.transform.parent = card_pos;
 
             yield return new WaitForSeconds(0.5f);
 
-            controller.curStep = GameController.Step.BetFromCardHand;
+            receive_cards.ReceiveCard(select_card);
 
-            yield return new WaitForSeconds(0.0f);
+            yield return new WaitForSeconds(0.5f);
+
+
+
+
+
+            //receive_cards.ReceiveCard(select_card);
+            //Debug.Log("사신효과 " + select_card.transform.name + " 이동 " + receive_cards.transform.name);
+            //yield return new WaitForSeconds(0.5f);
+            //controller.curStep = GameController.Step.BetFromCardHand;
+            //yield return new WaitForSeconds(0.0f);
         }
     }
 
