@@ -15,51 +15,84 @@ public class Reaper : Card
 
     public override void BattleCry(Digit digit)
     {
-        Debug.Log("사신 능력 발동");
+        base.BattleCry(digit);
+
         StartCoroutine(BattleCrySchedule(digit));
     }
+
 
     static IEnumerator BattleCrySchedule(Digit digit)
     {
         GameController controller = GameController.GetInstance();
-        Card select_card = null;
         BattleFieldCards receive_cards;
+        Card select_card = null;
 
-        controller.curStep = GameController.Step.SelectOpponentCard;
-
-        if(digit == Digit.One)
+        if (digit == Digit.One)
             receive_cards = controller.player_ten;
         else
             receive_cards = controller.player_one;
 
-        while(true)
+        if (controller.opponent_one.transform.childCount + controller.opponent_ten.transform.childCount == 2)
         {
-            yield return new WaitForSeconds(0.0f);
-            if(Input.GetMouseButtonDown(0))
-            {   
-                Vector3 mouse_point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Collider2D hit = Physics2D.OverlapPoint(mouse_point);
-
-                Debug.Log(hit);
-                if(hit == null)
-                    continue;
-                
-                BattleFieldCards send_cards = hit.transform.GetComponentInParent<BattleFieldCards>();
-                if(send_cards == null)
-                    continue;
-
-                select_card = send_cards.transform.GetChild(send_cards.transform.childCount - 1).GetComponent<Card>();
-                break;
-            }
+            Debug.Log("상대방 필드에 카드가 없음");
         }
+        else
+        {
+            controller.curStep = GameController.Step.SelectOpponentCard;
 
-        receive_cards.ReceiveCard(select_card);
+            while (true)
+            {
+                yield return new WaitForSeconds(0.0f);
 
-        yield return new WaitForSeconds(0.5f);
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Vector3 mouse_point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Collider2D hit = Physics2D.OverlapPoint(mouse_point);
 
-        controller.curStep = GameController.Step.BetFromCardHand;
+                    if (hit == null)
+                        continue;
 
-        yield return new WaitForSeconds(0.0f);
+                    BattleFieldCards send_cards = hit.transform.GetComponentInParent<BattleFieldCards>();
+                    if (send_cards == null)
+                        continue;
+
+                    select_card = send_cards.transform.GetChild(send_cards.transform.childCount - 1).GetComponent<Card>();
+                    break;
+                }
+            }
+
+            receive_cards.ReceiveCard(select_card);
+
+            Debug.Log("사신효과 " + select_card.transform.name + " 이동 " + receive_cards.transform.name);
+
+
+            yield return new WaitForSeconds(0.5f);
+
+            controller.curStep = GameController.Step.BetFromCardHand;
+
+            yield return new WaitForSeconds(0.0f);
+        }
     }
 
+
+    public override void BattleCryOpponent(Digit digit)
+    {
+        GameController controller = GameController.GetInstance();
+        base.BattleCryOpponent(digit);
+
+        BattleFieldCards receive_cards;
+        Digit select_player_digit = Digit.One;
+
+        if(digit == Digit.One)
+        {
+            receive_cards = controller.opponent_ten;
+        }
+        else
+        {
+            receive_cards = controller.opponent_ten;
+        }
+
+
+
+    }
 }

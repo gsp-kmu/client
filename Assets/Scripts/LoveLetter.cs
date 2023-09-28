@@ -18,23 +18,27 @@ public class LoveLetter : Card
 
     public override void BattleCry(Digit digit)
     {
-        Debug.Log("러브레터");
+        Debug.Log("러브레터발동");
 
         GameController controller = GameController.GetInstance();
-        List<Card> depard;
-        List<Card> arrive;
+        Card card;
+        BattleFieldCards arrive;
 
         if(digit == Digit.Ten)
         {
-            depard = controller.ten_cards;
-            arrive = controller.opponent_ten_cards;
+            Card[] cards = controller.player_ten.GetComponentsInChildren<Card>();
+            card = cards[cards.Length - 1];
+
+            arrive = controller.opponent_ten;
         }
         else
         {
-            depard = controller.one_cards;
-            arrive = controller.opponent_one_cards;
+            Card[] cards = controller.player_one.GetComponentsInChildren<Card>();
+            card = cards[cards.Length - 1];
+
+            arrive = controller.opponent_one;
         }
 
-        controller.CardSwap(depard, arrive);
+        arrive.ReceiveCard(card);
     }
 }

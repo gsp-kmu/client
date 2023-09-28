@@ -21,17 +21,8 @@ public class GameController : MonoBehaviour
 
     public int player_score = 11;
     public int opponent_score = 0;
-    public bool turn;
 
     public bool ten;
-
-    public List<Card> hand_cards = new List<Card>();
-    public List<Card> one_cards = new List<Card>();
-    public List<Card> ten_cards = new List<Card>();
-
-    public List<Card> opponent_hand_cards = new List<Card>();
-    public List<Card> opponent_one_cards = new List<Card>();
-    public List<Card> opponent_ten_cards = new List<Card>();
 
     public List<Card> remove_cards = new List<Card>();
 
@@ -60,13 +51,13 @@ public class GameController : MonoBehaviour
 
         if(Input.GetKeyDown("i"))
         {
-            opponent_hand.OpenCard(1, 1);
+            opponent_hand.OpenCard(1, 0);
             opponent_one.ReceiveCard(opponent_hand.cards[1]);
             opponent_hand.UpdateCard();
         }
         if(Input.GetKeyDown("o"))
         {
-            opponent_hand.OpenCard(1, 1);
+            opponent_hand.OpenCard(1, 0);
             opponent_ten.ReceiveCard(opponent_hand.cards[1]);
             opponent_hand.UpdateCard();
         }

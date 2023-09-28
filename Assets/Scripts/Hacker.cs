@@ -18,8 +18,8 @@ public class Hacker : Card
 
     public override void BattleCry(Digit digit)
     {
-        Debug.Log("��Ŀ �ɷ� �ߵ�");
-        StartCoroutine(BattleCrySchedule(digit));
+        Debug.Log("해커 능력 발동");
+            StartCoroutine(BattleCrySchedule(digit));
     }
 
     static IEnumerator BattleCrySchedule(Digit digit)
@@ -27,17 +27,26 @@ public class Hacker : Card
         GameController controller = GameController.GetInstance();
         Card side_card;
 
-        if(digit == Digit.One)
-            side_card = controller.ten_cards[controller.ten_cards.Count - 1];
+        if (digit == Digit.One)
+        {
+            Card[] cards = controller.player_ten.GetComponentsInChildren<Card>();
+            side_card = cards[cards.Length - 1];
+        }
         else
-            side_card = controller.one_cards[controller.one_cards.Count - 1];
+        {
+            Card[] cards = controller.player_one.GetComponentsInChildren<Card>();
+            side_card = cards[cards.Length - 1];
+        }
 
         side_card.BattleCry(digit);
 
         while(true)
         {
-            if(controller.curStep == GameController.Step.BetFromCardHand)
+            if (controller.curStep == GameController.Step.BetFromCardHand)
+            {
+                Debug.Log("해커 능력 종료");
                 break;
+            }
             yield return new WaitForSeconds(0.0f);
         }
     }

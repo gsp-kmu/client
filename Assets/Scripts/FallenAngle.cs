@@ -18,28 +18,32 @@ using UnityEngine;
 
     public override void BattleCry(Digit digit)
     {
-        Debug.Log("타락천사 능력 발동");
+        base.BattleCry(digit);
+
         StartCoroutine(BattleCrySchedule());
     }
     IEnumerator BattleCrySchedule()
     {
         GameController controller = GameController.GetInstance();
-        Card cardOne;
-        Card cardTen;
-        List<Card> one_cards = controller.opponent_one_cards;
-        List<Card> ten_cards = controller.opponent_ten_cards;
 
-        cardOne = one_cards[one_cards.Count - 1];
-        cardTen = ten_cards[ten_cards.Count - 1];
-            
-        one_cards.RemoveAt(one_cards.Count - 1);
-        ten_cards.RemoveAt(ten_cards.Count - 1);
+        Card cardOne = null;
+        Card cardTen = null;
 
-        one_cards.Add(cardTen);
-        ten_cards.Add(cardOne);
+        Card[] cards = controller.opponent_one.GetComponentsInChildren<Card>();
 
-        one_cards[one_cards.Count - 1].GetComponent<SpriteRenderer>().sortingOrder = 1000 + one_cards.Count;
-        ten_cards[ten_cards.Count - 1].GetComponent<SpriteRenderer>().sortingOrder = 1000 + ten_cards.Count;
+        if (cards.Length > 0)
+            cardOne = cards[cards.Length - 1];
+
+        cards = controller.opponent_ten.GetComponentsInChildren<Card>();
+
+        if (cards.Length > 0)
+            cardTen = cards[cards.Length - 1];
+
+        if (cardOne != null && cardTen != null)
+        {
+            controller.opponent_one.ReceiveCard(cardTen);
+            controller.opponent_ten.ReceiveCard(cardOne);
+        }
 
         yield return new WaitForSeconds(0.5f);
 

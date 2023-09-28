@@ -22,7 +22,7 @@ public class Luna : Card
 
         if (digit == Digit.Ten)
         {
-            controller.CardSwap(controller.ten_cards, controller.one_cards);
+            controller.player_one.ReceiveCard(this);
         }
     }
 }

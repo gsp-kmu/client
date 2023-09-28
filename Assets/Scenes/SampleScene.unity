@@ -996,7 +996,7 @@ GameObject:
   - component: {fileID: 867552954}
   - component: {fileID: 867552952}
   m_Layer: 0
-  m_Name: Square
+  m_Name: "\uC784\uC2DC1"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1158,7 +1158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cards: []
-  tex: {fileID: -1095959130, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  tex: {fileID: -572673169, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
 --- !u!4 &868182691
 Transform:
   m_ObjectHideFlags: 0
@@ -2075,7 +2075,7 @@ GameObject:
   - component: {fileID: 1653049434}
   - component: {fileID: 1653049432}
   m_Layer: 0
-  m_Name: Square (3)
+  m_Name: "\uC784\uC2DC4"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2239,23 +2239,7 @@ MonoBehaviour:
   curStep: 0
   player_score: 14
   opponent_score: 0
-  turn: 0
   ten: 0
-  hand_cards:
-  - {fileID: 404720908}
-  - {fileID: 1701404880}
-  - {fileID: 367462937}
-  - {fileID: 1114949268}
-  - {fileID: 1356122784}
-  - {fileID: 1607622945}
-  - {fileID: 1057060293}
-  one_cards: []
-  ten_cards: []
-  opponent_hand_cards: []
-  opponent_one_cards:
-  - {fileID: 0}
-  opponent_ten_cards:
-  - {fileID: 0}
   remove_cards: []
   select_card: {fileID: 0}
   select_card_hand_idx: 0
@@ -2444,7 +2428,7 @@ GameObject:
   - component: {fileID: 1914092641}
   - component: {fileID: 1914092639}
   m_Layer: 0
-  m_Name: Square (2)
+  m_Name: "\uC784\uC2DC3"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2589,7 +2573,7 @@ GameObject:
   - component: {fileID: 2065123611}
   - component: {fileID: 2065123609}
   m_Layer: 0
-  m_Name: Square (1)
+  m_Name: "\uC784\uC2DC2"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

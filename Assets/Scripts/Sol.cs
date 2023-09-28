@@ -15,10 +15,9 @@ public class Sol : Card
     }
     public override void BattleCry(Digit digit)
     {
-        Debug.Log("�� �ɷ� �ߵ�");
-            StartCoroutine(BattleCrySchedule());
+    //        StartCoroutine(BattleCrySchedule());
     }
-
+    /*
     IEnumerator BattleCrySchedule()
     {
         GameController controller = GameController.GetInstance();
@@ -56,5 +55,5 @@ public class Sol : Card
         yield return new WaitForSeconds(0.5f);
 
         controller.curStep = GameController.Step.BetFromCardHand;
-    }
+    }*/
 }

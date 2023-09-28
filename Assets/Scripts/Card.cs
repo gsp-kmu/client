@@ -30,6 +30,11 @@ public class Card : MonoBehaviour
 
     public virtual void BattleCry(Digit digit)
     {
+        Debug.Log(transform.name + " 능력발동");
+    }
 
+    public virtual void BattleCryOpponent(Digit digit)
+    {
+        Debug.Log("상대방 " + transform.name + " 능력발동");
     }
 }

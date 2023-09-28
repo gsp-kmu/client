@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class PlayerHand : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         MoveCard();
