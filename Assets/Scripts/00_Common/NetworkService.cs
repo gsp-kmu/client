@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Firesplash.GameDevAssets.SocketIOPlus;
+using System;
+using UnityEngine.Events;
 
 public class NetworkService : MonoBehaviour
 {
@@ -32,6 +34,16 @@ public class NetworkService : MonoBehaviour
         });
 
         eventHandler = new NetworkEventHandler(io, eventCallback);
+    }
+
+    public void AddEvent(string eventName, UnityAction callback)
+    {
+        io.D.On(eventName, callback);
+    }
+
+    public void AddEvent<T>(string eventName, UnityAction<T> callback)
+    {
+        io.D.On(eventName, callback);
     }
 
     public void Send(string eventName, string message)
