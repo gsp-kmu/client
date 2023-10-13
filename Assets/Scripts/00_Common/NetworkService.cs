@@ -20,7 +20,7 @@ public class NetworkService : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
-
+        
         DontDestroyOnLoad(gameObject);
     }
 
@@ -43,7 +43,7 @@ public class NetworkService : MonoBehaviour
 
     public void AddEvent<T>(string eventName, UnityAction<T> callback)
     {
-        io.D.On(eventName, callback);
+        io.D.On<T>(eventName, callback);
     }
 
     public void Send(string eventName, string message)

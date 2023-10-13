@@ -16,9 +16,9 @@ using UnityEngine;
 
     }
 
-    public override void BattleCry(Digit digit)
+    public override void BattleCry( Digit digit)
     {
-        Debug.Log("Å¸¶ôÃµ»ç ´É·Â ¹ßµ¿");
+        Debug.Log("Å¸ï¿½ï¿½Ãµï¿½ï¿½ ï¿½É·ï¿½ ï¿½ßµï¿½");
         StartCoroutine(BattleCrySchedule());
     }
     IEnumerator BattleCrySchedule()
