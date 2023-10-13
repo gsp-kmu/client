@@ -16,7 +16,7 @@ using UnityEngine;
 
     }
 
-    public override void BattleCry(Digit digit)
+    public override void BattleCry( Digit digit)
     {
         base.BattleCry(digit);
 
