@@ -8,6 +8,6 @@ public class NetworkEventCallback : MonoBehaviour
 {
     public void PrintMessage(string message)
     {
-        Debug.Log("테스트 메시지: " + message.ToString());
+        Debug.Log("Test message: " + message.ToString());
     }
 }
