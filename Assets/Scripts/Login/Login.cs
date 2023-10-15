@@ -16,8 +16,8 @@ public class Login : MonoBehaviour
 {
     public string loginUrl;
     public string registerUrl;
-    public TextMeshPro idField;
-    public TextMeshPro passwordField;
+    public TextMeshProUGUI idField;
+    public TextMeshProUGUI passwordField;
     // Start is called before the first frame update
     void Start()
     {
@@ -68,8 +68,8 @@ public class Login : MonoBehaviour
     {
         User user = new User
         {
-            id = "mclub4",
-            password = "12345678"
+            id = idField.text,
+            password = passwordField.text
         };
 
         string json = JsonUtility.ToJson(user);
