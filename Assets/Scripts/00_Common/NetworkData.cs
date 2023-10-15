@@ -2,9 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Card;
 
 public class NetworkData : MonoBehaviour
 {
+}
+
+enum Digit
+{
+    one,
+    ten,
 }
 
 namespace Data{
@@ -15,9 +22,32 @@ namespace Data{
         public string url;
     }
 
-    public struct Login
+    // 누가 먼저 턴인지 확인
+    public struct InGameTurn
     {
-        public string id;
-        public string pw;
+        bool isPlayerTurn; // True면 내턴 False면 상대방 턴
+    }
+    
+    // 첫 카드 2장 뽑기
+    public struct FIrstCard
+    {
+        Card card1;
+        Card card2;
+    }
+
+    // 카드 드로우
+    public struct DrawCard
+    {
+        string id;
+        Card card;
+        Digit drawDigit; // 추후 int 형으로 바뀔 수도 있음
+        string targetId; // 기본적으로 값은 0, 1이면 상대방
+        Digit targetDigit;
+    }
+    
+    // 누가 이겼는가 표시
+    public struct InGameEnd
+    {
+        string winId;
     }
 }

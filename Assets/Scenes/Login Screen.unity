@@ -797,6 +797,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loginUrl: http://localhost:8000/login
   registerUrl: http://localhost:8000/register
+  idField: {fileID: 0}
+  passwordField: {fileID: 0}
 --- !u!114 &290099213
 MonoBehaviour:
   m_ObjectHideFlags: 0
