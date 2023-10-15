@@ -14,4 +14,10 @@ namespace Data{
         public string name;
         public string url;
     }
+
+    public struct Login
+    {
+        public string id;
+        public string pw;
+    }
 }
