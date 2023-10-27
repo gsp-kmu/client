@@ -24,6 +24,7 @@ public class Luna : Card
     public override void BattleCryOpponent(Digit digit)
     {
         base.BattleCryOpponent(digit);
+
         GameController controller = GameController.GetInstance();
 
         if (digit == Digit.Ten)
@@ -39,9 +40,9 @@ public class Luna : Card
         GameObject effect2 = Instantiate(LunaEffect, take);
         effect2.transform.localScale = Vector3.zero;
 
-        effect1.transform.DOScale(Vector3.one, 0.5f);
+        effect1.transform.DOScale(Vector3.one * 1.5f, 0.5f);
         effect1.transform.DOPunchRotation(new Vector3(0, 0, 270), 2);
-        effect2.transform.DOScale(Vector3.one, 0.5f);
+        effect2.transform.DOScale(Vector3.one * 1.5f, 0.5f);
         effect2.transform.DOPunchRotation(new Vector3(0, 0, 270), 2);
 
         yield return new WaitForSeconds(0.2f);
@@ -65,11 +66,11 @@ public class Luna : Card
 
         card.GetComponent<SpriteRenderer>().sortingOrder = 1000 + card.parent.childCount;
 
-        card.DOScale(Vector3.one * 1.2f, 0.6f);
+        card.DOScale(Vector3.one * 2.2f, 0.6f);
 
         yield return new WaitForSeconds(0.6f);
 
-        card.DOScale(Vector3.one, 0.1f);
+        card.DOScale(Vector3.one * 2f, 0.1f);
 
         effect1.transform.DOScale(Vector3.zero, 0.5f);
         effect2.transform.DOScale(Vector3.zero, 0.5f);

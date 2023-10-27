@@ -41,8 +41,8 @@ using UnityEngine;
 
         if (cardOne != null && cardTen != null)
         {
-            controller.opponent_one.ReceiveCard(cardTen);
-            controller.opponent_ten.ReceiveCard(cardOne);
+            //controller.opponent_one.ReceiveCard(cardTen);
+            //controller.opponent_ten.ReceiveCard(cardOne);
         }
 
         yield return new WaitForSeconds(0.5f);

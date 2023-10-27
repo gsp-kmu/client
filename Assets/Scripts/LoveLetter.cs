@@ -39,6 +39,6 @@ public class LoveLetter : Card
             arrive = controller.opponent_one;
         }
 
-        arrive.ReceiveCard(card);
+        //arrive.ReceiveCard(card);
     }
 }

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Reaper : Card
 {
-    public static GameObject reaperEffect;
+    public static GameObject reaperEffect = null;
 
     void Start()
     {
-        reaperEffect = Resources.Load<GameObject>("Prefebs/Effect/ReaperEffect");
+        if(reaperEffect == null)
+            reaperEffect = Resources.Load<GameObject>("Prefebs/Effect/ReaperEffect");
     }
 
     void Update()
@@ -23,10 +24,21 @@ public class Reaper : Card
         StartCoroutine(BattleCrySchedule(digit));
     }
 
+    static IEnumerator ReaperSkill()
+    {
+        yield return new WaitForSeconds(0);
+    }
+
 
     static IEnumerator BattleCrySchedule(Digit digit)
     {
         GameController controller = GameController.GetInstance();
+
+
+
+
+
+        
         BattleFieldCards receive_cards;
         Card select_card = null;
 
@@ -91,7 +103,7 @@ public class Reaper : Card
 
             yield return new WaitForSeconds(0.5f);
 
-            receive_cards.ReceiveCard(select_card);
+//            receive_cards.ReceiveCard(select_card);
 
             yield return new WaitForSeconds(0.5f);
 

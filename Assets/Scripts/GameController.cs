@@ -115,8 +115,8 @@ public class GameController : MonoBehaviour
                     select_card.digit = Card.Digit.One;
                 else if(battleField == player_ten)
                     select_card.digit = Card.Digit.Ten;
-                
-                battleField.ReceiveCard(select_card);
+
+                StartCoroutine(select_card.PlayCard(battleField.transform));
                 select_card.BattleCry(select_card.digit);
                 select_card = null;
                 break;
