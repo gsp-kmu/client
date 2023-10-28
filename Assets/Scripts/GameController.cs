@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +39,8 @@ public class GameController : MonoBehaviour
     public BattleFieldCards opponent_ten;
     public BattleFieldCards opponent_one;
 
+    public Transform effect_ts;
+
     void Start()
     {
         instance = this;
@@ -61,6 +64,10 @@ public class GameController : MonoBehaviour
             opponent_ten.ReceiveCard(opponent_hand.cards[1]);
             opponent_hand.UpdateCard();
         }
+
+        if (Input.GetKeyDown("l"))
+            StartCoroutine(OpponentCardSelect(card => { Debug.Log(card); }));
+        
     }
 
     void ControllCard()
@@ -145,6 +152,43 @@ public class GameController : MonoBehaviour
         depart.RemoveAt(depart.Count - 1);
 
         arrive[arrive.Count - 1].GetComponent<SpriteRenderer>().sortingOrder = 1000 + arrive.Count;
+    }
+
+    public IEnumerator OpponentCardSelect(Action<Card> callback)
+    {
+        yield return new WaitForSeconds(0);
+
+        if (opponent_one.transform.childCount + opponent_ten.transform.childCount == 0)
+        {
+            Debug.Log("상대방 카드 없음");
+            callback(null);
+        }
+        else
+        {
+            while (true)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Vector3 mouse_point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Collider2D hit = Physics2D.OverlapPoint(mouse_point);
+
+                    if (hit == null)
+                        continue;
+
+                    BattleFieldCards send_cards = hit.transform.GetComponentInParent<BattleFieldCards>();
+                    if (send_cards == null)
+                        continue;
+
+                    //print(send_cards.transform.GetChild(send_cards.transform.childCount - 1).GetComponent<Card>());
+
+                    Card select_card = send_cards.transform.GetChild(send_cards.transform.childCount - 1).GetComponent<Card>();
+                    callback(select_card);
+                    break;
+                }
+                yield return new WaitForSeconds(0);
+            }
+        }
+
     }
 
 

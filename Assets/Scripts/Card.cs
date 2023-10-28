@@ -40,12 +40,16 @@ public class Card : MonoBehaviour
         Debug.Log("상대방 " + transform.name + " 능력발동");
     }
 
+    public void SetOrderInLayer()
+    {
+        GetComponent<SpriteRenderer>().sortingOrder = transform.parent.childCount * 2 + 1000;
+    }
+
     public IEnumerator PlayCard(Transform digit_ts)
     {
-        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
-        sprite.sortingOrder = 1000 + digit_ts.childCount;
-
         transform.parent = digit_ts.transform;
+
+        SetOrderInLayer();
 
         transform.DOLocalMove(Vector3.zero, 0.3f);
         transform.DOScale   (Vector3.one * 2.2f, 0.3f);

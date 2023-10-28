@@ -44,11 +44,11 @@ public class Elf : Card
 
         for (int i = 0; i < 10; i++)
         {
-            GameObject effect = Instantiate(elf_effect[Random.Range(0, 3)], pos);
+            GameObject effect = Instantiate(elf_effect[Random.Range(0, 3)], GameController.GetInstance().effect_ts);
             float pos_r = Random.Range(5.0f, 10);
             float ros_r = Random.Range(0, Mathf.PI * 2);
 
-            effect.transform.localPosition = new Vector3(Mathf.Cos(ros_r), Mathf.Sin(ros_r)) * pos_r;
+            effect.transform.position = new Vector3(Mathf.Cos(ros_r), Mathf.Sin(ros_r)) * pos_r + pos.position;
             effect.transform.localScale = Vector3.zero;
             effect.transform.DOScale(Vector3.one * 2.0f, 1.0f);
             effect.transform.DOPunchRotation(Vector3.forward * 180, 1.0f);

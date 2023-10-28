@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3750909620980802660}
   - component: {fileID: 6995767250171304603}
   m_Layer: 0
-  m_Name: Hand
+  m_Name: ReaperEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 6520542798234484593}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.24868982, w: 0.9685832}
-  m_LocalPosition: {x: -125.2, y: 0.4, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1501
   m_Sprite: {fileID: 21300000, guid: 9975812b2e4db46d6930b2e2c4c4c519, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

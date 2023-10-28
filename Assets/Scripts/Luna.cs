@@ -35,21 +35,28 @@ public class Luna : Card
     {
         yield return new WaitForSeconds(0.5f);
 
-        GameObject effect1 = Instantiate(LunaEffect, give);
+        GameObject effect1 = Instantiate(LunaEffect, GameController.GetInstance().effect_ts);
+        effect1.transform.position = give.position;
         effect1.transform.localScale = Vector3.zero;
-        GameObject effect2 = Instantiate(LunaEffect, take);
+        GameObject effect2 = Instantiate(LunaEffect, GameController.GetInstance().effect_ts);
+        effect2.transform.position = take.position;
         effect2.transform.localScale = Vector3.zero;
+
 
         effect1.transform.DOScale(Vector3.one * 1.5f, 0.5f);
         effect1.transform.DOPunchRotation(new Vector3(0, 0, 270), 2);
         effect2.transform.DOScale(Vector3.one * 1.5f, 0.5f);
         effect2.transform.DOPunchRotation(new Vector3(0, 0, 270), 2);
 
-        yield return new WaitForSeconds(0.2f);
 
         Card[] cards = give.GetComponentsInChildren<Card>();
         Transform card = cards[cards.Length - 1].transform;
 
+        effect1.GetComponent<SpriteRenderer>().sortingOrder = 1499;
+        effect2.GetComponent<SpriteRenderer>().sortingOrder = 1499;
+        card.GetComponent<SpriteRenderer>().sortingOrder = 1500;
+
+        yield return new WaitForSeconds(0.2f);
         card.DOScale(Vector3.one * 1.2f, 0.1f);
         card.DOPunchRotation(new Vector3(0, 0, 360), 1.4f);
 
@@ -64,7 +71,6 @@ public class Luna : Card
         card.parent = take;
         card.localPosition = Vector3.zero;
 
-        card.GetComponent<SpriteRenderer>().sortingOrder = 1000 + card.parent.childCount;
 
         card.DOScale(Vector3.one * 2.2f, 0.6f);
 
@@ -79,5 +85,7 @@ public class Luna : Card
 
         Destroy(effect1);
         Destroy(effect2);
+
+        card.GetComponent<Card>().SetOrderInLayer();
     }
 }
