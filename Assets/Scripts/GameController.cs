@@ -41,6 +41,34 @@ public class GameController : MonoBehaviour
 
     public Transform effect_ts;
 
+    public Card player_one_topCard {
+        get 
+        {
+            return player_one.transform.GetChild(player_one.transform.childCount - 1).GetComponent<Card>();
+        }
+    }
+    public Card player_ten_topCard
+    {
+        get 
+        {
+            return player_ten.transform.GetChild(player_ten.transform.childCount - 1).GetComponent<Card>();
+        }
+    }
+
+    public Card opponent_one_topCard
+    {
+        get
+        {
+            return opponent_one.transform.GetChild(opponent_one.transform.childCount - 1).GetComponent<Card>();
+        }
+    }
+    public Card opponent_ten_topCard
+    {
+        get
+        {
+            return opponent_ten.transform.GetChild(opponent_ten.transform.childCount - 1).GetComponent<Card>();
+        }
+    }
     void Start()
     {
         instance = this;
@@ -165,6 +193,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            Card select_card = null;
             while (true)
             {
                 if (Input.GetMouseButtonDown(0))
@@ -181,12 +210,14 @@ public class GameController : MonoBehaviour
 
                     //print(send_cards.transform.GetChild(send_cards.transform.childCount - 1).GetComponent<Card>());
 
-                    Card select_card = send_cards.transform.GetChild(send_cards.transform.childCount - 1).GetComponent<Card>();
-                    callback(select_card);
+                    select_card = send_cards.transform.GetChild(send_cards.transform.childCount - 1).GetComponent<Card>();
                     break;
                 }
                 yield return new WaitForSeconds(0);
             }
+
+            yield return new WaitForSeconds(0.2f);
+            callback(select_card);
         }
 
     }

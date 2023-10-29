@@ -13,6 +13,14 @@ public class BattleFieldCards : MonoBehaviour
     {
     }
 
+    public void OrganizeCard()
+    {
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = i * 2 + 1000;
+        }
+    }
+
     public void ReceiveCard(Card card)
     {
         StartCoroutine(MoveCard(card));

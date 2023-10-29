@@ -42,14 +42,13 @@ public class Card : MonoBehaviour
 
     public void SetOrderInLayer()
     {
-        GetComponent<SpriteRenderer>().sortingOrder = transform.parent.childCount * 2 + 1000;
+        GetComponent<SpriteRenderer>().sortingOrder = transform.parent.GetSiblingIndex() * 2 + 1000;
     }
 
     public IEnumerator PlayCard(Transform digit_ts)
     {
         transform.parent = digit_ts.transform;
-
-        SetOrderInLayer();
+        transform.parent.GetComponent<BattleFieldCards>().OrganizeCard();
 
         transform.DOLocalMove(Vector3.zero, 0.3f);
         transform.DOScale   (Vector3.one * 2.2f, 0.3f);

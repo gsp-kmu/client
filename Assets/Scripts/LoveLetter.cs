@@ -1,16 +1,19 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LoveLetter : Card
 {
-    // Start is called before the first frame update
-    void Start()
+    GameObject loveletter_effect = null;
+
+    void Awake()
     {
-        
+        if (loveletter_effect == null)
+            loveletter_effect = Resources.Load<GameObject>("Prefebs/Effect/LoveLetter_effect");
+
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -18,27 +21,38 @@ public class LoveLetter : Card
 
     public override void BattleCry(Digit digit)
     {
-        Debug.Log("러브레터발동");
+        base.BattleCry(digit);
 
         GameController controller = GameController.GetInstance();
-        Card card;
-        BattleFieldCards arrive;
 
-        if(digit == Digit.Ten)
-        {
-            Card[] cards = controller.player_ten.GetComponentsInChildren<Card>();
-            card = cards[cards.Length - 1];
-
-            arrive = controller.opponent_ten;
-        }
+        if (digit == Digit.One)
+            StartCoroutine(LoveLetterSkill(controller.player_one_topCard, controller.opponent_one.transform));
         else
-        {
-            Card[] cards = controller.player_one.GetComponentsInChildren<Card>();
-            card = cards[cards.Length - 1];
-
-            arrive = controller.opponent_one;
-        }
-
+            StartCoroutine(LoveLetterSkill(controller.player_ten_topCard, controller.opponent_ten.transform));
         //arrive.ReceiveCard(card);
+    }
+
+    public IEnumerator LoveLetterSkill(Card card, Transform target)
+    {
+        yield return new WaitForSeconds(0.5f);
+        card.transform.DOMove(target.position, 0.5f);
+
+        card.GetComponent<SpriteRenderer>().sortingOrder = 1500;
+
+        yield return new WaitForSeconds(0.5f);
+
+        GameObject effect = Instantiate(loveletter_effect, GameController.GetInstance().effect_ts);
+        effect.transform.position = target.position;
+        effect.transform.localScale = new Vector3(0, 0, 0);
+        effect.transform.DOScale(new Vector3(20, 20, 20), 0.7f);
+        effect.GetComponent<SpriteRenderer>().DOFade(0, 0.7f);
+
+        yield return new WaitForSeconds(0.7f);
+
+        card.transform.parent = target;
+        card.SetOrderInLayer();
+        Destroy(effect);
+
+
     }
 }

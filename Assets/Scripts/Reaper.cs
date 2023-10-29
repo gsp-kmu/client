@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class Reaper : Card
 {
-    public static GameObject reaperEffect = null;
+    public static GameObject reaper_effect = null;
 
-    void Start()
+    void Awake()
     {
-        if(reaperEffect == null)
-            reaperEffect = Resources.Load<GameObject>("Prefebs/Effect/ReaperEffect");
+        if(reaper_effect == null)
+            reaper_effect = Resources.Load<GameObject>("Prefebs/Effect/ReaperEffect");
     }
 
     void Update()
@@ -44,7 +44,7 @@ public class Reaper : Card
             yield break;
         card.GetComponent<SpriteRenderer>().sortingOrder = 1500;
 
-        GameObject effect = Instantiate(reaperEffect);
+        GameObject effect = Instantiate(reaper_effect);
         Destroy(effect, 1.5f);
 
         effect.transform.position = new Vector3(-50, Random.Range(-10, 10), 0);
