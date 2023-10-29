@@ -24,16 +24,22 @@ public class NetworkService : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    void Start()
+    public void Login(string id)
     {
         io.Connect();
         io.D.On("connect", () =>
         {
             Debug.Log("connect");
             io.D.Emit("들어왔습니다");
+            Send("login", id);
         });
 
         eventHandler = new NetworkEventHandler(io, eventCallback);
+    }
+
+    private void OnApplicationQuit()
+    {
+        io.D.Emit("disconnect");
     }
 
     public void AddEvent(string eventName, UnityAction callback)
