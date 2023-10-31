@@ -48,7 +48,6 @@ public class Luna : Card
         effect2.transform.DOScale(Vector3.one * 1.5f, 0.5f);
         effect2.transform.DOPunchRotation(new Vector3(0, 0, 270), 2);
 
-
         Card[] cards = give.GetComponentsInChildren<Card>();
         Transform card = cards[cards.Length - 1].transform;
 

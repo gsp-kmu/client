@@ -38,11 +38,15 @@ public class Reaper : Card
     {
         base.BattleCryOpponent(digit);
 
+        string order = "One";
+
         GameController controller = GameController.GetInstance();
+
+        Card card = order == "One" ? controller.player_one_topCard : controller.player_ten_topCard;
 
         Transform target = digit == Digit.One ? controller.opponent_ten.transform : controller.opponent_one.transform;
 
-
+        StartCoroutine(ReaperSkill(card, target));
     }
 
     static IEnumerator ReaperSkill(Card card, Transform pos)

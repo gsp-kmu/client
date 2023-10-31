@@ -31,7 +31,7 @@ public class BattleFieldCards : MonoBehaviour
         card.transform.parent = transform;
         
         SpriteRenderer sprite = card.GetComponent<SpriteRenderer>();
-        sprite.sortingOrder = 1000 + transform.childCount;
+        sprite.sortingOrder = 1000 + transform.childCount * 2;
         card.transform.DOScale(Vector3.one * 2, 0.5f);
         
         while(true)
@@ -45,5 +45,6 @@ public class BattleFieldCards : MonoBehaviour
             }       
             yield return new WaitForSeconds(0);
         }
+        card.BattleCryOpponent(Card.Digit.One);
     }
 }

@@ -42,6 +42,8 @@ public class GameController : MonoBehaviour
 
     public Transform effect_ts;
 
+    public bool turn;
+
     public Card player_one_topCard {
         get 
         {
@@ -91,24 +93,32 @@ public class GameController : MonoBehaviour
     
     void Update()
     {
-        ControllCard();
-        HandCardSort();
-
-        if(Input.GetKeyDown("i"))
+        if (turn)
         {
-            opponent_hand.OpenCard(1, 0);
-            opponent_one.ReceiveCard(opponent_hand.cards[1]);
-            opponent_hand.UpdateCard();
-        }
-        if(Input.GetKeyDown("o"))
-        {
-            opponent_hand.OpenCard(1, 0);
-            opponent_ten.ReceiveCard(opponent_hand.cards[1]);
-            opponent_hand.UpdateCard();
-        }
 
-        if (Input.GetKeyDown("l"))
-            StartCoroutine(OpponentCardSelect(card => { Debug.Log(card); }));
+            ControllCard();
+            HandCardSort();
+
+            if (Input.GetKeyDown("i"))
+            {
+                opponent_hand.OpenCard(1, 0);
+                opponent_one.ReceiveCard(opponent_hand.cards[1]);
+                opponent_hand.UpdateCard();
+            }
+            if (Input.GetKeyDown("o"))
+            {
+                opponent_hand.OpenCard(1, 0);
+                opponent_ten.ReceiveCard(opponent_hand.cards[1]);
+                opponent_hand.UpdateCard();
+            }
+
+            if (Input.GetKeyDown("l"))
+                StartCoroutine(OpponentCardSelect(card => { Debug.Log(card); }));
+        }
+        else // 상대방 턴일경우
+        {
+
+        }
         
     }
 
@@ -222,7 +232,7 @@ public class GameController : MonoBehaviour
                 tenCard.transform.localPosition = new Vector3(Mathf.Cos(tenDelta) * 0.5f, Mathf.Sin(tenDelta) * 0.5f, 0);
 
                 oneDelta += Time.deltaTime * 2;
-                tenDelta += Time.deltaTime * 2;
+                tenDelta -= Time.deltaTime * 2;
 
                 if (Input.GetMouseButtonDown(0))
                 {
