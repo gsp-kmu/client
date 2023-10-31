@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Reaper : Card
 {
@@ -24,12 +25,7 @@ public class Reaper : Card
 
         GameController controller = GameController.GetInstance();
 
-        Transform target;
-
-        if (digit == Digit.One)
-            target = controller.player_ten.transform;
-        else
-            target = controller.player_one.transform;
+        Transform target = digit == Digit.One ? controller.player_ten.transform : controller.player_one.transform;
 
         StartCoroutine(controller.OpponentCardSelect(
             card => { 
@@ -38,10 +34,22 @@ public class Reaper : Card
 
     }
 
+    public override void BattleCryOpponent(Digit digit)
+    {
+        base.BattleCryOpponent(digit);
+
+        GameController controller = GameController.GetInstance();
+
+        Transform target = digit == Digit.One ? controller.opponent_ten.transform : controller.opponent_one.transform;
+
+
+    }
+
     static IEnumerator ReaperSkill(Card card, Transform pos)
     {
         if (card == null)
             yield break;
+
         card.GetComponent<SpriteRenderer>().sortingOrder = 1500;
 
         GameObject effect = Instantiate(reaper_effect);
@@ -57,6 +65,7 @@ public class Reaper : Card
         
         effect.transform.DOMove(new Vector3(-50, 0, 0), 0.5f);
         card.transform.parent = pos;
-        card.SetOrderInLayer();
+
+        GameController.GetInstance().FieldCardOrganize();
     }
 }

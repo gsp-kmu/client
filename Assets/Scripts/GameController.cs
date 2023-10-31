@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class GameController : MonoBehaviour
 {
@@ -44,6 +45,9 @@ public class GameController : MonoBehaviour
     public Card player_one_topCard {
         get 
         {
+            if (player_one.transform.childCount == 0)
+                return null;
+
             return player_one.transform.GetChild(player_one.transform.childCount - 1).GetComponent<Card>();
         }
     }
@@ -51,6 +55,9 @@ public class GameController : MonoBehaviour
     {
         get 
         {
+            if (player_ten.transform.childCount == 0)
+                return null;
+
             return player_ten.transform.GetChild(player_ten.transform.childCount - 1).GetComponent<Card>();
         }
     }
@@ -59,6 +66,9 @@ public class GameController : MonoBehaviour
     {
         get
         {
+            if (opponent_one.transform.childCount == 0)
+                return null;
+
             return opponent_one.transform.GetChild(opponent_one.transform.childCount - 1).GetComponent<Card>();
         }
     }
@@ -66,6 +76,10 @@ public class GameController : MonoBehaviour
     {
         get
         {
+            if (opponent_ten.transform.childCount == 0)
+                return null;
+
+
             return opponent_ten.transform.GetChild(opponent_ten.transform.childCount - 1).GetComponent<Card>();
         }
     }
@@ -194,8 +208,22 @@ public class GameController : MonoBehaviour
         else
         {
             Card select_card = null;
+
+            Card oneCard = opponent_one_topCard;
+            Card tenCard = opponent_ten_topCard;
+            oneCard.transform.DOScale(Vector3.one * 2.2f, 0.1f);
+            tenCard.transform.DOScale(Vector3.one * 2.2f, 0.1f);
+
+            float oneDelta = UnityEngine.Random.Range(0, Mathf.PI);
+            float tenDelta = UnityEngine.Random.Range(0, Mathf.PI);
             while (true)
             {
+                oneCard.transform.localPosition = new Vector3(Mathf.Cos(oneDelta) * 0.5f, Mathf.Sin(oneDelta) * 0.5f, 0);
+                tenCard.transform.localPosition = new Vector3(Mathf.Cos(tenDelta) * 0.5f, Mathf.Sin(tenDelta) * 0.5f, 0);
+
+                oneDelta += Time.deltaTime * 2;
+                tenDelta += Time.deltaTime * 2;
+
                 if (Input.GetMouseButtonDown(0))
                 {
                     Vector3 mouse_point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -218,8 +246,19 @@ public class GameController : MonoBehaviour
 
             yield return new WaitForSeconds(0.2f);
             callback(select_card);
-        }
 
+            oneCard.transform.DOScale(Vector3.one * 2f, 0.1f);
+            tenCard.transform.DOScale(Vector3.one * 2f, 0.1f);
+            oneCard.transform.localPosition = Vector3.zero;
+        }
+    }
+
+    public void FieldCardOrganize()
+    {
+        player_one.OrganizeCard();
+        player_ten.OrganizeCard();
+        opponent_one.OrganizeCard();
+        opponent_ten.OrganizeCard();
     }
 
 
