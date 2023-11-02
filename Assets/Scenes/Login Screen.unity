@@ -133,7 +133,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 604249397514365113, guid: 5cd10eb48b7ae574da6b9c0cb70f9036, type: 3}
       propertyPath: serverAddress
-      value: http://35.199.190.237:8080
+      value: http://35.199.190.237:8000
       objectReference: {fileID: 0}
     - target: {fileID: 4800518141892289167, guid: 5cd10eb48b7ae574da6b9c0cb70f9036, type: 3}
       propertyPath: m_Name
@@ -1109,7 +1109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b964b70f7041454db5725f3c387ae30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loginUrl: http://35.199.190.237:8080/login
+  loginUrl: http://35.199.190.237:8000/login
   canvasManager: {fileID: 2088181764}
   idField: {fileID: 66240337}
   passwordField: {fileID: 2027789504}
@@ -4063,7 +4063,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a25eec52b749c498a2a9a5aa5d65a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registerUrl: http://35.199.190.237:8080/register
+  registerUrl: http://35.199.190.237:8000/register
   idField: {fileID: 155602404}
   passwordField: {fileID: 829051455}
   canvasManager: {fileID: 2088181764}
