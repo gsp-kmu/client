@@ -25,7 +25,7 @@ namespace Data{
     // 누가 먼저 턴인지 확인
     public struct InGameTurn
     {
-        bool isPlayerTurn; // True면 내턴 False면 상대방 턴
+        public bool isPlayerTurn; // True면 내턴 False면 상대방 턴
     }
     
     // 첫 카드 2장 뽑기
@@ -38,16 +38,16 @@ namespace Data{
     // 카드 드로우
     public struct DrawCard
     {
-        string id;
-        Card card;
+        public string id;
+        public Card card;
         Digit drawDigit; // 추후 int 형으로 바뀔 수도 있음
-        string targetId; // 기본적으로 값은 0, 1이면 상대방
+        public string targetId; // 기본적으로 값은 0, 1이면 상대방
         Digit targetDigit;
     }
     
     // 누가 이겼는가 표시
     public struct InGameEnd
     {
-        string winId;
+        public string winId;
     }
 }

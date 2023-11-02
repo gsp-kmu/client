@@ -15,9 +15,11 @@ public class User
 public class Login : MonoBehaviour
 {
     public string loginUrl;
-    public string registerUrl;
-    public TextMeshProUGUI idField;
-    public TextMeshProUGUI passwordField;
+    public GameObject canvasManager;
+    public TMP_InputField idField;
+    public TMP_InputField passwordField;
+    public NetworkService networkService;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,18 +33,19 @@ public class Login : MonoBehaviour
 
     public void LoginButtonClick()
     {
+        string id = idField.text;
         User user = new User
         {
-            id = idField.text,
+            id = id,
             password = passwordField.text
         };
 
         string json = JsonUtility.ToJson(user);
 
-        StartCoroutine(LoginPost(json));
+        StartCoroutine(LoginPost(json, id));
     }
 
-    IEnumerator LoginPost(string json)
+    IEnumerator LoginPost(string json, string id)
     {
         using (UnityWebRequest request = UnityWebRequest.PostWwwForm(loginUrl, json))
         {
@@ -54,49 +57,20 @@ public class Login : MonoBehaviour
 
             yield return request.SendWebRequest();
 
-            if (request.error != null)
+            Debug.Log(request.responseCode);
+            if (request.responseCode == 200)
             {
                 Debug.Log("로그인 성공");
+                NetworkService.Instance.Login(id);
             }
             else
             {
-                Debug.Log(request.error.ToString());
+                Debug.Log("로그인 실패");
             }
         }
     }
-    public void RegisterButtonClick()
+    public void ReturnToRegister()
     {
-        User user = new User
-        {
-            id = idField.text,
-            password = passwordField.text
-        };
-
-        string json = JsonUtility.ToJson(user);
-
-        StartCoroutine(RegisterPost(json));
-    }
-
-    IEnumerator RegisterPost(string json)
-    {
-        using(UnityWebRequest request = UnityWebRequest.PostWwwForm(registerUrl, json))
-        {
-
-            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
-            request.uploadHandler = new UploadHandlerRaw(jsonToSend);
-            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
-
-            yield return request.SendWebRequest();
-
-            if(request.error != null)
-            {
-                Debug.Log("회원가입 성공");
-            }
-            else
-            {
-                Debug.Log(request.error.ToString());
-            }
-        }
+        canvasManager.GetComponent<CanvasManager>().SetCurrentPage(CanvasManager.mPageInfo.Register);
     }
 }
