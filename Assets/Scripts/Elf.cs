@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -14,6 +14,7 @@ public class Elf : Card
             for (int i = 0; i < elf_effect.Length; i++)
                 elf_effect[i] = Resources.Load<GameObject>("Prefebs/Effect/Elf_effect_" + i.ToString());
         }
+        transform.name = "Elf";
     }
 
     public override void BattleCry(Digit digit)
@@ -25,11 +26,19 @@ public class Elf : Card
             StartCoroutine(Spawn(controller.player_ten.transform));
         else
             StartCoroutine(Spawn(controller.player_one.transform));
+
+        Data.PlayCard send_card = new Data.PlayCard();
+        send_card.id = "";
+        send_card.card.id = "8";
+        send_card.drawDigit = digit; // 추후 int 형으로 바뀔 수도 있음
+        send_card.targetId = "0"; // 기본적으로 값은 0, 1이면 상대방
+        send_card.targetDigit = digit;
+        //NetworkService.Instance.Send(NetworkEvent.INGAME_DRAW_CARD, send_card);
     }
 
-    public override void BattleCryOpponent(Digit digit)
+    public override void BattleCryOpponent(Digit digit, int target, Digit target_digit)
     {
-        base.BattleCryOpponent(digit);
+        base.BattleCryOpponent(digit, target, target_digit);
         GameController controller = GameController.GetInstance();
 
         if (digit == Digit.Ten)
@@ -40,8 +49,6 @@ public class Elf : Card
 
     static IEnumerator Spawn(Transform pos)
     {
-        yield return new WaitForSeconds(0.5f);
-
         for (int i = 0; i < 10; i++)
         {
             GameObject effect = Instantiate(elf_effect[Random.Range(0, 3)], GameController.GetInstance().effect_ts);

@@ -45,6 +45,6 @@ public class BattleFieldCards : MonoBehaviour
             }       
             yield return new WaitForSeconds(0);
         }
-        card.BattleCryOpponent(Card.Digit.One);
+       //card.BattleCryOpponent(Digit.One);
     }
 }

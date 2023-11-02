@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -11,6 +11,7 @@ public class Sol : Card
     {
         if (sol_effect == null)
             sol_effect = Resources.Load<GameObject>("Prefebs/Effect/SolEffect");
+        transform.name = "Sol";
     }
 
 
@@ -25,8 +26,28 @@ public class Sol : Card
         StartCoroutine(controller.OpponentCardSelect(
             card => {
                 StartCoroutine(SolSkill(card));
+
+                Data.PlayCard send_card = new Data.PlayCard();
+                send_card.id = "";
+                send_card.card.id = "0";
+                send_card.drawDigit = digit; // 추후 int 형으로 바뀔 수도 있음
+                send_card.targetId = "1"; // 기본적으로 값은 0, 1이면 상대방
+                if (card != null)
+                    send_card.targetDigit = card.transform.parent == controller.opponent_one ? Digit.One : Digit.Ten;
+                else
+                    send_card.targetDigit = Digit.One;
             }));
 
+    }
+    public override void BattleCryOpponent(Digit digit, int target, Digit target_digit)
+    {
+        base.BattleCryOpponent(digit, target, target_digit);
+
+        GameController controller = GameController.GetInstance();
+
+        Card card = target_digit == Digit.One ? controller.player_one_topCard : controller.player_ten_topCard;
+
+        StartCoroutine(SolSkill(card));
     }
 
     public IEnumerator SolSkill(Card card)

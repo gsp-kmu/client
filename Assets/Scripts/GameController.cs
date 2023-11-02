@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Data;
 
 public class GameController : MonoBehaviour
 {
@@ -28,7 +29,6 @@ public class GameController : MonoBehaviour
 
     public List<Card> remove_cards = new List<Card>();
 
-    
 
     public Card select_card;
     public int select_card_hand_idx;
@@ -36,13 +36,17 @@ public class GameController : MonoBehaviour
     public PlayerHand player_hand;
     public BattleFieldCards player_ten;
     public BattleFieldCards player_one;
-    public OpponentHand opponent_hand;
+    public Transform opponent_hand;
     public BattleFieldCards opponent_ten;
     public BattleFieldCards opponent_one;
 
     public Transform effect_ts;
 
-    public bool turn;
+    public bool turn = true;
+
+    public bool click_out;
+    public Vector3 click_pos;
+    public float click_time;
 
     public Card player_one_topCard {
         get 
@@ -85,41 +89,78 @@ public class GameController : MonoBehaviour
             return opponent_ten.transform.GetChild(opponent_ten.transform.childCount - 1).GetComponent<Card>();
         }
     }
-    void Start()
+    void Awake()
     {
+        turn = true;
+
         instance = this;
         curStep = Step.BetFromCardHand;
+
+        //NetworkService.Instance.AddEvent(NetworkEvent.INGAME_PLAY_CARD, (Data.DrawCard card) => {
+        //    OpponentPlayCard(card.id, int.Parse(card.card.id), (int)card.drawDigit, int.Parse(card.targetId), (int)card.targetDigit);
+        //});
     }
-    
+
     void Update()
     {
-        if (turn)
-        {
+        ControllCard();
+        HandCardSort();
 
-            ControllCard();
-            HandCardSort();
+        //리퍼 테스트
+        //if (Input.GetKeyDown(KeyCode.P))
+        //    StartCoroutine(OpponentPlayCard("", 0, 0, 1, 0));
+        //if (Input.GetKeyDown(KeyCode.O))
+        //    StartCoroutine(OpponentPlayCard("", 0, 0, 1, 1));
+        //if (Input.GetKeyDown(KeyCode.I))
+        //    StartCoroutine(OpponentPlayCard("", 0, 1, 1, 0));
+        //if (Input.GetKeyDown(KeyCode.U))
+        //    StartCoroutine(OpponentPlayCard("", 0, 1, 1, 1));
 
-            if (Input.GetKeyDown("i"))
-            {
-                opponent_hand.OpenCard(1, 0);
-                opponent_one.ReceiveCard(opponent_hand.cards[1]);
-                opponent_hand.UpdateCard();
-            }
-            if (Input.GetKeyDown("o"))
-            {
-                opponent_hand.OpenCard(1, 0);
-                opponent_ten.ReceiveCard(opponent_hand.cards[1]);
-                opponent_hand.UpdateCard();
-            }
+        //러브레터 테스트
+        //if (Input.GetKeyDown(KeyCode.P))
+        //    StartCoroutine(OpponentPlayCard("", 2, 0, 0, 0));
+        //if (Input.GetKeyDown(KeyCode.O))
+        //    StartCoroutine(OpponentPlayCard("", 2, 1, 0, 0));
 
-            if (Input.GetKeyDown("l"))
-                StartCoroutine(OpponentCardSelect(card => { Debug.Log(card); }));
-        }
-        else // 상대방 턴일경우
-        {
+        ////솔 테스트
+        //if (Input.GetKeyDown(KeyCode.P))
+        //    StartCoroutine(OpponentPlayCard("", 3, 0, 1, 0));
+        //if (Input.GetKeyDown(KeyCode.O))
+        //    StartCoroutine(OpponentPlayCard("", 3, 0, 1, 1));
+        //if (Input.GetKeyDown(KeyCode.I))
+        //    StartCoroutine(OpponentPlayCard("", 3, 1, 1, 0));
+        //if (Input.GetKeyDown(KeyCode.U))
+        //    StartCoroutine(OpponentPlayCard("", 3, 1, 1, 1));
 
-        }
-        
+        //타락아이코테스트
+        if (Input.GetKeyDown(KeyCode.P))
+            StartCoroutine(OpponentPlayCard("", 5, 0, 1, 0));
+        if (Input.GetKeyDown(KeyCode.O))
+            StartCoroutine(OpponentPlayCard("", 5, 1, 1, 0));
+
+        //타락천사 테스트
+        //if (Input.GetKeyDown(KeyCode.P))
+        //    StartCoroutine(OpponentPlayCard("", 6, 0, 0, 0));
+        //if (Input.GetKeyDown(KeyCode.O))
+        //    StartCoroutine(OpponentPlayCard("", 6, 1, 0, 0));
+
+        //메두사 테스트
+        //if (Input.GetKeyDown(KeyCode.P))
+        //    StartCoroutine(OpponentPlayCard("", 7, 0, 0, 0));
+        //if (Input.GetKeyDown(KeyCode.O))
+        //    StartCoroutine(OpponentPlayCard("", 7, 1, 0, 0));
+
+        //엘프 테스트
+        //if (Input.GetKeyDown(KeyCode.P))
+        //    StartCoroutine(OpponentPlayCard("", 8, 0, 0, 0));
+        //if (Input.GetKeyDown(KeyCode.O))
+        //    StartCoroutine(OpponentPlayCard("", 8, 1, 0, 0));
+
+        //루나 테스트
+        //if (Input.GetKeyDown(KeyCode.P))
+        //    StartCoroutine(OpponentPlayCard("", 9, 0, 0, 0));
+        //if (Input.GetKeyDown(KeyCode.O))
+        //    StartCoroutine(OpponentPlayCard("", 9, 1, 0, 0));
     }
 
     void ControllCard()
@@ -144,6 +185,10 @@ public class GameController : MonoBehaviour
             
             select_card = hit.GetComponent<Card>();
 
+            click_out = false;
+            click_pos = mouse_point;
+            click_time = Time.time;
+
             Card[] cards = player_hand.GetComponentsInChildren<Card>();
             for(int i = 0; i < cards.Length; i++)
             {
@@ -155,13 +200,28 @@ public class GameController : MonoBehaviour
 
         if(select_card)
         {
-            select_card.transform.position = Vector3.Lerp(select_card.transform.position, mouse_point, Time.deltaTime * 10);
+            if (Vector3.Distance(click_pos, mouse_point) > 1)
+                click_out = true;
+
+            if (Time.time - click_time > 0.5f && !click_out)
+            {
+                select_card.transform.position = Vector3.zero;
+                select_card.transform.localScale = Vector3.one * 5;
+            }
+            else
+            {
+                select_card.transform.position = Vector3.Lerp(select_card.transform.position, mouse_point, Time.deltaTime * 10);
+                select_card.transform.localScale = Vector3.one * 1.2f;
+            }
+
         }
 
         if(Input.GetMouseButtonUp(0))
         {
             if(select_card == null)
                 return;
+
+            select_card.transform.localScale = Vector3.one;
 
             Collider2D[] hits = Physics2D.OverlapPointAll(mouse_point);
 
@@ -171,9 +231,9 @@ public class GameController : MonoBehaviour
                 if(battleField == null)
                     continue;
                 if(battleField == player_one)
-                    select_card.digit = Card.Digit.One;
+                    select_card.digit = Digit.One;
                 else if(battleField == player_ten)
-                    select_card.digit = Card.Digit.Ten;
+                    select_card.digit = Digit.Ten;
 
                 StartCoroutine(select_card.PlayCard(battleField.transform));
                 select_card.BattleCry(select_card.digit);
@@ -261,6 +321,31 @@ public class GameController : MonoBehaviour
             tenCard.transform.DOScale(Vector3.one * 2f, 0.1f);
             oneCard.transform.localPosition = Vector3.zero;
         }
+    }
+
+    //적이 카드를 낼 경우
+    public IEnumerator OpponentPlayCard(string id, int card_id, int digit, int target, int target_digit) //유저 아이디, 카드정보, 내는숫자, 스킬사용대상(자신, 상대방), 스킬사용대상자릿수
+    {
+        GameObject card = Instantiate(Resources.Load<GameObject>("Prefebs/Card/" + card_id.ToString()));
+        card.transform.parent = opponent_hand;
+        card.transform.localPosition = Vector3.zero;
+
+        card.transform.parent = digit == 0 ? opponent_one.transform : opponent_ten.transform;
+
+        card.transform.DOLocalMove(Vector3.zero, 0.5f);
+        card.transform.DOScale(Vector3.one * 2.2f, 0.5f);
+
+        yield return new WaitForSeconds(0.5f);
+
+        card.transform.DOScale(Vector3.one * 2.0f, 0.2f);
+
+        yield return new WaitForSeconds(0.2f);
+
+        FieldCardOrganize();
+
+        card.GetComponent<Card>().BattleCryOpponent((Digit)digit, target, (Digit)target_digit);
+
+        yield return new WaitForSeconds(0);
     }
 
     public void FieldCardOrganize()

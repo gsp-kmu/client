@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
@@ -19,11 +19,19 @@ public class Luna : Card
         GameController controller = GameController.GetInstance();
         if (digit == Digit.Ten)
             StartCoroutine(Move(controller.player_ten.transform, controller.player_one.transform));
+
+        Data.PlayCard send_card = new Data.PlayCard();
+        send_card.id = "";
+        send_card.card.id = "9";
+        send_card.drawDigit = digit; // 추후 int 형으로 바뀔 수도 있음
+        send_card.targetId = "0"; // 기본적으로 값은 0, 1이면 상대방
+        send_card.targetDigit = digit;
+        //NetworkService.Instance.Send(NetworkEvent.INGAME_DRAW_CARD, send_card);
     }
 
-    public override void BattleCryOpponent(Digit digit)
+    public override void BattleCryOpponent(Digit digit, int target, Digit target_digit)
     {
-        base.BattleCryOpponent(digit);
+        base.BattleCryOpponent(digit, target, target_digit);
 
         GameController controller = GameController.GetInstance();
 

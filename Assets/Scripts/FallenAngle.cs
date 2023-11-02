@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -25,9 +25,30 @@ public class FallenAngle : Card
         base.BattleCry(digit);
 
         StartCoroutine(FallenAngelSkill(GameController.GetInstance().opponent_ten_topCard, GameController.GetInstance().opponent_one_topCard));
+
+        Data.PlayCard send_card = new Data.PlayCard();
+        send_card.id = "";
+        send_card.card.id = "6";
+        send_card.drawDigit = digit; // 추후 int 형으로 바뀔 수도 있음
+        send_card.targetId = "0"; // 기본적으로 값은 0, 1이면 상대방
+        send_card.targetDigit = digit;
+        //NetworkService.Instance.Send(NetworkEvent.INGAME_DRAW_CARD, send_card);
     }
+
+    public override void BattleCryOpponent(Digit digit, int target, Digit target_digit)
+    {
+        base.BattleCryOpponent(digit, target, target_digit);
+
+        StartCoroutine(FallenAngelSkill(GameController.GetInstance().player_one_topCard, GameController.GetInstance().player_ten_topCard));
+    }
+
     IEnumerator FallenAngelSkill(Card card1, Card card2)
     {
+        if (card1 == null || card2 == null)
+        {
+            yield break;
+        }
+
         GameController controller = GameController.GetInstance();
 
         GameObject ghost1 = Instantiate(ghost, controller.effect_ts);
@@ -62,7 +83,6 @@ public class FallenAngle : Card
 
         while (Vector3.Distance(ghost1.transform.position, ghost1_target) > 1)
         {
-            Debug.Log(Vector3.Distance(ghost1.transform.position, card2.transform.position));
             ghost1.transform.position = Vector3.RotateTowards(ghost1.transform.position, ghost1_target, Time.deltaTime * 3, 0);
             ghost2.transform.position = center + (center - ghost1.transform.position);
 
@@ -75,8 +95,7 @@ public class FallenAngle : Card
 
         card1.transform.localPosition = Vector3.zero;
         card2.transform.localPosition = Vector3.zero;
-        card1.SetOrderInLayer();
-        card2.SetOrderInLayer();
+        controller.FieldCardOrganize();
 
         yield return new WaitForSeconds(0);
 
@@ -89,5 +108,6 @@ public class FallenAngle : Card
         yield return new WaitForSeconds(0.3f);
         card1.transform.DOScale(Vector3.one * 2f, 0.2f);
         card2.transform.DOScale(Vector3.one * 2f, 0.2f);
+
     }
 }
