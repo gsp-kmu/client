@@ -133,10 +133,10 @@ public class GameController : MonoBehaviour
         //    StartCoroutine(OpponentPlayCard("", 3, 1, 1, 1));
 
         //타락아이코테스트
-        if (Input.GetKeyDown(KeyCode.P))
-            StartCoroutine(OpponentPlayCard("", 5, 0, 1, 0));
-        if (Input.GetKeyDown(KeyCode.O))
-            StartCoroutine(OpponentPlayCard("", 5, 1, 1, 0));
+        //if (Input.GetKeyDown(KeyCode.P))
+        //    StartCoroutine(OpponentPlayCard("", 5, 0, 1, 0));
+        //if (Input.GetKeyDown(KeyCode.O))
+        //    StartCoroutine(OpponentPlayCard("", 5, 1, 1, 0));
 
         //타락천사 테스트
         //if (Input.GetKeyDown(KeyCode.P))
@@ -151,10 +151,10 @@ public class GameController : MonoBehaviour
         //    StartCoroutine(OpponentPlayCard("", 7, 1, 0, 0));
 
         //엘프 테스트
-        //if (Input.GetKeyDown(KeyCode.P))
-        //    StartCoroutine(OpponentPlayCard("", 8, 0, 0, 0));
-        //if (Input.GetKeyDown(KeyCode.O))
-        //    StartCoroutine(OpponentPlayCard("", 8, 1, 0, 0));
+        if (Input.GetKeyDown(KeyCode.P))
+            StartCoroutine(OpponentPlayCard("", 8, 0, 0, 0));
+        if (Input.GetKeyDown(KeyCode.O))
+            StartCoroutine(OpponentPlayCard("", 8, 1, 0, 0));
 
         //루나 테스트
         //if (Input.GetKeyDown(KeyCode.P))
