@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56f3e21bcf4f47c47a2efb2a631eb2d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverAddress: http://localhost:8000
+  serverAddress: http://35.199.190.237:8000
   volatileOperationMode: 1
   OnEngineIOMessageReceived:
     m_PersistentCalls:

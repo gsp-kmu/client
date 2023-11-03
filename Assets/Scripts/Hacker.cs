@@ -42,11 +42,8 @@ public class Hacker : Card
 
         while(true)
         {
-            if (controller.curStep == GameController.Step.BetFromCardHand)
-            {
-                Debug.Log("해커 능력 종료");
-                break;
-            }
+            Debug.Log("해커 능력 종료");
+            break;
             yield return new WaitForSeconds(0.0f);
         }
     }
