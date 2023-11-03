@@ -8,11 +8,6 @@ public class NetworkData : MonoBehaviour
 {
 }
 
-enum Digit
-{
-    one,
-    ten,
-}
 
 namespace Data{
     [Serializable]
@@ -41,9 +36,9 @@ namespace Data{
     {
         public string id;
         public Card card;
-        Digit drawDigit; // ���� int ������ �ٲ� ���� ����
+        public Digit drawDigit; // ���� int ������ �ٲ� ���� ����
         public string targetId; // �⺻������ ���� 0, 1�̸� ����
-        Digit targetDigit;
+        public Digit targetDigit;
     }
     
     // ���� �̰�°� ǥ��

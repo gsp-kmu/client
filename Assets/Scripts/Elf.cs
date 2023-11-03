@@ -27,7 +27,7 @@ public class Elf : Card
         else
             StartCoroutine(Spawn(controller.player_one.transform));
 
-        Data.PlayCard send_card = new Data.PlayCard();
+        Data.DrawCard send_card = new Data.DrawCard();
         send_card.id = "";
         send_card.card.id = "8";
         send_card.drawDigit = digit; // 추후 int 형으로 바뀔 수도 있음

@@ -20,7 +20,7 @@ public class Luna : Card
         if (digit == Digit.Ten)
             StartCoroutine(Move(controller.player_ten.transform, controller.player_one.transform));
 
-        Data.PlayCard send_card = new Data.PlayCard();
+        Data.DrawCard send_card = new Data.DrawCard();
         send_card.id = "";
         send_card.card.id = "9";
         send_card.drawDigit = digit; // 추후 int 형으로 바뀔 수도 있음
