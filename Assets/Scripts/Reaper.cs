@@ -1,131 +1,86 @@
+﻿using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Reaper : Card
 {
-    public static GameObject reaperEffect;
+    public static GameObject reaper_effect = null;
 
-    void Start()
+    void Awake()
     {
-        reaperEffect = Resources.Load<GameObject>("Prefebs/Effect/ReaperEffect");
-    }
-
-    void Update()
-    {
-        
+        if (reaper_effect == null)
+            reaper_effect = Resources.Load<GameObject>("Prefebs/Effect/ReaperEffect");
+        this.transform.name = "Reaper";
     }
 
     public override void BattleCry(Digit digit)
     {
         base.BattleCry(digit);
 
-        StartCoroutine(BattleCrySchedule(digit));
-    }
-
-
-    static IEnumerator BattleCrySchedule(Digit digit)
-    {
         GameController controller = GameController.GetInstance();
-        BattleFieldCards receive_cards;
-        Card select_card = null;
 
-        string givePos = "";
-        string receivePos = "";
+        Transform target = digit == Digit.One ? controller.player_ten.transform : controller.player_one.transform;
 
-        if (digit == Digit.One)
-        {
-            receive_cards = controller.player_ten;
-            receivePos = "Ten";
-        }
-        else
-        {
-            receive_cards = controller.player_one;
-            receivePos = "One";
-        }
-
-
-        if (controller.opponent_one.transform.childCount + controller.opponent_ten.transform.childCount == 2)
-        {
-            Debug.Log("상대방 필드에 카드가 없음");
-        }
-        else
-        {
-            controller.curStep = GameController.Step.SelectOpponentCard;
-
-            while (true)
+        StartCoroutine(controller.OpponentCardSelect(
+            card =>
             {
-                yield return new WaitForSeconds(0.0f);
+                StartCoroutine(ReaperSkill(card, target));
 
-                if (Input.GetMouseButtonDown(0))
-                {
-                    Vector3 mouse_point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Collider2D hit = Physics2D.OverlapPoint(mouse_point);
+                Data.PlayCard send_card = new Data.PlayCard();
+                send_card.id = "";
+                send_card.card.id = "0";
+                send_card.drawDigit = digit; // 추후 int 형으로 바뀔 수도 있음
+                send_card.targetId = "1"; // 기본적으로 값은 0, 1이면 상대방
+                if (card != null)
+                    send_card.targetDigit = card.transform.parent == controller.opponent_one ? Digit.One : Digit.Ten;
+                else
+                    send_card.targetDigit = Digit.One;
 
-                    if (hit == null)
-                        continue;
+                //NetworkService.Instance.Send(NetworkEvent.INGAME_DRAW_CARD, send_card);
+            }));
 
-                    BattleFieldCards send_cards = hit.transform.GetComponentInParent<BattleFieldCards>();
-                    if (send_cards == null)
-                        continue;
-
-                    if (send_cards.transform.name == "OpponentTen")
-                        givePos = "Ten";
-                    else
-                        givePos = "One";
-
-                    select_card = send_cards.transform.GetChild(send_cards.transform.childCount - 1).GetComponent<Card>();
-
-                    break;
-                }
-            }
-            GameObject effect = Instantiate(reaperEffect);
-            Animator animator = effect.GetComponent<Animator>();
-            animator.Play(givePos + "To" + receivePos);
-            Destroy(effect, 2f);
-
-            yield return new WaitForSeconds(1.0f);
-
-            Transform card_pos = effect.transform.Find("CardPos");
-            select_card.transform.parent = card_pos;
-
-            yield return new WaitForSeconds(0.5f);
-
-            receive_cards.ReceiveCard(select_card);
-
-            yield return new WaitForSeconds(0.5f);
-
-
-
-
-
-            //receive_cards.ReceiveCard(select_card);
-            //Debug.Log("사신효과 " + select_card.transform.name + " 이동 " + receive_cards.transform.name);
-            //yield return new WaitForSeconds(0.5f);
-            //controller.curStep = GameController.Step.BetFromCardHand;
-            //yield return new WaitForSeconds(0.0f);
-        }
     }
 
-
-    public override void BattleCryOpponent(Digit digit)
+    public override void BattleCryOpponent(Digit digit, int target, Digit target_digit)
     {
+        base.BattleCryOpponent(digit, target, target_digit);
+
         GameController controller = GameController.GetInstance();
-        base.BattleCryOpponent(digit);
 
-        BattleFieldCards receive_cards;
-        Digit select_player_digit = Digit.One;
+        Card card = target_digit == Digit.One ? controller.player_one_topCard : controller.player_ten_topCard;
+        Transform move_target = digit == Digit.One ? controller.opponent_ten.transform : controller.opponent_one.transform;
 
-        if(digit == Digit.One)
+        StartCoroutine(ReaperSkill(card, move_target));
+    }
+
+    static IEnumerator ReaperSkill(Card card, Transform pos)
+    {
+        if (card == null)
         {
-            receive_cards = controller.opponent_ten;
+            GameController.GetInstance().turn = !GameController.GetInstance().turn;
+            yield break;
         }
         else
         {
-            receive_cards = controller.opponent_ten;
+            card.GetComponent<SpriteRenderer>().sortingOrder = 1500;
+
+            GameObject effect = Instantiate(reaper_effect);
+            Destroy(effect, 1.5f);
+
+            effect.transform.position = new Vector3(-50, Random.Range(-10, 10), 0);
+            effect.transform.DOMove(card.transform.position, 0.5f);
+            yield return new WaitForSeconds(0.5f);
+
+            effect.transform.DOMove(pos.position, 0.5f);
+            card.transform.parent = effect.transform;
+            yield return new WaitForSeconds(0.5f);
+
+            effect.transform.DOMove(new Vector3(-50, 0, 0), 0.5f);
+            card.transform.parent = pos;
+
+            GameController.GetInstance().FieldCardOrganize();
         }
-
-
-
     }
 }

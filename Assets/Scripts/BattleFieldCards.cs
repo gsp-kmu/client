@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class BattleFieldCards : MonoBehaviour
 {
@@ -10,6 +11,14 @@ public class BattleFieldCards : MonoBehaviour
 
     void Update()
     {
+    }
+
+    public void OrganizeCard()
+    {
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            transform.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = i * 2 + 1000;
+        }
     }
 
     public void ReceiveCard(Card card)
@@ -22,7 +31,8 @@ public class BattleFieldCards : MonoBehaviour
         card.transform.parent = transform;
         
         SpriteRenderer sprite = card.GetComponent<SpriteRenderer>();
-        sprite.sortingOrder = 1000 + transform.childCount;
+        sprite.sortingOrder = 1000 + transform.childCount * 2;
+        card.transform.DOScale(Vector3.one * 2, 0.5f);
         
         while(true)
         {
@@ -32,8 +42,9 @@ public class BattleFieldCards : MonoBehaviour
             {
                 card.transform.localPosition = Vector3.zero;
                 break;
-            }
+            }       
             yield return new WaitForSeconds(0);
         }
+       //card.BattleCryOpponent(Digit.One);
     }
 }
