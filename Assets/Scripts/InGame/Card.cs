@@ -6,25 +6,8 @@ using DG.Tweening;
 
 public class Card : MonoBehaviour
 {
-    public enum State
-    {
-        Hand,
-        Select,
-        Battlefield
-    };
-
-    State state;
-
     public int num;
     public Digit digit;
-    
-    void Start() {
-    
-    }
-    
-    void Update() {
-
-    }
 
     public virtual void BattleCry(Digit digit)
     {
@@ -44,7 +27,7 @@ public class Card : MonoBehaviour
     public IEnumerator PlayCard(Transform digit_ts)
     {
         transform.parent = digit_ts.transform;
-        transform.parent.GetComponent<BattleFieldCards>().OrganizeCard();
+        GameController.GetInstance().FieldCardOrganize(transform.parent);
 
         transform.DOLocalMove(Vector3.zero, 0.3f);
         transform.DOScale   (Vector3.one * 2.2f, 0.3f);

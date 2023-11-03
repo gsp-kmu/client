@@ -80,7 +80,7 @@ public class Reaper : Card
             effect.transform.DOMove(new Vector3(-50, 0, 0), 0.5f);
             card.transform.parent = pos;
 
-            GameController.GetInstance().FieldCardOrganize();
+            GameController.GetInstance().FieldsCardOrganize();
         }
     }
 }

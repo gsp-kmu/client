@@ -95,7 +95,7 @@ public class FallenAngle : Card
 
         card1.transform.localPosition = Vector3.zero;
         card2.transform.localPosition = Vector3.zero;
-        controller.FieldCardOrganize();
+        controller.FieldsCardOrganize();
 
         yield return new WaitForSeconds(0);
 

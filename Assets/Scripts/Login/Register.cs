@@ -55,11 +55,11 @@ public class Register : MonoBehaviour
             Debug.Log(request.responseCode);
             if (request.responseCode == 200)
             {
-                Debug.Log("È¸¿ø°¡ÀÔ ¼º°ø");
+                Debug.Log("êµ³ ");
             }
             else
             {
-                Debug.Log("È¸¿ø°¡ÀÔ ½ÇÆÐ");
+                Debug.Log("ë†’ ");
             }
         }
     }

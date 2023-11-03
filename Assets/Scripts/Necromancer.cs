@@ -107,7 +107,7 @@ public class Necromancer : Card
         selectCard.transform.parent = endPos;
         selectCard.transform.localPosition = Vector3.zero;
 
-        startPos.GetComponent<BattleFieldCards>().OrganizeCard();
+        GameController.GetInstance().FieldsCardOrganize();
 
         for (int i = 0; i < transform.childCount; i++)
         {

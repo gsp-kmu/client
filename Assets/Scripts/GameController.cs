@@ -8,19 +8,11 @@ using Data;
 public class GameController : MonoBehaviour
 {
     static GameController instance = null;
+
     public static GameController GetInstance()
     {
         return instance;
     }
-
-    public enum Step
-    {
-        BetFromCardHand,
-        SelectPlayerCard,
-        SelectOpponentCard,
-        SelectAllCard
-    }
-    public Step curStep;
 
     public int player_score = 11;
     public int opponent_score = 0;
@@ -85,7 +77,6 @@ public class GameController : MonoBehaviour
             if (opponent_ten.transform.childCount == 0)
                 return null;
 
-
             return opponent_ten.transform.GetChild(opponent_ten.transform.childCount - 1).GetComponent<Card>();
         }
     }
@@ -94,7 +85,6 @@ public class GameController : MonoBehaviour
         turn = true;
 
         instance = this;
-        curStep = Step.BetFromCardHand;
 
         //NetworkService.Instance.AddEvent(NetworkEvent.INGAME_PLAY_CARD, (Data.DrawCard card) => {
         //    OpponentPlayCard(card.id, int.Parse(card.card.id), (int)card.drawDigit, int.Parse(card.targetId), (int)card.targetDigit);
@@ -103,7 +93,7 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        ControllCard();
+        ControllHandCard();
         HandCardSort();
 
         //리퍼 테스트
@@ -133,10 +123,10 @@ public class GameController : MonoBehaviour
         //    StartCoroutine(OpponentPlayCard("", 3, 1, 1, 1));
 
         //타락아이코테스트
-        if (Input.GetKeyDown(KeyCode.P))
-            StartCoroutine(OpponentPlayCard("", 5, 0, 1, 0));
-        if (Input.GetKeyDown(KeyCode.O))
-            StartCoroutine(OpponentPlayCard("", 5, 1, 1, 0));
+        //if (Input.GetKeyDown(KeyCode.P))
+        //    StartCoroutine(OpponentPlayCard("", 5, 0, 1, 0));
+        //if (Input.GetKeyDown(KeyCode.O))
+        //    StartCoroutine(OpponentPlayCard("", 5, 1, 1, 0));
 
         //타락천사 테스트
         //if (Input.GetKeyDown(KeyCode.P))
@@ -151,10 +141,10 @@ public class GameController : MonoBehaviour
         //    StartCoroutine(OpponentPlayCard("", 7, 1, 0, 0));
 
         //엘프 테스트
-        //if (Input.GetKeyDown(KeyCode.P))
-        //    StartCoroutine(OpponentPlayCard("", 8, 0, 0, 0));
-        //if (Input.GetKeyDown(KeyCode.O))
-        //    StartCoroutine(OpponentPlayCard("", 8, 1, 0, 0));
+        if (Input.GetKeyDown(KeyCode.P))
+            StartCoroutine(OpponentPlayCard("", 8, 0, 0, 0));
+        if (Input.GetKeyDown(KeyCode.O))
+            StartCoroutine(OpponentPlayCard("", 8, 1, 0, 0));
 
         //루나 테스트
         //if (Input.GetKeyDown(KeyCode.P))
@@ -162,90 +152,79 @@ public class GameController : MonoBehaviour
         //if (Input.GetKeyDown(KeyCode.O))
         //    StartCoroutine(OpponentPlayCard("", 9, 1, 0, 0));
     }
-
-    void ControllCard()
+ 
+    void ControllHandCard()
     {
-        if(curStep != Step.BetFromCardHand)
-            return;
-
         Vector3 mouse_point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouse_point = new Vector3(mouse_point.x, mouse_point.y, 0);
 
+        //마우스 클릭시 카드를 들기
         if(Input.GetMouseButtonDown(0))
         {
             Collider2D hit = Physics2D.OverlapPoint(mouse_point);
 
             if(!hit)
                 return;
-            
-            PlayerHand is_hand = hit.GetComponentInParent<PlayerHand>();
 
-            if(!is_hand)
+            if (player_hand.transform != hit.transform.parent)
                 return;
             
             select_card = hit.GetComponent<Card>();
 
+            //되돌아갈 인덱스 설정
+            select_card_hand_idx = select_card.transform.GetSiblingIndex();
+
+            select_card.transform.parent = transform;
+
+            //select_card 선택 타이밍 위치 저장 (카드 확대 하기 위함)
             click_out = false;
             click_pos = mouse_point;
             click_time = Time.time;
-
-            Card[] cards = player_hand.GetComponentsInChildren<Card>();
-            for(int i = 0; i < cards.Length; i++)
-            {
-                if(cards[i] == select_card)
-                    select_card_hand_idx = i;
-            }
-            select_card.transform.parent = transform;
         }
-
-        if(select_card)
+        //카드를 내기
+        if (Input.GetMouseButtonUp(0))
         {
-            if (Vector3.Distance(click_pos, mouse_point) > 1)
-                click_out = true;
-
-            if (Time.time - click_time > 0.5f && !click_out)
-            {
-                select_card.transform.position = Vector3.zero;
-                select_card.transform.localScale = Vector3.one * 5;
-            }
-            else
-            {
-                select_card.transform.position = Vector3.Lerp(select_card.transform.position, mouse_point, Time.deltaTime * 10);
-                select_card.transform.localScale = Vector3.one * 1.2f;
-            }
-
-        }
-
-        if(Input.GetMouseButtonUp(0))
-        {
-            if(select_card == null)
+            if (select_card == null)
                 return;
 
             select_card.transform.localScale = Vector3.one;
 
             Collider2D[] hits = Physics2D.OverlapPointAll(mouse_point);
 
-            foreach(Collider2D hit in hits)
+            foreach (Collider2D hit in hits)
             {
-                BattleFieldCards battleField = hit.transform.GetComponent<BattleFieldCards>();
-                if(battleField == null)
-                    continue;
-                if(battleField == player_one)
-                    select_card.digit = Digit.One;
-                else if(battleField == player_ten)
-                    select_card.digit = Digit.Ten;
-
-                StartCoroutine(select_card.PlayCard(battleField.transform));
-                select_card.BattleCry(select_card.digit);
-                select_card = null;
-                break;
+                if(hit.transform == player_one.transform || hit.transform == player_ten.transform)
+                {
+                    StartCoroutine(select_card.PlayCard(hit.transform));
+                    select_card.BattleCry(hit.transform == player_one ? Digit.One : Digit.Ten);
+                    select_card = null;
+                    break;
+                }
             }
 
-            if(select_card)
+            //만약 내지 못했을 경우 손패로 다시 돌아가기
+            if (select_card)
             {
                 select_card.transform.parent = player_hand.transform;
                 select_card.transform.SetSiblingIndex(select_card_hand_idx);
                 select_card = null;
+            }
+        }
+        //카드를 들고 있을경우
+        if (select_card)
+        {
+            if (Vector3.Distance(click_pos, mouse_point) > 1)
+                click_out = true;
+
+            if (Time.time - click_time > 0.5f && !click_out) //카드 확대
+            { 
+                select_card.transform.position = Vector3.zero;
+                select_card.transform.localScale = Vector3.one * 5;
+            }
+            else //카드 마우스 따라 다니기
+            {
+                select_card.transform.position = Vector3.Lerp(select_card.transform.position, mouse_point, Time.deltaTime * 10);
+                select_card.transform.localScale = Vector3.one * 1.2f;
             }
         }
     }
@@ -258,29 +237,26 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void CardSwap(List<Card> depart, List<Card> arrive)
-    {
-        arrive.Add(depart[depart.Count - 1]);
-        depart.RemoveAt(depart.Count - 1);
-
-        arrive[arrive.Count - 1].GetComponent<SpriteRenderer>().sortingOrder = 1000 + arrive.Count;
-    }
-
     public IEnumerator OpponentCardSelect(Action<Card> callback)
     {
-        yield return new WaitForSeconds(0);
+        Card oneCard = opponent_one_topCard;
+        Card tenCard = opponent_ten_topCard;
 
-        if (opponent_one.transform.childCount + opponent_ten.transform.childCount == 0)
+        if (oneCard == null && tenCard == null)
         {
             Debug.Log("상대방 카드 없음");
             callback(null);
         }
+        else if (oneCard == null)
+        {
+            callback(tenCard);
+        }
+        else if (tenCard == null)
+        {
+            callback(oneCard);
+        }
         else
         {
-            Card select_card = null;
-
-            Card oneCard = opponent_one_topCard;
-            Card tenCard = opponent_ten_topCard;
             oneCard.transform.DOScale(Vector3.one * 2.2f, 0.1f);
             tenCard.transform.DOScale(Vector3.one * 2.2f, 0.1f);
 
@@ -288,6 +264,8 @@ public class GameController : MonoBehaviour
             float tenDelta = UnityEngine.Random.Range(0, Mathf.PI);
             while (true)
             {
+                yield return new WaitForSeconds(0);
+
                 oneCard.transform.localPosition = new Vector3(Mathf.Cos(oneDelta) * 0.5f, Mathf.Sin(oneDelta) * 0.5f, 0);
                 tenCard.transform.localPosition = new Vector3(Mathf.Cos(tenDelta) * 0.5f, Mathf.Sin(tenDelta) * 0.5f, 0);
 
@@ -302,24 +280,25 @@ public class GameController : MonoBehaviour
                     if (hit == null)
                         continue;
 
-                    BattleFieldCards send_cards = hit.transform.GetComponentInParent<BattleFieldCards>();
-                    if (send_cards == null)
+                    if(hit.transform.parent == opponent_one && hit.transform.parent == opponent_ten)
+                        select_card = hit.transform.parent.GetChild(hit.transform.childCount - 1).GetComponent<Card>();
+                    if (select_card == null)
                         continue;
 
-                    //print(send_cards.transform.GetChild(send_cards.transform.childCount - 1).GetComponent<Card>());
-
-                    select_card = send_cards.transform.GetChild(send_cards.transform.childCount - 1).GetComponent<Card>();
                     break;
                 }
-                yield return new WaitForSeconds(0);
             }
 
             yield return new WaitForSeconds(0.2f);
-            callback(select_card);
 
-            oneCard.transform.DOScale(Vector3.one * 2f, 0.1f);
-            tenCard.transform.DOScale(Vector3.one * 2f, 0.1f);
+            oneCard.transform.localScale = Vector3.one * 2;
             oneCard.transform.localPosition = Vector3.zero;
+
+            tenCard.transform.localScale = Vector3.one * 2;
+            tenCard.transform.localPosition = Vector3.zero;
+
+            callback(select_card);
+            select_card = null;
         }
     }
 
@@ -341,20 +320,30 @@ public class GameController : MonoBehaviour
 
         yield return new WaitForSeconds(0.2f);
 
-        FieldCardOrganize();
+        FieldsCardOrganize();
 
         card.GetComponent<Card>().BattleCryOpponent((Digit)digit, target, (Digit)target_digit);
 
         yield return new WaitForSeconds(0);
     }
 
-    public void FieldCardOrganize()
+    //선택한 필드에 카드들 Sprite 순서 정렬
+    public void FieldCardOrganize(Transform field)
     {
-        player_one.OrganizeCard();
-        player_ten.OrganizeCard();
-        opponent_one.OrganizeCard();
-        opponent_ten.OrganizeCard();
+        for (int i = 0; i < field.childCount; i++)
+            field.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = i * 2 + 1000;
     }
 
+    //모든 필드 카드 순서 정렬
+    public void FieldsCardOrganize()
+    {
 
+        foreach(Transform field in new List<Transform>() { player_one.transform,
+                                                        player_ten.transform,
+                                                        opponent_one.transform,
+                                                        opponent_ten.transform,})
+        {
+            FieldCardOrganize(field);
+        }
+    }
 }

@@ -59,7 +59,7 @@ public class DevilIco : Card
         yield return new WaitForSeconds(0.5f);
 
         card.transform.parent = target;
-        GameController.GetInstance().FieldCardOrganize();
+        GameController.GetInstance().FieldsCardOrganize();
 
         bool isOpponent = target == GameController.GetInstance().player_one.transform || target == GameController.GetInstance().player_ten.transform;
 

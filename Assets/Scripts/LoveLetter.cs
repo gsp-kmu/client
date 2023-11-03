@@ -66,7 +66,7 @@ public class LoveLetter : Card
         yield return new WaitForSeconds(0.7f);
 
         card.transform.parent = target;
-        GameController.GetInstance().FieldCardOrganize();
+        GameController.GetInstance().FieldsCardOrganize();
         Destroy(effect);
 
 
