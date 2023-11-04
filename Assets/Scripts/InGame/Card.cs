@@ -19,18 +19,13 @@ public class Card : MonoBehaviour
         Debug.Log("상대방 " + transform.name + " 능력발동");
     }
 
-    public void SetOrderInLayer()
-    {
-        GetComponent<SpriteRenderer>().sortingOrder = transform.parent.GetSiblingIndex() * 2 + 1000;
-    }
-
     public IEnumerator PlayCard(Transform digit_ts)
     {
         transform.parent = digit_ts.transform;
         GameController.GetInstance().FieldCardOrganize(transform.parent);
 
         transform.DOLocalMove(Vector3.zero, 0.3f);
-        transform.DOScale   (Vector3.one * 2.2f, 0.3f);
+        transform.DOScale(Vector3.one * 2.2f, 0.3f);
 
         yield return new WaitForSeconds(0.3f);
         transform.DOScale(Vector3.one * 2f, 0.2f);

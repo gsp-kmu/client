@@ -8,7 +8,6 @@ using Data;
 public class GameController : MonoBehaviour
 {
     static GameController instance = null;
-
     public static GameController GetInstance()
     {
         return instance;
@@ -19,22 +18,19 @@ public class GameController : MonoBehaviour
 
     public bool ten;
 
-    public List<Card> remove_cards = new List<Card>();
-
-
     public Card select_card;
     public int select_card_hand_idx;
 
     public PlayerHand player_hand;
-    public BattleFieldCards player_ten;
-    public BattleFieldCards player_one;
+    public Transform player_ten;
+    public Transform player_one;
     public Transform opponent_hand;
-    public BattleFieldCards opponent_ten;
-    public BattleFieldCards opponent_one;
+    public Transform opponent_ten;
+    public Transform opponent_one;
 
     public Transform effect_ts;
 
-    public bool turn = true;
+    public int turn = 0;
 
     public bool click_out;
     public Vector3 click_pos;
@@ -43,48 +39,45 @@ public class GameController : MonoBehaviour
     public Card player_one_topCard {
         get 
         {
-            if (player_one.transform.childCount == 0)
+            if (player_one.childCount == 0)
                 return null;
 
-            return player_one.transform.GetChild(player_one.transform.childCount - 1).GetComponent<Card>();
+            return player_one.GetChild(player_one.childCount - 1).GetComponent<Card>();
         }
     }
     public Card player_ten_topCard
     {
         get 
         {
-            if (player_ten.transform.childCount == 0)
+            if (player_ten.childCount == 0)
                 return null;
 
-            return player_ten.transform.GetChild(player_ten.transform.childCount - 1).GetComponent<Card>();
+            return player_ten.GetChild(player_ten.childCount - 1).GetComponent<Card>();
         }
     }
-
     public Card opponent_one_topCard
     {
         get
         {
-            if (opponent_one.transform.childCount == 0)
+            if (opponent_one.childCount == 0)
                 return null;
 
-            return opponent_one.transform.GetChild(opponent_one.transform.childCount - 1).GetComponent<Card>();
+            return opponent_one.GetChild(opponent_one.childCount - 1).GetComponent<Card>();
         }
     }
     public Card opponent_ten_topCard
     {
         get
         {
-            if (opponent_ten.transform.childCount == 0)
+            if (opponent_ten.childCount == 0)
                 return null;
 
-            return opponent_ten.transform.GetChild(opponent_ten.transform.childCount - 1).GetComponent<Card>();
+            return opponent_ten.GetChild(opponent_ten.childCount - 1).GetComponent<Card>();
         }
     }
     void Awake()
     {
-        turn = true;
-
-        instance = this;
+        instance = this; 
 
         //NetworkService.Instance.AddEvent(NetworkEvent.INGAME_PLAY_CARD, (Data.DrawCard card) => {
         //    OpponentPlayCard(card.id, int.Parse(card.card.id), (int)card.drawDigit, int.Parse(card.targetId), (int)card.targetDigit);
@@ -94,7 +87,9 @@ public class GameController : MonoBehaviour
     void Update()
     {
         ControllHandCard();
-        HandCardSort();
+
+        if (Input.GetKeyDown(KeyCode.L))
+            DrawCard(0);
 
         //리퍼 테스트
         //if (Input.GetKeyDown(KeyCode.P))
@@ -106,41 +101,41 @@ public class GameController : MonoBehaviour
         //if (Input.GetKeyDown(KeyCode.U))
         //    StartCoroutine(OpponentPlayCard("", 0, 1, 1, 1));
 
-        //러브레터 테스트
-        //if (Input.GetKeyDown(KeyCode.P))
-        //    StartCoroutine(OpponentPlayCard("", 2, 0, 0, 0));
-        //if (Input.GetKeyDown(KeyCode.O))
-        //    StartCoroutine(OpponentPlayCard("", 2, 1, 0, 0));
+            //러브레터 테스트
+            //if (Input.GetKeyDown(KeyCode.P))
+            //    StartCoroutine(OpponentPlayCard("", 2, 0, 0, 0));
+            //if (Input.GetKeyDown(KeyCode.O))
+            //    StartCoroutine(OpponentPlayCard("", 2, 1, 0, 0));
 
-        ////솔 테스트
-        //if (Input.GetKeyDown(KeyCode.P))
-        //    StartCoroutine(OpponentPlayCard("", 3, 0, 1, 0));
-        //if (Input.GetKeyDown(KeyCode.O))
-        //    StartCoroutine(OpponentPlayCard("", 3, 0, 1, 1));
-        //if (Input.GetKeyDown(KeyCode.I))
-        //    StartCoroutine(OpponentPlayCard("", 3, 1, 1, 0));
-        //if (Input.GetKeyDown(KeyCode.U))
-        //    StartCoroutine(OpponentPlayCard("", 3, 1, 1, 1));
+            ////솔 테스트
+            //if (Input.GetKeyDown(KeyCode.P))
+            //    StartCoroutine(OpponentPlayCard("", 3, 0, 1, 0));
+            //if (Input.GetKeyDown(KeyCode.O))
+            //    StartCoroutine(OpponentPlayCard("", 3, 0, 1, 1));
+            //if (Input.GetKeyDown(KeyCode.I))
+            //    StartCoroutine(OpponentPlayCard("", 3, 1, 1, 0));
+            //if (Input.GetKeyDown(KeyCode.U))
+            //    StartCoroutine(OpponentPlayCard("", 3, 1, 1, 1));
 
-        //타락아이코테스트
-        //if (Input.GetKeyDown(KeyCode.P))
-        //    StartCoroutine(OpponentPlayCard("", 5, 0, 1, 0));
-        //if (Input.GetKeyDown(KeyCode.O))
-        //    StartCoroutine(OpponentPlayCard("", 5, 1, 1, 0));
+            //타락아이코테스트
+            //if (Input.GetKeyDown(KeyCode.P))
+            //    StartCoroutine(OpponentPlayCard("", 5, 0, 1, 0));
+            //if (Input.GetKeyDown(KeyCode.O))
+            //    StartCoroutine(OpponentPlayCard("", 5, 1, 1, 0));
 
-        //타락천사 테스트
-        //if (Input.GetKeyDown(KeyCode.P))
-        //    StartCoroutine(OpponentPlayCard("", 6, 0, 0, 0));
-        //if (Input.GetKeyDown(KeyCode.O))
-        //    StartCoroutine(OpponentPlayCard("", 6, 1, 0, 0));
+            //타락천사 테스트
+            //if (Input.GetKeyDown(KeyCode.P))
+            //    StartCoroutine(OpponentPlayCard("", 6, 0, 0, 0));
+            //if (Input.GetKeyDown(KeyCode.O))
+            //    StartCoroutine(OpponentPlayCard("", 6, 1, 0, 0));
 
-        //메두사 테스트
-        //if (Input.GetKeyDown(KeyCode.P))
-        //    StartCoroutine(OpponentPlayCard("", 7, 0, 0, 0));
-        //if (Input.GetKeyDown(KeyCode.O))
-        //    StartCoroutine(OpponentPlayCard("", 7, 1, 0, 0));
+            //메두사 테스트
+            //if (Input.GetKeyDown(KeyCode.P))
+            //    StartCoroutine(OpponentPlayCard("", 7, 0, 0, 0));
+            //if (Input.GetKeyDown(KeyCode.O))
+            //    StartCoroutine(OpponentPlayCard("", 7, 1, 0, 0));
 
-        //엘프 테스트
+            //엘프 테스트
         if (Input.GetKeyDown(KeyCode.P))
             StartCoroutine(OpponentPlayCard("", 8, 0, 0, 0));
         if (Input.GetKeyDown(KeyCode.O))
@@ -193,7 +188,7 @@ public class GameController : MonoBehaviour
 
             foreach (Collider2D hit in hits)
             {
-                if(hit.transform == player_one.transform || hit.transform == player_ten.transform)
+                if(hit.transform == player_one || hit.transform == player_ten)
                 {
                     StartCoroutine(select_card.PlayCard(hit.transform));
                     select_card.BattleCry(hit.transform == player_one ? Digit.One : Digit.Ten);
@@ -229,14 +224,17 @@ public class GameController : MonoBehaviour
         }
     }
 
-    void HandCardSort()
+    public void DrawCard(int card_id)
     {
-        for (int i = 0; i < remove_cards.Count; i++)
-        {
-            remove_cards[i].transform.position = Vector3.Lerp(remove_cards[i].transform.position, new Vector3(30.0f, 0, 0), Time.deltaTime * 5);
-        }
+        GameObject card = Instantiate(Resources.Load<GameObject>("Prefebs/Card/" + card_id.ToString()));
+
+        card.transform.parent = player_hand.transform;
+        card.transform.position = new Vector3(0, 100, 0);
+        card.transform.localScale = Vector3.one * 4;
+        card.transform.DOScale(Vector3.one, 1.0f);
     }
 
+    //적 카드 선택
     public IEnumerator OpponentCardSelect(Action<Card> callback)
     {
         Card oneCard = opponent_one_topCard;
@@ -257,6 +255,8 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            Card card = null;
+
             oneCard.transform.DOScale(Vector3.one * 2.2f, 0.1f);
             tenCard.transform.DOScale(Vector3.one * 2.2f, 0.1f);
 
@@ -275,17 +275,21 @@ public class GameController : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     Vector3 mouse_point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Collider2D hit = Physics2D.OverlapPoint(mouse_point);
+                    Collider2D[] hits = Physics2D.OverlapPointAll(mouse_point);
 
-                    if (hit == null)
-                        continue;
+                    foreach (Collider2D hit in hits)
+                    {
+                        if (hit == null)
+                            continue;
 
-                    if(hit.transform.parent == opponent_one && hit.transform.parent == opponent_ten)
-                        select_card = hit.transform.parent.GetChild(hit.transform.childCount - 1).GetComponent<Card>();
-                    if (select_card == null)
-                        continue;
-
-                    break;
+                        if (hit.transform.parent == opponent_one || hit.transform.parent == opponent_ten)
+                        {
+                            card = hit.transform.parent.GetChild(hit.transform.parent.childCount - 1).GetComponent<Card>();
+                            break;
+                        }
+                    }
+                    if (card)
+                        break;
                 }
             }
 
@@ -297,8 +301,26 @@ public class GameController : MonoBehaviour
             tenCard.transform.localScale = Vector3.one * 2;
             tenCard.transform.localPosition = Vector3.zero;
 
-            callback(select_card);
-            select_card = null;
+            callback(card);
+        }
+    }
+
+    //선택한 필드에 카드들 Sprite 순서 정렬
+    public void FieldCardOrganize(Transform field)
+    {
+        for (int i = 0; i < field.childCount; i++)
+            field.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = i * 2 + 1000;
+    }
+
+    //모든 필드 카드 순서 정렬
+    public void FieldsCardOrganize()
+    {
+        foreach(Transform field in new List<Transform>() { player_one,
+                                                           player_ten,
+                                                           opponent_one,
+                                                           opponent_ten,})
+        {
+            FieldCardOrganize(field);
         }
     }
 
@@ -309,7 +331,7 @@ public class GameController : MonoBehaviour
         card.transform.parent = opponent_hand;
         card.transform.localPosition = Vector3.zero;
 
-        card.transform.parent = digit == 0 ? opponent_one.transform : opponent_ten.transform;
+        card.transform.parent = digit == 0 ? opponent_one : opponent_ten;
 
         card.transform.DOLocalMove(Vector3.zero, 0.5f);
         card.transform.DOScale(Vector3.one * 2.2f, 0.5f);
@@ -325,25 +347,5 @@ public class GameController : MonoBehaviour
         card.GetComponent<Card>().BattleCryOpponent((Digit)digit, target, (Digit)target_digit);
 
         yield return new WaitForSeconds(0);
-    }
-
-    //선택한 필드에 카드들 Sprite 순서 정렬
-    public void FieldCardOrganize(Transform field)
-    {
-        for (int i = 0; i < field.childCount; i++)
-            field.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = i * 2 + 1000;
-    }
-
-    //모든 필드 카드 순서 정렬
-    public void FieldsCardOrganize()
-    {
-
-        foreach(Transform field in new List<Transform>() { player_one.transform,
-                                                        player_ten.transform,
-                                                        opponent_one.transform,
-                                                        opponent_ten.transform,})
-        {
-            FieldCardOrganize(field);
-        }
     }
 }

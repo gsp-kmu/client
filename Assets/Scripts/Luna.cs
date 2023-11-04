@@ -50,7 +50,6 @@ public class Luna : Card
         effect2.transform.position = take.position;
         effect2.transform.localScale = Vector3.zero;
 
-
         effect1.transform.DOScale(Vector3.one * 1.5f, 0.5f);
         effect1.transform.DOPunchRotation(new Vector3(0, 0, 270), 2);
         effect2.transform.DOScale(Vector3.one * 1.5f, 0.5f);
@@ -93,6 +92,6 @@ public class Luna : Card
         Destroy(effect1);
         Destroy(effect2);
 
-        card.GetComponent<Card>().SetOrderInLayer();
+        GameController.GetInstance().FieldsCardOrganize();
     }
 }

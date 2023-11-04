@@ -12,7 +12,7 @@ public class Reaper : Card
     {
         if (reaper_effect == null)
             reaper_effect = Resources.Load<GameObject>("Prefebs/Effect/ReaperEffect");
-        this.transform.name = "Reaper";
+        transform.name = "Reaper";
     }
 
     public override void BattleCry(Digit digit)
@@ -21,7 +21,7 @@ public class Reaper : Card
 
         GameController controller = GameController.GetInstance();
 
-        Transform target = digit == Digit.One ? controller.player_ten.transform : controller.player_one.transform;
+        Transform target = digit == Digit.One ? controller.player_ten : controller.player_one;
 
         StartCoroutine(controller.OpponentCardSelect(
             card =>
@@ -59,7 +59,6 @@ public class Reaper : Card
     {
         if (card == null)
         {
-            GameController.GetInstance().turn = !GameController.GetInstance().turn;
             yield break;
         }
         else
