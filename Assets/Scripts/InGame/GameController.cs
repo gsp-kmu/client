@@ -13,13 +13,8 @@ public class GameController : MonoBehaviour
         return instance;
     }
 
-    public int player_score = 11;
-    public int opponent_score = 0;
-
-    public bool ten;
-
-    public Card select_card;
-    public int select_card_hand_idx;
+    Card select_card;
+    int select_card_hand_idx;
 
     public PlayerHand player_hand;
     public Transform player_ten;
@@ -35,6 +30,8 @@ public class GameController : MonoBehaviour
     public bool click_out;
     public Vector3 click_pos;
     public float click_time;
+
+    public int playerID = 0;
 
     public Card player_one_topCard {
         get 
@@ -75,79 +72,59 @@ public class GameController : MonoBehaviour
             return opponent_ten.GetChild(opponent_ten.childCount - 1).GetComponent<Card>();
         }
     }
+
     void Awake()
     {
+        NetworkService.Instance.Login("B");
+        
         instance = this; 
+    }
 
-        //NetworkService.Instance.AddEvent(NetworkEvent.INGAME_PLAY_CARD, (Data.DrawCard card) => {
-        //    OpponentPlayCard(card.id, int.Parse(card.card.id), (int)card.drawDigit, int.Parse(card.targetId), (int)card.targetDigit);
-        //});
+    void Start()
+    {
+       
     }
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.M))
+            Mathcing();
+
         ControllHandCard();
-
-        if (Input.GetKeyDown(KeyCode.L))
-            DrawCard(0);
-
-        //리퍼 테스트
-        //if (Input.GetKeyDown(KeyCode.P))
-        //    StartCoroutine(OpponentPlayCard("", 0, 0, 1, 0));
-        //if (Input.GetKeyDown(KeyCode.O))
-        //    StartCoroutine(OpponentPlayCard("", 0, 0, 1, 1));
-        //if (Input.GetKeyDown(KeyCode.I))
-        //    StartCoroutine(OpponentPlayCard("", 0, 1, 1, 0));
-        //if (Input.GetKeyDown(KeyCode.U))
-        //    StartCoroutine(OpponentPlayCard("", 0, 1, 1, 1));
-
-            //러브레터 테스트
-            //if (Input.GetKeyDown(KeyCode.P))
-            //    StartCoroutine(OpponentPlayCard("", 2, 0, 0, 0));
-            //if (Input.GetKeyDown(KeyCode.O))
-            //    StartCoroutine(OpponentPlayCard("", 2, 1, 0, 0));
-
-            ////솔 테스트
-            //if (Input.GetKeyDown(KeyCode.P))
-            //    StartCoroutine(OpponentPlayCard("", 3, 0, 1, 0));
-            //if (Input.GetKeyDown(KeyCode.O))
-            //    StartCoroutine(OpponentPlayCard("", 3, 0, 1, 1));
-            //if (Input.GetKeyDown(KeyCode.I))
-            //    StartCoroutine(OpponentPlayCard("", 3, 1, 1, 0));
-            //if (Input.GetKeyDown(KeyCode.U))
-            //    StartCoroutine(OpponentPlayCard("", 3, 1, 1, 1));
-
-            //타락아이코테스트
-            //if (Input.GetKeyDown(KeyCode.P))
-            //    StartCoroutine(OpponentPlayCard("", 5, 0, 1, 0));
-            //if (Input.GetKeyDown(KeyCode.O))
-            //    StartCoroutine(OpponentPlayCard("", 5, 1, 1, 0));
-
-            //타락천사 테스트
-            //if (Input.GetKeyDown(KeyCode.P))
-            //    StartCoroutine(OpponentPlayCard("", 6, 0, 0, 0));
-            //if (Input.GetKeyDown(KeyCode.O))
-            //    StartCoroutine(OpponentPlayCard("", 6, 1, 0, 0));
-
-            //메두사 테스트
-            //if (Input.GetKeyDown(KeyCode.P))
-            //    StartCoroutine(OpponentPlayCard("", 7, 0, 0, 0));
-            //if (Input.GetKeyDown(KeyCode.O))
-            //    StartCoroutine(OpponentPlayCard("", 7, 1, 0, 0));
-
-            //엘프 테스트
-        if (Input.GetKeyDown(KeyCode.P))
-            StartCoroutine(OpponentPlayCard("", 8, 0, 0, 0));
-        if (Input.GetKeyDown(KeyCode.O))
-            StartCoroutine(OpponentPlayCard("", 8, 1, 0, 0));
-
-        //루나 테스트
-        //if (Input.GetKeyDown(KeyCode.P))
-        //    StartCoroutine(OpponentPlayCard("", 9, 0, 0, 0));
-        //if (Input.GetKeyDown(KeyCode.O))
-        //    StartCoroutine(OpponentPlayCard("", 9, 1, 0, 0));
     }
- 
+
+    void Mathcing()
+    {
+        Debug.Log("Matching Start");
+        NetworkService.Instance.Send(NetworkEvent.MATCH_START, "");
+        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_SUCCESS, (string s) =>
+        {
+            Debug.Log("Matching Success");
+        });
+
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_INIT_ID, (int id) => {
+            Debug.Log("ID : " + id.ToString());
+            playerID = id;
+        });
+
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TURN, (Data.InGameTurn turn) =>
+        {
+            Debug.Log(turn.isPlayerTurn == "1" ? "내턴" : "상대방 턴");
+        });
+
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_FIRST_CARD, (FirstCard cards) =>
+        {
+            DrawCard(cards.card1.id);
+            DrawCard(cards.card2.id);
+        });
+
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_PLAY_CARD, (Data.PlayCard card) => {
+            StartCoroutine(OpponentPlayCard(card.id, card.cardIndex, card.drawDigit, card.targetId, card.targetDigit, card.targetCardIndex));
+        });
+
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_DRAW_CARD, (Data.Card card) => DrawCard(card.id));
+    }
+
     void ControllHandCard()
     {
         Vector3 mouse_point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -226,8 +203,13 @@ public class GameController : MonoBehaviour
 
     public void DrawCard(int card_id)
     {
-        GameObject card = Instantiate(Resources.Load<GameObject>("Prefebs/Card/" + card_id.ToString()));
+        Debug.Log("Draw card id : " + card_id.ToString());
+        GameObject resources = Resources.Load<GameObject>("Prefebs/Card/" + card_id.ToString());
 
+        if(resources == null)
+            resources = Resources.Load<GameObject>("Prefebs/Card/19");
+
+        GameObject card = Instantiate(resources);
         card.transform.parent = player_hand.transform;
         card.transform.position = new Vector3(0, 100, 0);
         card.transform.localScale = Vector3.one * 4;
@@ -325,8 +307,13 @@ public class GameController : MonoBehaviour
     }
 
     //적이 카드를 낼 경우
-    public IEnumerator OpponentPlayCard(string id, int card_id, int digit, int target, int target_digit) //유저 아이디, 카드정보, 내는숫자, 스킬사용대상(자신, 상대방), 스킬사용대상자릿수
+    public IEnumerator OpponentPlayCard(int id, int card_id, int digit, int target, int target_digit, int targetCardIndex) //유저 아이디, 카드정보, 내는숫자, 스킬사용대상(자신, 상대방), 스킬사용대상자릿수
     {
+        if (id == playerID)
+            yield break;
+
+        Debug.Log("Play card id" + card_id.ToString());
+
         GameObject card = Instantiate(Resources.Load<GameObject>("Prefebs/Card/" + card_id.ToString()));
         card.transform.parent = opponent_hand;
         card.transform.localPosition = Vector3.zero;
@@ -344,7 +331,7 @@ public class GameController : MonoBehaviour
 
         FieldsCardOrganize();
 
-        card.GetComponent<Card>().BattleCryOpponent((Digit)digit, target, (Digit)target_digit);
+        card.GetComponent<Card>().BattleCryOpponent((Digit)digit, target, (Digit)target_digit, targetCardIndex);
 
         yield return new WaitForSeconds(0);
     }

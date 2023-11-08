@@ -24,17 +24,11 @@ public class Medusa : Card
 
         StartCoroutine(Stun(transform));
 
-        Data.DrawCard send_card = new Data.DrawCard();
-        send_card.id = "";
-        send_card.card.id = "7";
-        send_card.drawDigit = digit; // 추후 int 형으로 바뀔 수도 있음
-        send_card.targetId = "0"; // 기본적으로 값은 0, 1이면 상대방
-        send_card.targetDigit = digit;
-        //NetworkService.Instance.Send(NetworkEvent.INGAME_DRAW_CARD, send_card);
+        SendServerMessage(GameController.GetInstance().playerID, 18, (int)digit, 0, 0, 0);
     }
-    public override void BattleCryOpponent(Digit digit, int target, Digit target_digit)
+    public override void BattleCryOpponent(Digit digit, int target, Digit target_digit, int targetCardIndex)
     {
-        base.BattleCryOpponent(digit, target, target_digit);
+        base.BattleCryOpponent(digit, target, target_digit, targetCardIndex);
 
         StartCoroutine(Stun(transform));
     }

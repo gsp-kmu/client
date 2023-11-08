@@ -14,9 +14,22 @@ public class Card : MonoBehaviour
         Debug.Log(transform.name + " 능력발동");
     }
 
-    public virtual void BattleCryOpponent(Digit digit, int target, Digit target_digit)
+    public virtual void BattleCryOpponent(Digit digit, int target, Digit target_digit, int targetCardIndex)
     {
         Debug.Log("상대방 " + transform.name + " 능력발동");
+    }
+
+    public void SendServerMessage(int id, int cardIndex, int drawDigit, int targetId, int targetDigit, int targetIndex)
+    {
+        Data.PlayCard send_card = new Data.PlayCard();
+        send_card.id = id;
+        send_card.cardIndex = cardIndex;
+        send_card.drawDigit = drawDigit;
+        send_card.targetId = targetId;
+        send_card.targetDigit = targetDigit;
+        send_card.targetCardIndex = targetIndex;
+        NetworkService.Instance.Send(NetworkEvent.INGAME_PLAY_CARD, send_card);
+        NetworkService.Instance.Send(NetworkEvent.INGAME_TURN_END, "");
     }
 
     public IEnumerator PlayCard(Transform digit_ts)

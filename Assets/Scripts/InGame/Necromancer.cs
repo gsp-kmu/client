@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class Necromancer : Card
 {
@@ -21,6 +22,13 @@ public class Necromancer : Card
     public override void BattleCry(Digit digit)
     {
         StartCoroutine(NecromancerSkill(digit));
+    }
+
+    public override void BattleCryOpponent(Digit digit, int target, Digit target_digit, int targetCardIndex)
+    {
+        base.BattleCryOpponent(digit, target, target_digit, targetCardIndex);
+
+        StartCoroutine(NecromancerSkill(target_digit, targetCardIndex));
     }
 
     public IEnumerator NecromancerSkill(Digit digit)
@@ -83,6 +91,9 @@ public class Necromancer : Card
                     continue;
 
                 selectCard = hit.GetComponent<Card>();
+
+                Debug.Log(selectCard.transform.GetSiblingIndex());
+                SendServerMessage(GameController.GetInstance().playerID, 15, (int)digit, 0, 0, selectCard.transform.GetSiblingIndex());
                 break;
             }
 
@@ -116,5 +127,17 @@ public class Necromancer : Card
         }
 
         yield return new WaitForSeconds(0);
+    }
+
+    public IEnumerator NecromancerSkill(Digit targetDigit, int targetCardIndex)
+    {
+        GameController controller = GameController.GetInstance();
+        Transform start = targetDigit == Digit.One ? controller.opponent_one : controller.opponent_ten; 
+        Transform end = targetDigit == Digit.One ? controller.opponent_ten : controller.opponent_one;
+
+        Transform card = start.GetChild(targetCardIndex);
+        card.parent = end;
+        card.DOLocalMove(Vector3.zero, 0.5f);
+        yield break;
     }
 }

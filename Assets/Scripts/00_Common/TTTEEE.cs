@@ -8,7 +8,7 @@ public class TTTEEE : MonoBehaviour
 
     void Start(){
         NetworkService.Instance.AddEvent(NetworkEvent.TEST_CARD, (Data.Card card)=>{
-            Debug.Log("id: "+ card.id+ "  name: "+ card.name+ "  url: "+ card.url);
+            Debug.Log("id: "+ card.id);
             Debug.Log("받음");
         });
     }
@@ -16,9 +16,7 @@ public class TTTEEE : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.A)){
             Data.Card card;
-            card.id = "absdiosnef";
-            card.name = "러브러브러브";
-            card.url = "./Love.png";
+            card.id = 1;
             NetworkService.Instance.Send(NetworkEvent.TEST_CARD, card);
         }
     }

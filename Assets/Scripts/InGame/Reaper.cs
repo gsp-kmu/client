@@ -28,24 +28,15 @@ public class Reaper : Card
             {
                 StartCoroutine(ReaperSkill(card, target));
 
-                Data.DrawCard send_card = new Data.DrawCard();
-                send_card.id = "";
-                send_card.card.id = "0";
-                send_card.drawDigit = digit; // 추후 int 형으로 바뀔 수도 있음
-                send_card.targetId = "1"; // 기본적으로 값은 0, 1이면 상대방
-                if (card != null)
-                    send_card.targetDigit = card.transform.parent == controller.opponent_one ? Digit.One : Digit.Ten;
-                else
-                    send_card.targetDigit = Digit.One;
-
-                //NetworkService.Instance.Send(NetworkEvent.INGAME_DRAW_CARD, send_card);
+                int targetCard = card.transform.parent == controller.opponent_one ? 0 : 1;
+                SendServerMessage(GameController.GetInstance().playerID, 11, (int)digit, 1, targetCard, 0);
             }));
 
     }
 
-    public override void BattleCryOpponent(Digit digit, int target, Digit target_digit)
+    public override void BattleCryOpponent(Digit digit, int target, Digit target_digit, int targetCardIndex)
     {
-        base.BattleCryOpponent(digit, target, target_digit);
+        base.BattleCryOpponent(digit, target, target_digit, targetCardIndex);
 
         GameController controller = GameController.GetInstance();
 
@@ -63,6 +54,8 @@ public class Reaper : Card
         }
         else
         {
+            SoundController.PlaySound("amomo");
+           
             card.GetComponent<SpriteRenderer>().sortingOrder = 1500;
 
             GameObject effect = Instantiate(reaper_effect);
