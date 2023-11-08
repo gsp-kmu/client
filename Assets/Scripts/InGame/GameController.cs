@@ -109,7 +109,7 @@ public class GameController : MonoBehaviour
 
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TURN, (Data.InGameTurn turn) =>
         {
-            Debug.Log(turn.isPlayerTurn == "1" ? "내턴" : "상대방 턴");
+            Debug.Log(turn.turn == "1" ? "내턴" : "상대방 턴");
         });
 
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_FIRST_CARD, (FirstCard cards) =>

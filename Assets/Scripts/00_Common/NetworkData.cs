@@ -18,7 +18,7 @@ namespace Data{
 
     public struct InGameTurn
     {
-        public string isPlayerTurn; 
+        public string turn; 
     }
 
     [Serializable]
