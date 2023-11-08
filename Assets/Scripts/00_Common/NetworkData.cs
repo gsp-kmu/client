@@ -29,7 +29,7 @@ namespace Data{
     }
 
     [Serializable]
-    public struct PlayCard
+    public struct SendPlayCard
     {
         public int id;
         public int cardIndex;
@@ -38,7 +38,18 @@ namespace Data{
         public int targetDigit;
         public int targetCardIndex;
     }
-    
+
+    [Serializable]
+    public struct RecvPlayCard
+    {
+        public int id;
+        public int cardId;
+        public int drawDigit; // ���� int ������ �ٲ� ���� ����
+        public int targetId; // �⺻������ ���� 0, 1�̸� ����
+        public int targetDigit;
+        public int targetCardIndex;
+    }
+
     // ���� �̰�°� ǥ��
     public struct InGameEnd
     {

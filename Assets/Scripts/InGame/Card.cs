@@ -8,6 +8,7 @@ public class Card : MonoBehaviour
 {
     public int num;
     public Digit digit;
+    public int index; // hyeonseo;
 
     public virtual void BattleCry(Digit digit)
     {
@@ -21,14 +22,15 @@ public class Card : MonoBehaviour
 
     public void SendServerMessage(int id, int cardIndex, int drawDigit, int targetId, int targetDigit, int targetIndex)
     {
-        Data.PlayCard send_card = new Data.PlayCard();
+        GameController.GetInstance().player_hand.RefreshAllCardIndex(); // hyeonseo
+        Data.SendPlayCard send_card = new Data.SendPlayCard();
         send_card.id = id;
-        send_card.cardIndex = cardIndex;
+        send_card.cardIndex = index; // hyeonseo;
         send_card.drawDigit = drawDigit;
         send_card.targetId = targetId;
         send_card.targetDigit = targetDigit;
         send_card.targetCardIndex = targetIndex;
-        NetworkService.Instance.Send(NetworkEvent.INGAME_PLAY_CARD, send_card);
+        NetworkService.Instance.Send(NetworkEvent.INGAME_PLAY_SEND, send_card);
         NetworkService.Instance.Send(NetworkEvent.INGAME_TURN_END, "");
     }
 

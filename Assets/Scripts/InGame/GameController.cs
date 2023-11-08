@@ -118,8 +118,9 @@ public class GameController : MonoBehaviour
             DrawCard(cards.card2.id);
         });
 
-        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_PLAY_CARD, (Data.PlayCard card) => {
-            StartCoroutine(OpponentPlayCard(card.id, card.cardIndex, card.drawDigit, card.targetId, card.targetDigit, card.targetCardIndex));
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_PLAY_RECV, (Data.RecvPlayCard card) => {
+            StartCoroutine(OpponentPlayCard(card.id, card.cardId, card.drawDigit, card.targetId, card.targetDigit, card.targetCardIndex));
+            // hyenoseo card.cardIdnex => card.cardId
         });
 
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_DRAW_CARD, (Data.Card card) => DrawCard(card.id));
@@ -167,6 +168,9 @@ public class GameController : MonoBehaviour
             {
                 if(hit.transform == player_one || hit.transform == player_ten)
                 {
+                    int cardIndex = select_card.index;
+                    player_hand.cards.RemoveAt(cardIndex); // hyeonseo;
+                    player_hand.RefreshAllCardIndex(); // hyeonseo;
                     StartCoroutine(select_card.PlayCard(hit.transform));
                     select_card.BattleCry(hit.transform == player_one ? Digit.One : Digit.Ten);
                     select_card = null;
@@ -208,8 +212,9 @@ public class GameController : MonoBehaviour
 
         if(resources == null)
             resources = Resources.Load<GameObject>("Prefebs/Card/19");
-
         GameObject card = Instantiate(resources);
+        player_hand.cards.Add(card.GetComponent<Card>());
+        card.GetComponent<Card>().index = player_hand.cards.Count - 1;
         card.transform.parent = player_hand.transform;
         card.transform.position = new Vector3(0, 100, 0);
         card.transform.localScale = Vector3.one * 4;

@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class PlayerHand : MonoBehaviour
 {
+    public List<Card> cards = new List<Card>();// hyeonseo;
     void Update()
     {
         MoveCard();
+    }
+
+    public void RefreshAllCardIndex()
+    {
+        for(int i = 0; i < cards.Count; i++)
+        {
+            cards[i].index = i;
+        }
     }
 
     void MoveCard()

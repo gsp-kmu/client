@@ -13,7 +13,8 @@ public static class NetworkEvent
     public const string INGAME_TURN_END = "ingame_turn_end";
     public const string INGAME_FIRST_CARD = "ingame_first_card";
     public const string INGAME_DRAW_CARD = "ingame_draw_card";
-    public const string INGAME_PLAY_CARD = "ingame_play_card";
+    public const string INGAME_PLAY_RECV = "ingame_play_recv"; // hyeonseo
+    public const string INGAME_PLAY_SEND = "ingame_play_send"; // hyeonseo
     public const string INGAME_END_WIN = "ingame_end_win";
     public const string INGAME_END_LOSE = "ingame_end_lose";
 
