@@ -42,6 +42,11 @@ public class NetworkService : MonoBehaviour
         io.D.Emit("disconnect");
     }
 
+    public void RemoveEvent(string eventName)
+    {
+        io.D.RemoveAllListeners(eventName);
+    }
+
     public void AddEvent(string eventName, UnityAction callback)
     {
         io.D.On(eventName, callback);
