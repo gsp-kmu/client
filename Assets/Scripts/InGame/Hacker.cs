@@ -18,33 +18,24 @@ public class Hacker : Card
 
     public override void BattleCry(Digit digit)
     {
-        Debug.Log("해커 능력 발동");
-            StartCoroutine(BattleCrySchedule(digit));
+        base.BattleCry(digit);
+
+        GameController controller = GameController.GetInstance();
+        Card side_card = digit == Digit.One ? controller.player_ten_topCard : controller.player_one_topCard;
+
+        Card.deputy = this;
+        side_card.BattleCry(digit);
     }
 
-    static IEnumerator BattleCrySchedule(Digit digit)
+    public override void BattleCryOpponent(Digit digit, int target, Digit target_digit, int targetCardIndex)
     {
+        base.BattleCryOpponent(digit, target, target_digit, targetCardIndex);
+
         GameController controller = GameController.GetInstance();
-        Card side_card;
 
-        if (digit == Digit.One)
-        {
-            Card[] cards = controller.player_ten.GetComponentsInChildren<Card>();
-            side_card = cards[cards.Length - 1];
-        }
-        else
-        {
-            Card[] cards = controller.player_one.GetComponentsInChildren<Card>();
-            side_card = cards[cards.Length - 1];
-        }
+        Card side_card = digit == Digit.One ? controller.opponent_ten_topCard : controller.opponent_one_topCard;
+        Digit side_digit = digit == Digit.One ? Digit.Ten : Digit.One;
 
-        side_card.BattleCry(digit);
-
-        while(true)
-        {
-            Debug.Log("해커 능력 종료");
-            break;
-            yield return new WaitForSeconds(0.0f);
-        }
+        side_card.BattleCryOpponent(side_digit, target, target_digit, targetCardIndex);
     }
 }

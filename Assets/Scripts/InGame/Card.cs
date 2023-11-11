@@ -9,6 +9,7 @@ public class Card : MonoBehaviour
     public int num;
     public Digit digit;
     public int index; // hyeonseo;
+    public static Card deputy = null;
 
     public virtual void BattleCry(Digit digit)
     {
@@ -20,12 +21,25 @@ public class Card : MonoBehaviour
         Debug.Log("상대방 " + transform.name + " 능력발동");
     }
 
-    public void SendServerMessage(int id, int cardIndex, int drawDigit, int targetId, int targetDigit, int targetIndex)
+    public void SendServerMessage(int id, int drawDigit, int targetId, int targetDigit, int targetIndex)
     {
+
         GameController.GetInstance().player_hand.RefreshAllCardIndex(); // hyeonseo
         Data.SendPlayCard send_card = new Data.SendPlayCard();
         send_card.id = id;
-        send_card.cardIndex = index; // hyeonseo;
+
+        send_card.cardIndex = GameController.GetInstance().select_card_hand_idx;
+        //if (deputy == null)
+        //{
+        //    send_card.cardIndex = index; // hyeonseo;
+        //}
+        //else
+        //{
+        //    send_card.cardIndex = deputy.index;
+        //    deputy = null;
+        //}
+        Debug.Log("Hand Index : " + send_card.cardIndex.ToString());
+
         send_card.drawDigit = drawDigit;
         send_card.targetId = targetId;
         send_card.targetDigit = targetDigit;

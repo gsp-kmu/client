@@ -28,8 +28,10 @@ public class Reaper : Card
             {
                 StartCoroutine(ReaperSkill(card, target));
 
-                int targetCard = card.transform.parent == controller.opponent_one ? 0 : 1;
-                SendServerMessage(GameController.GetInstance().playerID, 11, (int)digit, 1, targetCard, 0);
+                int targetCard = 0;
+                if(card != null)
+                    targetCard = card.transform.parent == controller.opponent_one ? 0 : 1;
+                SendServerMessage(GameController.GetInstance().playerID, (int)digit, 1, targetCard, 0);
             }));
 
     }

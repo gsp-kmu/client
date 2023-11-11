@@ -24,7 +24,7 @@ public class Medusa : Card
 
         StartCoroutine(Stun(transform));
 
-        SendServerMessage(GameController.GetInstance().playerID, 18, (int)digit, 0, 0, 0);
+        SendServerMessage(GameController.GetInstance().playerID, (int)digit, 0, 0, 0);
     }
     public override void BattleCryOpponent(Digit digit, int target, Digit target_digit, int targetCardIndex)
     {

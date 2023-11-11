@@ -93,7 +93,7 @@ public class Necromancer : Card
                 selectCard = hit.GetComponent<Card>();
 
                 Debug.Log(selectCard.transform.GetSiblingIndex());
-                SendServerMessage(GameController.GetInstance().playerID, 15, (int)digit, 0, 0, selectCard.transform.GetSiblingIndex());
+                SendServerMessage(GameController.GetInstance().playerID, (int)digit, 0, 0, selectCard.transform.GetSiblingIndex());
                 break;
             }
 

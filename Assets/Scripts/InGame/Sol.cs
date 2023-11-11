@@ -27,9 +27,11 @@ public class Sol : Card
             card => {
                 StartCoroutine(SolSkill(card));
 
-                int target = card.transform.parent == controller.opponent_one ? 0 : 1;
+                int target = 0;
+                if(card != null)
+                    target = card.transform.parent == controller.opponent_one ? 0 : 1;
 
-                SendServerMessage(controller.playerID, 4, (int)digit, 1, target, 0);
+                SendServerMessage(controller.playerID, (int)digit, 1, target, 0);
             }));
 
     }

@@ -22,7 +22,7 @@ public class Elf : Card
 
         GameController controller = GameController.GetInstance();
 
-        SendServerMessage(controller.playerID, 19, (int)digit, 0, 0, 0);
+        SendServerMessage(controller.playerID, (int)digit, 0, 0, 0);
 
         if (digit == Digit.Ten)
             StartCoroutine(Spawn(controller.player_ten.transform));

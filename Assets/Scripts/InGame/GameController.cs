@@ -13,9 +13,6 @@ public class GameController : MonoBehaviour
         return instance;
     }
 
-    Card select_card;
-    int select_card_hand_idx;
-
     public PlayerHand player_hand;
     public Transform player_ten;
     public Transform player_one;
@@ -25,6 +22,10 @@ public class GameController : MonoBehaviour
 
     public Transform effect_ts;
 
+    Card select_card;
+    public int select_card_hand_idx;
+
+    public bool myTurn;
     public int turn = 0;
 
     public bool click_out;
@@ -75,14 +76,9 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
-        NetworkService.Instance.Login("B");
+        instance = this;
+        NetworkService.Instance.Login("a");
         
-        instance = this; 
-    }
-
-    void Start()
-    {
-       
     }
 
     void Update()
@@ -91,6 +87,7 @@ public class GameController : MonoBehaviour
             Mathcing();
 
         ControllHandCard();
+        ControllOpponentHand();
     }
 
     void Mathcing()
@@ -109,6 +106,7 @@ public class GameController : MonoBehaviour
 
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TURN, (Data.InGameTurn turn) =>
         {
+            myTurn = turn.turn == "1" ? true : false;
             Debug.Log(turn.turn == "1" ? "내턴" : "상대방 턴");
         });
 
@@ -134,6 +132,9 @@ public class GameController : MonoBehaviour
         //마우스 클릭시 카드를 들기
         if(Input.GetMouseButtonDown(0))
         {
+            if (!myTurn)
+                return;
+
             Collider2D hit = Physics2D.OverlapPoint(mouse_point);
 
             if(!hit)
@@ -205,13 +206,24 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void ControllOpponentHand()
+    {
+        int count = opponent_hand.childCount;
+
+        for (int i = 0; i < opponent_hand.childCount; i++)
+        {
+            Transform child = opponent_hand.GetChild(i);
+            child.transform.localPosition = Vector3.Lerp(child.transform.localPosition, new Vector3(i * 2 - 1, 0, 0), Time.deltaTime * 10);
+        }
+    }
+
     public void DrawCard(int card_id)
     {
         Debug.Log("Draw card id : " + card_id.ToString());
         GameObject resources = Resources.Load<GameObject>("Prefebs/Card/" + card_id.ToString());
 
         if(resources == null)
-            resources = Resources.Load<GameObject>("Prefebs/Card/19");
+            resources = Resources.Load<GameObject>("Prefebs/Card/9");
         GameObject card = Instantiate(resources);
         player_hand.cards.Add(card.GetComponent<Card>());
         card.GetComponent<Card>().index = player_hand.cards.Count - 1;
@@ -317,7 +329,7 @@ public class GameController : MonoBehaviour
         if (id == playerID)
             yield break;
 
-        Debug.Log("Play card id" + card_id.ToString());
+        Debug.Log("Play card id " + card_id.ToString());
 
         GameObject card = Instantiate(Resources.Load<GameObject>("Prefebs/Card/" + card_id.ToString()));
         card.transform.parent = opponent_hand;

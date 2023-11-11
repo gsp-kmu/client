@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEditor.U2D.Aseprite;
 
 public class FallenAngle : Card
 {
@@ -26,7 +25,7 @@ public class FallenAngle : Card
 
         StartCoroutine(FallenAngelSkill(GameController.GetInstance().opponent_ten_topCard, GameController.GetInstance().opponent_one_topCard));
 
-        SendServerMessage(GameController.GetInstance().playerID, 17, (int)digit, 0, 0, 0);
+        SendServerMessage(GameController.GetInstance().playerID, (int)digit, 0, 0, 0);
     }
 
     public override void BattleCryOpponent(Digit digit, int target, Digit target_digit, int targetCardIndex)

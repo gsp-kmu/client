@@ -27,7 +27,7 @@ public class LoveLetter : Card
         else
             StartCoroutine(LoveLetterSkill(controller.player_ten_topCard, controller.opponent_ten.transform));
 
-        SendServerMessage(GameController.GetInstance().playerID, 13, (int)digit, 0, 0, 0);
+        SendServerMessage(GameController.GetInstance().playerID, (int)digit, 0, 0, 0);
     }
 
     public override void BattleCryOpponent(Digit digit, int target, Digit target_digit, int targetCardIndex)
