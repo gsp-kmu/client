@@ -13,34 +13,43 @@ namespace Data{
     [Serializable]
     public struct Card
     {
-        public string id;
-        public string name;
-        public string url;
+        public int id;
     }
 
-    // ���� ���� ������ Ȯ��
     public struct InGameTurn
     {
-        public bool isPlayerTurn; // True�� ���� False�� ���� ��
-    }
-    
-    // ù ī�� 2�� �̱�
-    public struct FIrstCard
-    {
-        Card card1;
-        Card card2;
+        public string turn; 
     }
 
-    // ī�� ��ο�
-    public struct DrawCard
+    [Serializable]
+    public struct FirstCard
     {
-        public string id;
-        public Card card;
-        public Digit drawDigit; // ���� int ������ �ٲ� ���� ����
-        public string targetId; // �⺻������ ���� 0, 1�̸� ����
-        public Digit targetDigit;
+        public Card card1;
+        public Card card2;
     }
-    
+
+    [Serializable]
+    public struct SendPlayCard
+    {
+        public int id;
+        public int cardIndex;
+        public int drawDigit; // ���� int ������ �ٲ� ���� ����
+        public int targetId; // �⺻������ ���� 0, 1�̸� ����
+        public int targetDigit;
+        public int targetCardIndex;
+    }
+
+    [Serializable]
+    public struct RecvPlayCard
+    {
+        public int id;
+        public int cardId;
+        public int drawDigit; // ���� int ������ �ٲ� ���� ����
+        public int targetId; // �⺻������ ���� 0, 1�̸� ����
+        public int targetDigit;
+        public int targetCardIndex;
+    }
+
     // ���� �̰�°� ǥ��
     public struct InGameEnd
     {
