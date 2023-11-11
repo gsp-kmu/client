@@ -280,11 +280,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 106127040}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1602502ec1f71d047a1c360dac9b99bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  url: http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000/savedeck
   SceneToLoad: CardGachaScene
 --- !u!4 &106127042
 Transform:
@@ -557,8 +558,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uCE74\uB4DC \uBF51\uAE30"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ec035aaff3283664d9c0262850b29cca, type: 2}
-  m_sharedMaterial: {fileID: 6092531105279806722, guid: ec035aaff3283664d9c0262850b29cca, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 73d2dfea983a1754c92cfdb4c42ac5bd, type: 2}
+  m_sharedMaterial: {fileID: -7418865800469709782, guid: 73d2dfea983a1754c92cfdb4c42ac5bd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -661,6 +662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1602502ec1f71d047a1c360dac9b99bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  url: http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000/savedeck
   SceneToLoad: MyCardScene
 --- !u!4 &528067441
 Transform:
@@ -828,8 +830,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uB0B4 \uCE74\uB4DC"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ec035aaff3283664d9c0262850b29cca, type: 2}
-  m_sharedMaterial: {fileID: 6092531105279806722, guid: ec035aaff3283664d9c0262850b29cca, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 73d2dfea983a1754c92cfdb4c42ac5bd, type: 2}
+  m_sharedMaterial: {fileID: -7418865800469709782, guid: 73d2dfea983a1754c92cfdb4c42ac5bd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -932,6 +934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1602502ec1f71d047a1c360dac9b99bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  url: http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000/savedeck
   SceneToLoad: MainScene
 --- !u!4 &996917134
 Transform:
@@ -993,6 +996,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1240869897 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4475820245103073246, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+  m_PrefabInstance: {fileID: 1754476104}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1273328193
 GameObject:
   m_ObjectHideFlags: 0
@@ -1160,7 +1168,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uD655 \uC778"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ec035aaff3283664d9c0262850b29cca, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 73d2dfea983a1754c92cfdb4c42ac5bd, type: 2}
   m_sharedMaterial: {fileID: 6092531105279806722, guid: ec035aaff3283664d9c0262850b29cca, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1224,7 +1232,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1310178225
@@ -1331,6 +1339,18 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1526047662}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1240869897}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -1672,10 +1692,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1854503989}
-        m_TargetAssemblyTypeName: RandomSelect, Assembly-CSharp
-        m_MethodName: Start
-        m_Mode: 1
+      - m_Target: {fileID: 1240869897}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1793,8 +1813,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uBA54\uC778 \uBA54\uB274\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ec035aaff3283664d9c0262850b29cca, type: 2}
-  m_sharedMaterial: {fileID: 6092531105279806722, guid: ec035aaff3283664d9c0262850b29cca, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 73d2dfea983a1754c92cfdb4c42ac5bd, type: 2}
+  m_sharedMaterial: {fileID: -7418865800469709782, guid: 73d2dfea983a1754c92cfdb4c42ac5bd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1960,6 +1980,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1531008051}
     - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: cardpo.Array.size
       value: 5
       objectReference: {fileID: 0}
@@ -2003,6 +2027,202 @@ PrefabInstance:
       propertyPath: cardpo.Array.data[4].y
       value: -700
       objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[1].cardId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[2].cardId
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[3].cardId
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[4].cardId
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[5].cardId
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[6].cardId
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[7].cardId
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[8].cardId
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[9].cardId
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[10].cardId
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[11].cardId
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[12].cardId
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[13].cardId
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[14].cardId
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[15].cardId
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[16].cardId
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[17].cardId
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[18].cardId
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[19].cardId
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[0].cardName
+      value: 00Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[1].cardName
+      value: 01Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[2].cardName
+      value: 02Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[3].cardName
+      value: 03Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[4].cardName
+      value: 04Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[5].cardName
+      value: 05Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[6].cardName
+      value: 06Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[7].cardName
+      value: 07Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[8].cardName
+      value: 08Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[9].cardName
+      value: 09Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[10].cardName
+      value: 10Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[11].cardName
+      value: 11Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[12].cardName
+      value: 12Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[13].cardName
+      value: 13Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[14].cardName
+      value: 14Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[15].cardName
+      value: 15Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[16].cardName
+      value: 16Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[17].cardName
+      value: 17Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[18].cardName
+      value: 18Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[19].cardName
+      value: 19Card
+      objectReference: {fileID: 0}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[10].cardImage
+      value: 
+      objectReference: {fileID: 975430238, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[11].cardImage
+      value: 
+      objectReference: {fileID: 1207006645, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[12].cardImage
+      value: 
+      objectReference: {fileID: -629485264, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[13].cardImage
+      value: 
+      objectReference: {fileID: -367177690, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[14].cardImage
+      value: 
+      objectReference: {fileID: -750573246, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[15].cardImage
+      value: 
+      objectReference: {fileID: 1841537504, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[16].cardImage
+      value: 
+      objectReference: {fileID: 274962391, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[17].cardImage
+      value: 
+      objectReference: {fileID: 167651401, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[18].cardImage
+      value: 
+      objectReference: {fileID: 4052141, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
+    - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
+      propertyPath: deck.Array.data[19].cardImage
+      value: 
+      objectReference: {fileID: 1646500545, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
     - target: {fileID: 4475820245103073246, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: m_Name
       value: DeckManager
@@ -2066,7 +2286,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
   m_PrefabInstance: {fileID: 1754476104}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1240869897}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c0224cf30edd7149bce22cc9cfd9e28, type: 3}
@@ -2264,8 +2484,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC804\uCCB4 \uBF51\uAE30"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ec035aaff3283664d9c0262850b29cca, type: 2}
-  m_sharedMaterial: {fileID: 6092531105279806722, guid: ec035aaff3283664d9c0262850b29cca, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 73d2dfea983a1754c92cfdb4c42ac5bd, type: 2}
+  m_sharedMaterial: {fileID: -7418865800469709782, guid: 73d2dfea983a1754c92cfdb4c42ac5bd, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

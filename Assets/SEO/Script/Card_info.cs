@@ -7,12 +7,12 @@ public class Card_
 {
     public string cardName;
     public Sprite cardImage;
-    public int weight;
+    public int cardId;
 
     public Card_(Card_ card)
     {
         this.cardName = card.cardName;
         this.cardImage = card.cardImage;
-        this.weight = card.weight;
+        this.cardId = card.cardId;
     }
 }
