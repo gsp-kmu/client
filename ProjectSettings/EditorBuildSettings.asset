@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/05_CardGachaScene.unity
     guid: 439bda113f7ff0242a7ea27909c07528
+  - enabled: 1
+    path: Assets/Scenes/98_MatchingScene.unity
+    guid: 21b77c93446ca6d44aad0be6ec3e250a
   m_configObjects: {}
