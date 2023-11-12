@@ -1,10 +1,11 @@
 using Data;
+using Firesplash.GameDevAssets.SocketIOPlus;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class User
@@ -14,22 +15,11 @@ public class User
 }
 public class Login : MonoBehaviour
 {
-    public string loginUrl;
+    private string loginUrl = GSP.http.login;
     public GameObject canvasManager;
     public TMP_InputField idField;
     public TMP_InputField passwordField;
     public NetworkService networkService;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void LoginButtonClick()
     {
@@ -61,7 +51,7 @@ public class Login : MonoBehaviour
             if (request.responseCode == 200)
             {
                 Debug.Log("로그인 성공");
-                NetworkService.Instance.Login(id);
+                NetworkService.Instance.Login(id, MoveSceneMainMenu);
             }
             else
             {
@@ -72,5 +62,10 @@ public class Login : MonoBehaviour
     public void ReturnToRegister()
     {
         canvasManager.GetComponent<CanvasManager>().SetCurrentPage(CanvasManager.mPageInfo.Register);
+    }
+
+    private void MoveSceneMainMenu()
+    {
+        SceneManager.LoadScene(GSP.Scene.main);
     }
 }

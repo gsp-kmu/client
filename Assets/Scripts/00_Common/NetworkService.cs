@@ -14,8 +14,14 @@ public class NetworkService : MonoBehaviour
     public NetworkEventCallback eventCallback;
     private NetworkEventHandler eventHandler;
 
+
+    /// 임시
+    public Notice noticeObject;
+    /// 임시
     private void Awake()
     {
+        io.serverAddress = GSP.Info.ip;
+
         if (instance == null)
             instance = this;
         else
@@ -23,23 +29,38 @@ public class NetworkService : MonoBehaviour
         
         DontDestroyOnLoad(gameObject);
     }
-
-    public void Login(string id)
+    public void Login(string id, UnityAction callback)
     {
+        Debug.Log(io.serverAddress);
         io.Connect();
         io.D.On("connect", () =>
         {
             Debug.Log("connect");
             io.D.Emit("들어왔습니다");
             Send("login", id);
+            callback();
+
+            AddEvent("notice", (string data) =>
+            {
+                Instantiate(noticeObject).GetComponent<Notice>().Init(data);
+            });
         });
 
         eventHandler = new NetworkEventHandler(io, eventCallback);
+    }
+    public void Login(string id)
+    {
+        Login(id, () => { });
     }
 
     private void OnApplicationQuit()
     {
         io.D.Emit("disconnect");
+    }
+
+    public void RemoveEvent(string eventName)
+    {
+        io.D.RemoveAllListeners(eventName);
     }
 
     public void AddEvent(string eventName, UnityAction callback)

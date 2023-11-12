@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4475820245103073246
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4715180253271274257}
+  - component: {fileID: 294138011208760205}
+  m_Layer: 0
+  m_Name: DeckManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4715180253271274257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4475820245103073246}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 720, y: 1280, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &294138011208760205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4475820245103073246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c0224cf30edd7149bce22cc9cfd9e28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deck:
+  - cardName: 0Card
+    cardImage: {fileID: 975430238, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+    cardId: 0
+  - cardName: 1Card
+    cardImage: {fileID: 1207006645, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+    cardId: 0
+  - cardName: 2Card
+    cardImage: {fileID: -629485264, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+    cardId: 0
+  - cardName: 3Card
+    cardImage: {fileID: -1721926910, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+    cardId: 0
+  - cardName: 4Card
+    cardImage: {fileID: -750573246, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+    cardId: 0
+  - cardName: 5Card
+    cardImage: {fileID: 1625515580, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+    cardId: 0
+  - cardName: 6Card
+    cardImage: {fileID: 274962391, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+    cardId: 0
+  - cardName: 7Card
+    cardImage: {fileID: 167651401, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+    cardId: 0
+  - cardName: 8Card
+    cardImage: {fileID: 4052141, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+    cardId: 0
+  - cardName: 9Card
+    cardImage: {fileID: 2070504878, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+    cardId: 0
+  total: 0
+  gachabutton: {fileID: 0}
+  cardpo:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  result: []
+  parent: {fileID: 1727510555904563514, guid: 5465feb362bf08e4d8e2d787df7af145, type: 3}
+  cardprefab: {fileID: 878384543158946410, guid: 75cb612308941fe4ca50b9b4244ad8a6, type: 3}
+  cardUIs: []
