@@ -76,6 +76,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   io: {fileID: 604249397514365113}
   eventCallback: {fileID: 2354909414439790254}
+  noticeObject: {fileID: 846857420013104711, guid: a55d1007b5b8e1c468230fb5f3cde654, type: 3}
 --- !u!114 &2354909414439790254
 MonoBehaviour:
   m_ObjectHideFlags: 0

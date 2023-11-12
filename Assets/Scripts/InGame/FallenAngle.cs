@@ -13,7 +13,6 @@ public class FallenAngle : Card
             ghost = Resources.Load<GameObject>("Prefebs/Effect/ghost");
     }
 
-    // Update is called once per frame
     void Update()
     {
 

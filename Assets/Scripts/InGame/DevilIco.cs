@@ -12,6 +12,7 @@ public class DevilIco : Card
 
     void Awake()
     {
+
         if (loveletter_effect == null)
             loveletter_effect = Resources.Load<GameObject>("Prefebs/Effect/ghost");
         transform.name = "DevilIco";

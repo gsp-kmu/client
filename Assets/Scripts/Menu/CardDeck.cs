@@ -9,6 +9,7 @@ using UnityEngine.Networking;
 using System;
 using UnityEditor.PackageManager.Requests;
 using Newtonsoft.Json;
+using UnityEngine.SceneManagement;
 
 public class RequestGetDeck
 {
@@ -23,6 +24,13 @@ public class ResponseGetCard
 }
 
 [System.Serializable]
+public class ResponseSendDeck
+{
+    public int userId;
+    public List<List<int>> deckList;
+}
+
+[System.Serializable]
 public class ResponseGetDeck
 {
     public string msg;
@@ -30,8 +38,8 @@ public class ResponseGetDeck
 }
 public class CardDeck : MonoBehaviour
 {
-    private string getDeckUrl = "http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000/getdeck";
-    private string getCardUrl = "http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000/getcard";
+    private string getDeckUrl = GSP.http.getDeck;
+    private string getCardUrl = GSP.http.getCard;
 
     public List<List<int>> allDecks; // 여러 덱을 저장하는 리스트의 리스트
     public List<List<int>> allCardState; // 모든카드 상태
@@ -50,6 +58,8 @@ public class CardDeck : MonoBehaviour
 
     void Start()
     {
+        SceneManager.sceneUnloaded += OnUnSceneloaded;
+
         int id = 1;
         RequestGetDeck deck = new RequestGetDeck
         {
@@ -57,6 +67,72 @@ public class CardDeck : MonoBehaviour
         };
         string json = JsonUtility.ToJson(deck);
         StartCoroutine(DeckAndCardGet(json));
+    }
+    private void OnUnSceneloaded(Scene scene)
+    {
+        Debug.Log("zzz");
+        CardDeck carddeck = this;
+        int id = 1;
+        List<List<int>> ran = new List<List<int>>();
+        ran = carddeck.allDecks;
+
+        ResponseSendDeck deck = new ResponseSendDeck
+        {
+            userId = id,
+            deckList = ran
+        };
+
+        string json = JsonConvert.SerializeObject(deck);
+        Debug.Log("json");
+        StartCoroutine(DeckPost(json));
+        Debug.Log("코루틴끝");
+    }
+
+    private void OnDestroy()
+    {
+        Debug.Log("씬 바뀜");
+        SceneManager.sceneUnloaded -= OnUnSceneloaded;
+    }
+
+    IEnumerator DeckPost(string json)
+    {
+        Debug.Log("코루틴시작");
+        string url = GSP.http.saveDeck;
+        using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, json))
+        {
+
+            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+            request.uploadHandler = new UploadHandlerRaw(jsonToSend);
+            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            Debug.Log(request.responseCode);
+            if (request.responseCode == 200)
+            {
+                string responseJson = request.downloadHandler.text;
+                Debug.Log("전부 성공");
+
+                Debug.Log(responseJson);
+
+
+            }
+            else if (request.responseCode == 400)
+            {
+                Debug.Log("덱이 모잘라서 일부만 업데이트");
+            }
+
+            else if (request.responseCode == 401)
+            {
+                Debug.Log("실패");
+            }
+
+            else if (request.responseCode == 402)
+            {
+                Debug.Log("json오류");
+            }
+        }
     }
 
     IEnumerator DeckAndCardGet(string json)
@@ -120,6 +196,8 @@ public class CardDeck : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             List<int> subList = new List<int>(new int[currentCollectionCards.Count]);
+            Debug.Log(string.Join("", subList));
+            Debug.Log(string.Join("", allDecks));
             subList = findState(allDecks[i], subList);
             allCardState.Add(subList);
         }

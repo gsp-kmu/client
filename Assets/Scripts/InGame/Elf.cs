@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Elf : Card
 {
+
     static GameObject[] elf_effect = null;
     void Awake()
     {

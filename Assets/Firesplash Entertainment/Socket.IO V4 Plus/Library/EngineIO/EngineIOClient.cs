@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static Firesplash.GameDevAssets.SocketIOPlus.EngineIO.DataTypes;
 
+
 namespace Firesplash.GameDevAssets.SocketIOPlus.EngineIO
 {
 
@@ -18,6 +19,7 @@ namespace Firesplash.GameDevAssets.SocketIOPlus.EngineIO
     [AddComponentMenu("Networking/Socket.IO/Low-Level Engine.IO Client")]
     public class EngineIOClient : MonoBehaviour
     {
+        [HideInInspector]
         public string serverAddress;
 
         private protected string defaultPath = "/engine.io/";

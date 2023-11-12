@@ -77,8 +77,6 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         instance = this;
-        NetworkService.Instance.Login("a");
-        
     }
 
     void Update()
@@ -351,5 +349,14 @@ public class GameController : MonoBehaviour
         card.GetComponent<Card>().BattleCryOpponent((Digit)digit, target, (Digit)target_digit, targetCardIndex);
 
         yield return new WaitForSeconds(0);
+    }
+
+
+
+
+    ////// 서렌 서렌 서렌
+    public void Surrender()
+    {
+        NetworkService.Instance.Send(NetworkEvent.INGAME_SURRENDER, "");
     }
 }

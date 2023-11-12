@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 public class Register : MonoBehaviour
 {
-    public string registerUrl;
+    private string registerUrl = GSP.http.register;
     public TMP_InputField idField;
     public TMP_InputField passwordField;
     public GameObject canvasManager;

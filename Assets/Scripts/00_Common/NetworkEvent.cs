@@ -17,7 +17,7 @@ public static class NetworkEvent
     public const string INGAME_PLAY_SEND = "ingame_play_send"; // hyeonseo
     public const string INGAME_END_WIN = "ingame_end_win";
     public const string INGAME_END_LOSE = "ingame_end_lose";
-
+    public const string INGAME_SURRENDER = "ingame_surrender";
     //����
     public const string SHOP_RANDOM_DRAWCARD = "shop_random_drawcard";
 
