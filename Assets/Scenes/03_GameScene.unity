@@ -886,6 +886,7 @@ MonoBehaviour:
   sound_icon: {fileID: 1160933562}
   vibration: 1
   vibration_icon: {fileID: 223373330}
+  result: {fileID: 1399819351}
   game_result: {fileID: 1830682925}
   myScore: {fileID: 754349383}
   yourScore: {fileID: 1315569072}
@@ -8708,6 +8709,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1399819351 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5634411566491070615, guid: 7f10dfc098bc84a45bee05652a55f81f, type: 3}
+  m_PrefabInstance: {fileID: 1869055599}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1514639561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9776,7 +9782,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1711695040897447935, guid: 7f10dfc098bc84a45bee05652a55f81f, type: 3}
   m_PrefabInstance: {fileID: 1869055599}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1399819351}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}

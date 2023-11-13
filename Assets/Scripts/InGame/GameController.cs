@@ -78,7 +78,7 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         instance = this;
-        NetworkService.Instance.Login("B");
+        NetworkService.Instance.Login("A");
 
     }
 

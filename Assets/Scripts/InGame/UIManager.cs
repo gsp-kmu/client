@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     public bool vibration = true;
     public Image vibration_icon;
 
+    public GameObject result;
     public TextMeshProUGUI game_result;
     public TextMeshProUGUI myScore;
     public TextMeshProUGUI yourScore;
@@ -30,11 +31,11 @@ public class UIManager : MonoBehaviour
     public void Awake()
     {
         instance = this;
-        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_WIN, (string s) =>
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_WIN, (Data.InGameEnd winId) =>
         {
             instance.Win();
         });
-        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_LOSE, (string s) =>
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_LOSE, (Data.InGameEnd winId) =>
         {
             instance.Lose();
         });
@@ -86,6 +87,7 @@ public class UIManager : MonoBehaviour
 
     public void Win()
     {
+        result.SetActive(true);
         game_result.text = "Win";
 
         int score = 0;
@@ -112,6 +114,7 @@ public class UIManager : MonoBehaviour
 
     public void Lose()
     {
+        result.SetActive(true);
         game_result.text = "Loss";
 
         int score = 0;
