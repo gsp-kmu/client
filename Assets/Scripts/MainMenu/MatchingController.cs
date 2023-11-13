@@ -9,7 +9,8 @@ public class MatchingController : MonoBehaviour
     public GameObject matchingWindow;
     public LoadingAnimation loadingAnimation;
     public TMPro.TextMeshProUGUI machingText;
-    private const string matching_text = "¸ÅÄª Áß";
+    public TMPro.TextMeshProUGUI timeText;
+    private const string matching_text = "ë§¤ì¹­ ì¤‘";
     private Action matchingEndCallback;
 
     public void MatchingStart()
@@ -18,23 +19,25 @@ public class MatchingController : MonoBehaviour
         NetworkService.Instance.Send(NetworkEvent.MATCH_START, "");
         loadingAnimation.Play();
         StartCoroutine(MatchingTextAnimation());
+        StartCoroutine(MatchingTImeAnimation());
     }
 
     public void MatchingCancel()
     {
         NetworkService.Instance.Send(NetworkEvent.MATCH_CANCEL, "");
         StopCoroutine(MatchingTextAnimation());
+        StopCoroutine(MatchingTImeAnimation());
         matchingWindow.gameObject.SetActive(false);
     }
 
     public void onMatchingSuccess()
     {
-        machingText.SetText("¸ÅÄªÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.!");
+        machingText.SetText("ë§¤ì¹­ ë˜ì—ˆìŠµë‹ˆë‹¤.!!");
     }
 
     public void onMatchingEnd()
     {
-        machingText.SetText("°ÔÀÓ¿¡ °ğ Á¢¼Ó ÇÕ´Ï´Ù.!");
+        machingText.SetText("ê²Œì„ì„ ê³§ ì‹œì‘í•©ë‹ˆë‹¤.!");
         Invoke("MoveInGameScene", 0.8f);
     }
 
@@ -55,10 +58,44 @@ public class MatchingController : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                Debug.Log("hi");
                 machingText.SetText(matching_text + new string('.', i));
                 yield return new WaitForSeconds(0.5f);
             }
         }
+    }
+
+    IEnumerator MatchingTImeAnimation()
+    {
+        yield return null;
+        int time = 0;
+        SetTImeText(time);
+
+        while (true)
+        {
+            yield return new WaitForSeconds(1.0f);
+            time += 1;
+            SetTImeText(time);
+        }
+    }
+
+    private void SetTImeText(int time)
+    {
+        int sec = time % 60;
+        int minute = time / 60;
+
+        string timeString = "";
+        timeString += SetTimeToText(minute);
+        timeString += ":" + SetTimeToText(sec);
+        Debug.Log(timeString);
+        timeText.SetText(timeString);
+    }
+
+    private string SetTimeToText(int time){
+        if(time == 0)
+            return "00";
+        else if(time /10>= 1)
+            return "" + time;
+
+        return "0" + time;
     }
 }
