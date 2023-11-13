@@ -6,8 +6,8 @@ namespace GSP
 {
     public static class Info
     {
-        //public const string ip = "http://localhost:8000";
-        public const string ip = "http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000";
+        public const string ip = "http://localhost:8000";
+        //public const string ip = "http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000";
     }
 
     public static class http
@@ -25,7 +25,7 @@ namespace GSP
     {
         public const string title = "00_TitleScene";
         public const string login = "01_LoginScene";
-        public const string main = "02_MainScene";
+        public const string main = "98_MatchingScene";
         public const string ingame = "03_GameScene";
         public const string mycard = "04_MyCardScene";
         public const string garcha = "05_CardGachaScene";
