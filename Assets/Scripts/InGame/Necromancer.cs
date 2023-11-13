@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -12,6 +12,7 @@ public class Necromancer : Card
     {
         if (ghost == null)
             ghost = Resources.Load<GameObject>("Prefebs/Effect/ghost");
+        transform.name = "네크로멘서";
     }
 
     void Update()
@@ -28,7 +29,7 @@ public class Necromancer : Card
     {
         base.BattleCryOpponent(digit, target, target_digit, targetCardIndex);
 
-        StartCoroutine(NecromancerSkill(target_digit, targetCardIndex));
+        StartCoroutine(NecromancerSkill(digit, targetCardIndex));
     }
 
     public IEnumerator NecromancerSkill(Digit digit)
@@ -37,6 +38,13 @@ public class Necromancer : Card
 
         Transform startPos = digit == Digit.One ? controller.player_one.transform : controller.player_ten.transform;
         Transform endPos = digit == Digit.One ? controller.player_ten.transform : controller.player_one.transform;
+
+        Debug.Log(startPos.transform.childCount);
+        if(startPos.transform.childCount == 1)
+        {
+            SendServerMessage(GameController.GetInstance().playerID, (int)digit, 0, 0, -1);
+            yield break;
+        }
 
         List<GameObject> ghosts = new List<GameObject>();
 
@@ -73,6 +81,7 @@ public class Necromancer : Card
         Card selectCard;
         while (true)
         {
+            yield return new WaitForSeconds(0);
 
             if (Input.GetMouseButtonDown(0))
             {
@@ -131,12 +140,16 @@ public class Necromancer : Card
 
     public IEnumerator NecromancerSkill(Digit targetDigit, int targetCardIndex)
     {
+        if (targetCardIndex == -1)
+            yield break;
+
         GameController controller = GameController.GetInstance();
         Transform start = targetDigit == Digit.One ? controller.opponent_one : controller.opponent_ten; 
         Transform end = targetDigit == Digit.One ? controller.opponent_ten : controller.opponent_one;
 
         Transform card = start.GetChild(targetCardIndex);
         card.parent = end;
+        GameController.GetInstance().FieldsCardOrganize();
         card.DOLocalMove(Vector3.zero, 0.5f);
         yield break;
     }

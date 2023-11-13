@@ -53,6 +53,9 @@ public class LoveLetter : Card
         yield return new WaitForSeconds(0.5f);
 
         GameObject effect = Instantiate(loveletter_effect, GameController.GetInstance().effect_ts);
+        card.transform.parent = target;
+        GameController.GetInstance().FieldsCardOrganize();
+
         effect.transform.position = target.position;
         effect.transform.localScale = new Vector3(0, 0, 0);
         effect.transform.DOScale(new Vector3(20, 20, 20), 0.7f);
@@ -60,8 +63,6 @@ public class LoveLetter : Card
 
         yield return new WaitForSeconds(0.7f);
 
-        card.transform.parent = target;
-        GameController.GetInstance().FieldsCardOrganize();
         Destroy(effect);
 
 
