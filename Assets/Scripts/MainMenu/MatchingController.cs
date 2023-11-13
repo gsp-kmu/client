@@ -13,25 +13,31 @@ public class MatchingController : MonoBehaviour
     private const string matching_text = "매칭 중";
     private Action matchingEndCallback;
 
+    private Coroutine matchingCoroutine;
+    private Coroutine timeTextCoroutine;
+
     public void MatchingStart()
     {
         matchingWindow.gameObject.SetActive(true);
+        gameObject.GetComponent<MatchingTipController>().StartTip();
         NetworkService.Instance.Send(NetworkEvent.MATCH_START, "");
         loadingAnimation.Play();
-        StartCoroutine(MatchingTextAnimation());
-        StartCoroutine(MatchingTImeAnimation());
+        matchingCoroutine = StartCoroutine(MatchingTextAnimation());
+        timeTextCoroutine = StartCoroutine(MatchingTImeAnimation());
     }
 
     public void MatchingCancel()
     {
         NetworkService.Instance.Send(NetworkEvent.MATCH_CANCEL, "");
-        StopCoroutine(MatchingTextAnimation());
-        StopCoroutine(MatchingTImeAnimation());
+        StopCoroutine(matchingCoroutine);
+        StopCoroutine(timeTextCoroutine);
         matchingWindow.gameObject.SetActive(false);
     }
 
     public void onMatchingSuccess()
     {
+        StopCoroutine(matchingCoroutine);
+        StopCoroutine(timeTextCoroutine);
         machingText.SetText("매칭 되었습니다.!!");
     }
 
@@ -56,6 +62,7 @@ public class MatchingController : MonoBehaviour
         yield return null;
         while (true)
         {
+            yield return null;
             for (int i = 0; i < 4; i++)
             {
                 machingText.SetText(matching_text + new string('.', i));
@@ -73,6 +80,7 @@ public class MatchingController : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(1.0f);
+            yield return null;
             time += 1;
             SetTImeText(time);
         }
