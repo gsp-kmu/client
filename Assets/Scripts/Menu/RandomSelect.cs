@@ -28,7 +28,7 @@ public class RandomSelect : MonoBehaviour
     public GameObject gachabutton;
     public List<Vector3> cardpo = new List<Vector3>(); //카드 위치
 
-    public void Start()
+    public void OnEnable()
     {
         gachabutton.GetComponent<Button>().enabled = false;
         int id = 1;
