@@ -206,9 +206,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 996917133}
+      - m_Target: {fileID: 2072109394}
         m_TargetAssemblyTypeName: ButtonChangeScreen, Assembly-CSharp
-        m_MethodName: SceneChange
+        m_MethodName: ClickMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -256,52 +256,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 63583442}
   m_CullTransparentMesh: 1
---- !u!1 &106127040
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 106127042}
-  - component: {fileID: 106127041}
-  m_Layer: 0
-  m_Name: ClickForCardGatcha
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &106127041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 106127040}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1602502ec1f71d047a1c360dac9b99bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  url: http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000/savedeck
-  SceneToLoad: CardGachaScene
---- !u!4 &106127042
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 106127040}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 720, y: 1280, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &178663974
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,52 +587,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 420842113}
   m_CullTransparentMesh: 1
---- !u!1 &528067439
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 528067441}
-  - component: {fileID: 528067440}
-  m_Layer: 0
-  m_Name: ClickForMyCard
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &528067440
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 528067439}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1602502ec1f71d047a1c360dac9b99bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  url: http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000/savedeck
-  SceneToLoad: MyCardScene
---- !u!4 &528067441
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 528067439}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 720, y: 1280, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &892112097
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,6 +598,7 @@ GameObject:
   - component: {fileID: 892112100}
   - component: {fileID: 892112099}
   - component: {fileID: 892112098}
+  - component: {fileID: 892112101}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -771,6 +680,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &892112101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892112097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1 &918484904
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,52 +857,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 918484904}
   m_CullTransparentMesh: 1
---- !u!1 &996917132
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 996917134}
-  - component: {fileID: 996917133}
-  m_Layer: 0
-  m_Name: ClickForMain
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &996917133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 996917132}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1602502ec1f71d047a1c360dac9b99bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  url: http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000/savedeck
-  SceneToLoad: MainScene
---- !u!4 &996917134
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 996917132}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 720, y: 1280, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1088600886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1483,7 +1389,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 106127041}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ButtonChangeScreen, Assembly-CSharp
         m_MethodName: SceneChange
         m_Mode: 1
@@ -2186,43 +2092,43 @@ PrefabInstance:
     - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: deck.Array.data[10].cardImage
       value: 
-      objectReference: {fileID: -1447311128, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+      objectReference: {fileID: 975430238, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
     - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: deck.Array.data[11].cardImage
       value: 
-      objectReference: {fileID: -239725897, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+      objectReference: {fileID: 1207006645, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
     - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: deck.Array.data[12].cardImage
       value: 
-      objectReference: {fileID: 657567705, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+      objectReference: {fileID: -629485264, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
     - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: deck.Array.data[13].cardImage
       value: 
-      objectReference: {fileID: -367177690, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+      objectReference: {fileID: -367177690, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
     - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: deck.Array.data[14].cardImage
       value: 
-      objectReference: {fileID: -2055328141, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+      objectReference: {fileID: -750573246, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
     - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: deck.Array.data[15].cardImage
       value: 
-      objectReference: {fileID: 1841537504, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+      objectReference: {fileID: 1841537504, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
     - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: deck.Array.data[16].cardImage
       value: 
-      objectReference: {fileID: 1649945694, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+      objectReference: {fileID: 274962391, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
     - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: deck.Array.data[17].cardImage
       value: 
-      objectReference: {fileID: -77924794, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+      objectReference: {fileID: 167651401, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
     - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: deck.Array.data[18].cardImage
       value: 
-      objectReference: {fileID: 460223130, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+      objectReference: {fileID: 4052141, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
     - target: {fileID: 294138011208760205, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: deck.Array.data[19].cardImage
       value: 
-      objectReference: {fileID: 1646500545, guid: 292adb40a2f6bf24ba0ee87038459b78, type: 3}
+      objectReference: {fileID: 1646500545, guid: ec39f3815d9a27449bb9f9e98590c79c, type: 3}
     - target: {fileID: 4475820245103073246, guid: a5ed7c4dcac22dc4c82db78cbcc75e5b, type: 3}
       propertyPath: m_Name
       value: DeckManager
@@ -2375,9 +2281,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 528067440}
+      - m_Target: {fileID: 2072109394}
         m_TargetAssemblyTypeName: ButtonChangeScreen, Assembly-CSharp
-        m_MethodName: SceneChange
+        m_MethodName: ClickMyCardScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2745,6 +2651,52 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &2072109393
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2072109395}
+  - component: {fileID: 2072109394}
+  m_Layer: 0
+  m_Name: ButtonChangeScene
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2072109394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072109393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1602502ec1f71d047a1c360dac9b99bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  url: http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000/savedeck
+  SceneToLoad: 
+--- !u!4 &2072109395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072109393}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 626.939, y: 2691.3333, z: -27.017}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2145702384
 GameObject:
   m_ObjectHideFlags: 0
@@ -2828,9 +2780,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 106127041}
+      - m_Target: {fileID: 2072109394}
         m_TargetAssemblyTypeName: ButtonChangeScreen, Assembly-CSharp
-        m_MethodName: SceneChange
+        m_MethodName: ClickCardGarcha
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2884,8 +2836,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 892112100}
   - {fileID: 1273328197}
-  - {fileID: 106127042}
-  - {fileID: 996917134}
-  - {fileID: 528067441}
   - {fileID: 1950824351}
   - {fileID: 1088600888}
+  - {fileID: 2072109395}
