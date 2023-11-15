@@ -28,6 +28,7 @@ public class ResponseSendDeck
 {
     public int userId;
     public List<List<int>> deckList;
+    public List<string> nameList;
 }
 
 [System.Serializable]
@@ -35,6 +36,7 @@ public class ResponseGetDeck
 {
     public string msg;
     public List<List<int>> deckList;
+    public List<string> nameList;
 }
 public class CardDeck : MonoBehaviour
 {
@@ -51,8 +53,13 @@ public class CardDeck : MonoBehaviour
 
     public List<GameObject> allCardDeckCollect; // 카드들 넘버링해주기 위해 담은 카드 오브젝트 리스트
     public List<Button> deckButtons; // 덱 전환을 위한 버튼 리스트
+    public List<string> decknameList; // 덱 이름 리스트
+
     private int previousindex = 0;
     public Sprite[] sprites;
+    public Button renameDeckButton;
+    public Button renameCheckButton;
+    public GameObject RenameView;
     public List<int> reciveCardIndex = new List<int> { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9 };
     int num = 0; // 카드 순서기록용
 
@@ -74,12 +81,15 @@ public class CardDeck : MonoBehaviour
         CardDeck carddeck = this;
         int id = 1;
         List<List<int>> ran = new List<List<int>>();
+        List<string> deckl = new List<string>();
         ran = carddeck.allDecks;
+        deckl = carddeck.decknameList;
 
         ResponseSendDeck deck = new ResponseSendDeck
         {
             userId = id,
-            deckList = ran
+            deckList = ran,
+            nameList = deckl
         };
 
         string json = JsonConvert.SerializeObject(deck);
@@ -196,8 +206,8 @@ public class CardDeck : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             List<int> subList = new List<int>(new int[currentCollectionCards.Count]);
-            Debug.Log(string.Join("", subList));
-            Debug.Log(string.Join("", allDecks));
+            //Debug.Log(string.Join("", subList));
+            //Debug.Log(string.Join("", allDecks));
             subList = findState(allDecks[i], subList);
             allCardState.Add(subList);
         }
@@ -219,14 +229,25 @@ public class CardDeck : MonoBehaviour
             else
             {
                 setParentMyDeckCard(deckcard, allCardDeckCollect[i].name);
+                deckcard.transform.localScale = new Vector3(1f, 1f, 1f);
             }
         }
+
+        for(int i=0; i < decknameList.Count; i++)
+        {
+            deckButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = decknameList[i];
+        } 
         for (int i = 0; i < deckButtons.Count; i++)
         {
             int index = i;
             deckButtons[i].onClick.AddListener(() => SwitchDeck(index));
         }
+
+        renameDeckButton.onClick.AddListener(() => SetDeckName());
+        renameCheckButton.onClick.AddListener(() => SetDeckNameSuccess());
     }
+
+
 
     private GameObject generateCard(int i, int num)
     {
@@ -262,15 +283,29 @@ public class CardDeck : MonoBehaviour
 
     private void setParentMyDeckCard(GameObject deckcard, string i)
     {
-        if(i.Length == 2)
+        string k = i;
+        if (i.Length == 2)
         {
+            
             i = i[1].ToString();
         }
         GameObject cardin = GameObject.Find("card0/" + i);
         GameObject cardin2 = GameObject.Find("card1/" + i);
+
+        
         if (deckcard.transform.parent != cardin.transform && deckcard.transform.parent != cardin2.transform)
         {
-            deckcard.transform.localScale = new Vector3(1f, 1f, 1f);
+            if(cardin.transform.childCount != 0 && cardin2.transform.childCount != 0)
+            {
+                if (currentCardState[cardin.transform.GetChild(0).GetComponent<CardClick>().num] == 0)
+                {
+                    cardin.transform.GetChild(0).transform.SetParent(transform);
+                }
+                if (currentCardState[cardin2.transform.GetChild(0).GetComponent<CardClick>().num] == 0)
+                {
+                    cardin2.transform.GetChild(0).transform.SetParent(transform);
+                }
+            }   
             if (cardin.transform.childCount == 0)
             {
                 deckcard.transform.localScale = new Vector3(1f, 1f, 1f);
@@ -287,7 +322,7 @@ public class CardDeck : MonoBehaviour
             else
             {
                 deckcard.transform.localScale = new Vector3(1f, 1f, 1f);
-                Debug.Log(i + "못들어감" + cardin.transform.childCount);
+                Debug.Log(k + "못들어감" + cardin.transform.childCount);
                 Debug.Log(cardin.transform.name);
             }
         }
@@ -320,15 +355,29 @@ public class CardDeck : MonoBehaviour
             if (sublist[indeck] == 0)
             {
                 sublist[indeck] = 1;
-                Debug.Log("찾는숫자"+i+  " 인덱스:"+ indeck);
+                //Debug.Log("찾는숫자"+i+  " 인덱스:"+ indeck);
             }
             else
             {
                 sublist[currentCollectionCards.IndexOf(i - 1, indeck + 1)] = 1;
-                Debug.Log("찾는숫자" + i + " 인덱스:" + currentCollectionCards.IndexOf(i - 1, indeck + 1));
+                //Debug.Log("찾는숫자" + i + " 인덱스:" + currentCollectionCards.IndexOf(i - 1, indeck + 1));
             }
         }
         return sublist;
+    }
+
+    private void SetDeckName()
+    {
+        RenameView.gameObject.SetActive(true);
+        TMP_InputField inputfield = RenameView.gameObject.transform.Find("InputField").GetComponent<TMP_InputField>();
+        inputfield.text = decknameList[previousindex];
+    }
+
+    private void SetDeckNameSuccess()
+    {
+        decknameList[previousindex] = RenameView.gameObject.transform.Find("InputField/Text Area/InPutText").GetComponent<TextMeshProUGUI>().text;
+        deckButtons[previousindex].GetComponentInChildren<TextMeshProUGUI>().text = decknameList[previousindex];
+        RenameView.gameObject.SetActive(false);
     }
 
     IEnumerator DeckGet(string json)
@@ -356,6 +405,7 @@ public class CardDeck : MonoBehaviour
                 
                 Debug.Log(response.msg);
                 allDecks = response.deckList;
+                decknameList = response.nameList;
                 currentDeck = allDecks[0];
 
             }
