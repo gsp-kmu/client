@@ -11,7 +11,7 @@ public class Reaper : Card
     void Awake()
     {
         if (reaper_effect == null)
-            reaper_effect = Resources.Load<GameObject>("Prefebs/Effect/ReaperEffect");
+            reaper_effect = Resources.Load<GameObject>("Prefebs/Effect/Ingame/ReaperEffect");
         transform.name = "Reaper";
     }
 
@@ -31,7 +31,10 @@ public class Reaper : Card
                 int targetCard = 0;
                 if(card != null)
                     targetCard = card.transform.parent == controller.opponent_one ? 0 : 1;
-                SendServerMessage(GameController.GetInstance().playerID, (int)digit, 1, targetCard, 0);
+
+                int targetID = GameController.GetInstance().playerID == 0 ? 1 : 0;
+
+                SendServerMessage(GameController.GetInstance().playerID, (int)digit, targetID, targetCard, 0);
             }));
 
     }

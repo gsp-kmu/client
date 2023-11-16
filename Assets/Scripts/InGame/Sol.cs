@@ -27,7 +27,8 @@ public class Sol : Card
                 if (card != null)
                     target = card.transform.parent == controller.opponent_one ? 0 : 1;
 
-                SendServerMessage(controller.playerID, (int)digit, 1, target, 0);
+                int targetId = GameController.GetInstance().playerID == 0 ? 1 : 0;
+                SendServerMessage(controller.playerID, (int)digit, targetId, target, 0);
             }));
 
     }
@@ -46,6 +47,8 @@ public class Sol : Card
     {
         if (card == null)
             yield break;
+
+        SoundController.PlaySound("레오나대사");
 
         Material dissolve = Resources.Load<Material>("Shader/Dissolve");
         card.GetComponent<SpriteRenderer>().material = dissolve;

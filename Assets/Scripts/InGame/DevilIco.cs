@@ -29,7 +29,8 @@ public class DevilIco : Card
         else
             StartCoroutine(DevilIcoSkill(controller.player_ten_topCard, controller.opponent_ten.transform));
 
-        SendServerMessage(GameController.GetInstance().playerID, (int)digit, 0, 0, 0);
+        int targetId = GameController.GetInstance().playerID == 0 ? 1 : 0;
+        SendServerMessage(GameController.GetInstance().playerID, (int)digit, targetId, 0, 0);
     }
 
     public override void BattleCryOpponent(Digit digit, int target, Digit target_digit, int targetCardIndex)
@@ -46,6 +47,8 @@ public class DevilIco : Card
 
     public IEnumerator DevilIcoSkill(Card card, Transform target)
     {
+        SoundController.PlaySound("애니");
+
         yield return new WaitForSeconds(0.5f);
         card.transform.DOMove(target.position, 0.5f);
 

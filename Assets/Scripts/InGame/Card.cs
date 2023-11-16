@@ -56,7 +56,6 @@ public class Card : MonoBehaviour
         transform.DOLocalMove(Vector3.zero, 0.3f);
         transform.DOScale(Vector3.one * 2.2f, 0.3f);
 
-
         yield return new WaitForSeconds(0.3f);
         transform.DOScale(Vector3.one * 2f, 0.2f);
     }

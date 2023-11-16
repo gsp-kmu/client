@@ -26,6 +26,7 @@ public class Hacker : Card
 
         Card.deputy = this;
 
+        int targetId = controller.playerID == 0 ? 0 : 1;
 
         if (side_card != null)
         {
@@ -37,12 +38,14 @@ public class Hacker : Card
             }
             else
             {
-                SendServerMessage(controller.playerID, (int)digit, 0, 0, 0);
+                SendServerMessage(controller.playerID, (int)digit, targetId, 0, 0);
             }
 
         }
         else
-            SendServerMessage(controller.playerID, (int)digit, 0, 0, 0);
+        {
+            SendServerMessage(controller.playerID, (int)digit, targetId, 0, 0);
+        }
     }
 
     public override void BattleCryOpponent(Digit digit, int target, Digit target_digit, int targetCardIndex)

@@ -34,6 +34,8 @@ public class Necromancer : Card
 
     public IEnumerator NecromancerSkill(Digit digit)
     {
+        SoundController.PlaySound("벡스대사");
+
         GameController controller = GameController.GetInstance();
 
         Transform startPos = digit == Digit.One ? controller.player_one.transform : controller.player_ten.transform;
@@ -78,7 +80,7 @@ public class Necromancer : Card
 
         yield return new WaitForSeconds(0.5f);
 
-        Card selectCard;
+        Card selectCard = null;
         while (true)
         {
             yield return new WaitForSeconds(0);
@@ -88,21 +90,28 @@ public class Necromancer : Card
                 Vector3 mouse_point = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 mouse_point = new Vector3(mouse_point.x, mouse_point.y, 0);
 
-                Collider2D hit = Physics2D.OverlapPoint(mouse_point);
+                Collider2D[] hits = Physics2D.OverlapPointAll(mouse_point);
 
-                if (!hit)
+                foreach (Collider2D hit in hits)
+                {
+
+                    if (!hit)
+                        continue;
+
+                    if (hit.transform.parent != startPos)
+                        continue;
+
+                    if (hit.transform == startPos.GetChild(startPos.childCount - 1))
+                        continue;
+
+                    selectCard = hit.GetComponent<Card>();
+                    if (selectCard != null)
+                        break;
+                }
+                if (selectCard == null)
                     continue;
 
-                if (hit.transform.parent != startPos)
-                    continue;
-
-                if (hit.transform == startPos.GetChild(startPos.childCount - 1))
-                    continue;
-
-                selectCard = hit.GetComponent<Card>();
-
-                Debug.Log(selectCard.transform.GetSiblingIndex());
-                SendServerMessage(GameController.GetInstance().playerID, (int)digit, 0, 0, selectCard.transform.GetSiblingIndex());
+                SendServerMessage(GameController.GetInstance().playerID, (int)digit, GameController.GetInstance().playerID, (int)digit, selectCard.transform.GetSiblingIndex());
                 break;
             }
 
@@ -142,6 +151,7 @@ public class Necromancer : Card
     {
         if (targetCardIndex == -1)
             yield break;
+        SoundController.PlaySound("벡스대사");
 
         GameController controller = GameController.GetInstance();
         Transform start = targetDigit == Digit.One ? controller.opponent_one : controller.opponent_ten; 

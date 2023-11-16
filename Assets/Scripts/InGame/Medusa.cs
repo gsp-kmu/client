@@ -24,7 +24,7 @@ public class Medusa : Card
 
         StartCoroutine(Stun(transform));
 
-        SendServerMessage(GameController.GetInstance().playerID, (int)digit, 0, 0, 0);
+        SendServerMessage(GameController.GetInstance().playerID, (int)digit, GameController.GetInstance().playerID, 0, 0);
     }
     public override void BattleCryOpponent(Digit digit, int target, Digit target_digit, int targetCardIndex)
     {
@@ -35,6 +35,8 @@ public class Medusa : Card
 
     static IEnumerator Stun(Transform tf)
     {
+        SoundController.PlaySound("아칼리");
+
         yield return new WaitForSeconds(0.5f);
         GameObject effect_obj = Instantiate(effect, tf);
         Image effect_img = effect_obj.GetComponentInChildren<Image>();

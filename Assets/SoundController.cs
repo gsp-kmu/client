@@ -20,7 +20,7 @@ public class SoundController : MonoBehaviour
 
     public static void PlaySound(string s)
     {
-        instance.effect.clip = Resources.Load<AudioClip>("Sound/" + s);
+        instance.effect.clip = Resources.Load<AudioClip>("Sound/Ingame/" + s);
         instance.effect.Play();
     }
 }

@@ -23,7 +23,7 @@ public class Elf : Card
 
         GameController controller = GameController.GetInstance();
 
-        SendServerMessage(controller.playerID, (int)digit, 0, 0, 0);
+        SendServerMessage(controller.playerID, (int)digit, GameController.GetInstance().playerID, 0, 0);
 
         if (digit == Digit.Ten)
             StartCoroutine(Spawn(controller.player_ten.transform));
@@ -45,6 +45,7 @@ public class Elf : Card
 
     static IEnumerator Spawn(Transform pos)
     {
+        SoundController.PlaySound("이즈리얼");
         for (int i = 0; i < 10; i++)
         {
             GameObject effect = Instantiate(elf_effect[Random.Range(0, 3)], GameController.GetInstance().effect_ts);

@@ -100,6 +100,10 @@ public class GameController : MonoBehaviour
             Debug.Log("Matching Success");
         });
 
+        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_END, (string s) =>
+        {
+            NetworkService.Instance.Send(NetworkEvent.INGAME_CLIENT_READY, "");
+        });
 
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_INIT_ID, (int id) => {
             Debug.Log("ID : " + id.ToString());
