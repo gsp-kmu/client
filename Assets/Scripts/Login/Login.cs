@@ -20,6 +20,7 @@ public class Login : MonoBehaviour
     public TMP_InputField idField;
     public TMP_InputField passwordField;
     public NetworkService networkService;
+    public userData userData;
 
     public void LoginButtonClick()
     {
@@ -51,7 +52,7 @@ public class Login : MonoBehaviour
             if (request.responseCode == 200)
             {
                 Debug.Log("로그인 성공");
-                NetworkService.Instance.Login(id, MoveSceneMainMenu);
+                NetworkService.Instance.Login(id, MoveSceneMainMenu);;
             }
             else
             {
