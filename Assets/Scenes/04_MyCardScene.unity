@@ -6369,6 +6369,8 @@ MonoBehaviour:
   - {fileID: 1673518895}
   - {fileID: 778957540}
   decknameList: []
+  cardSound:
+  - {fileID: 8300000, guid: c629a5d03ba49a54bbba806b0f659905, type: 3}
   sprites: []
   renameDeckButton: {fileID: 420908799}
   renameCheckButton: {fileID: 519679678}

@@ -56,6 +56,7 @@ public class CardDeck : MonoBehaviour
     public List<string> decknameList; // µ¦ ÀÌ¸§ ¸®½ºÆ®
 
     private int previousindex = 0;
+    public AudioClip[] cardSound;
     public Sprite[] sprites;
     public Button renameDeckButton;
     public Button renameCheckButton;
@@ -65,7 +66,6 @@ public class CardDeck : MonoBehaviour
 
     void Start()
     {
-        SceneManager.sceneUnloaded += OnUnSceneloaded;
 
         int id = 1;
         RequestGetDeck deck = new RequestGetDeck
@@ -77,6 +77,7 @@ public class CardDeck : MonoBehaviour
     }
     private void OnUnSceneloaded(Scene scene)
     {
+        
         Debug.Log("zzz");
         CardDeck carddeck = this;
         int id = 1;
@@ -98,11 +99,6 @@ public class CardDeck : MonoBehaviour
         Debug.Log("ÄÚ·çÆ¾³¡");
     }
 
-    private void OnDestroy()
-    {
-        Debug.Log("¾À ¹Ù²ñ");
-        SceneManager.sceneUnloaded -= OnUnSceneloaded;
-    }
 
     IEnumerator DeckPost(string json)
     {
@@ -267,6 +263,9 @@ public class CardDeck : MonoBehaviour
         Image imageComponent = deckcard.AddComponent<Image>();
         imageComponent.sprite = sprites[i];
         deckcard.tag = i.ToString();
+
+        AudioSource audioSource = deckcard.AddComponent<AudioSource>();
+        audioSource.clip = cardSound[0];
 
         return deckcard;
     }
