@@ -25,7 +25,7 @@ namespace GSP
     {
         public const string title = "00_TitleScene";
         public const string login = "01_LoginScene";
-        public const string main = "98_MatchingScene";
+        public const string main = "02_MainScene";
         public const string ingame = "03_GameScene";
         public const string mycard = "04_MyCardScene";
         public const string garcha = "05_CardGachaScene";
