@@ -879,6 +879,50 @@ RectTransform:
   m_AnchoredPosition: {x: 12.5, y: 58.4}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &213689680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 213689681}
+  - component: {fileID: 213689682}
+  m_Layer: 0
+  m_Name: UserDataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &213689681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213689680}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 734.8066, y: 1249.8622, z: -23.732698}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &213689682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 213689680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c7c5a87fb6f10e41a17bc899ce2cd2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &224449538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1113,11 +1157,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b964b70f7041454db5725f3c387ae30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loginUrl: http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000/login
   canvasManager: {fileID: 2088181764}
   idField: {fileID: 66240337}
   passwordField: {fileID: 2027789504}
   networkService: {fileID: 3868352797579431944, guid: 5cd10eb48b7ae574da6b9c0cb70f9036, type: 3}
+  userData: {fileID: 0}
 --- !u!114 &290099213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4067,7 +4111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31a25eec52b749c498a2a9a5aa5d65a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  registerUrl: http://localhost:8000/register
   idField: {fileID: 155602404}
   passwordField: {fileID: 829051455}
   canvasManager: {fileID: 2088181764}
@@ -4448,3 +4491,4 @@ SceneRoots:
   - {fileID: 1079627925}
   - {fileID: 37152105}
   - {fileID: 2088181766}
+  - {fileID: 213689681}
