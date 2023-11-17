@@ -28,6 +28,7 @@ public class CardClick : MonoBehaviour
                 // 자식이 없을때(카드가 자리에 없을때)
                 if (cardin.transform.childCount == 0)
                 {
+                    eventData.pointerClick.GetComponent<AudioSource>().Play();
                     eventData.pointerClick.transform.localScale = new Vector3(2f, 2f, 2f);
                     eventData.pointerClick.transform.SetParent(cardin.transform);
                     eventData.pointerClick.transform.position = cardin.transform.position;
@@ -37,6 +38,7 @@ public class CardClick : MonoBehaviour
                 }
                 else if (cardin2.transform.childCount == 0)
                 {
+                    eventData.pointerClick.GetComponent<AudioSource>().Play();
                     eventData.pointerClick.transform.localScale = new Vector3(2f, 2f, 2f);
                     eventData.pointerClick.transform.SetParent(cardin2.transform);
                     eventData.pointerClick.transform.position = cardin2.transform.position;
@@ -52,6 +54,7 @@ public class CardClick : MonoBehaviour
                 // 자식이 없을때(카드가 자리에 없을때)
                 if (cardin.transform.childCount == 0)
                 {
+                    eventData.pointerClick.GetComponent<AudioSource>().Play();
                     eventData.pointerClick.transform.localScale = new Vector3(2f, 2f, 2f);
                     eventData.pointerClick.transform.SetParent(cardin.transform);
                     eventData.pointerClick.transform.position = cardin.transform.position;
@@ -61,6 +64,7 @@ public class CardClick : MonoBehaviour
                 }
                 else if (cardin2.transform.childCount == 0)
                 {
+                    eventData.pointerClick.GetComponent<AudioSource>().Play();
                     eventData.pointerClick.transform.localScale = new Vector3(2f, 2f, 2f);
                     eventData.pointerClick.transform.SetParent(cardin2.transform);
                     eventData.pointerClick.transform.position = cardin2.transform.position;
@@ -73,6 +77,7 @@ public class CardClick : MonoBehaviour
         }
         else
         {
+            eventData.pointerClick.GetComponent<AudioSource>().Play();
             GameObject allcard = GameObject.FindGameObjectWithTag("AllCard");
             eventData.pointerClick.transform.SetParent(allcard.transform);
             eventData.pointerClick.transform.localScale = new Vector3(3f, 3f, 3f);

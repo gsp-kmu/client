@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class ButtonChangeScreen : MonoBehaviour
 {
+    public CardDeck carddeck;
     public void ClickMyCardScene()
     {
         Debug.Log("hi");
@@ -21,8 +22,6 @@ public class ButtonChangeScreen : MonoBehaviour
     {
         SceneManager.LoadScene(GSP.Scene.garcha);
     }
-
-
 
 
 }

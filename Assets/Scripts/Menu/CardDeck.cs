@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
@@ -28,6 +28,7 @@ public class ResponseSendDeck
 {
     public int userId;
     public List<List<int>> deckList;
+    public List<string> nameList;
 }
 
 [System.Serializable]
@@ -35,30 +36,36 @@ public class ResponseGetDeck
 {
     public string msg;
     public List<List<int>> deckList;
+    public List<string> nameList;
 }
 public class CardDeck : MonoBehaviour
 {
     private string getDeckUrl = GSP.http.getDeck;
     private string getCardUrl = GSP.http.getCard;
 
-    public List<List<int>> allDecks; // ¿©·¯ µ¦À» ÀúÀåÇÏ´Â ¸®½ºÆ®ÀÇ ¸®½ºÆ®
-    public List<List<int>> allCardState; // ¸ğµçÄ«µå »óÅÂ
+    public List<List<int>> allDecks; // ì—¬ëŸ¬ ë±ì„ ì €ì¥í•˜ëŠ” ë¦¬ìŠ¤íŠ¸ì˜ ë¦¬ìŠ¤íŠ¸
+    public List<List<int>> allCardState; // ëª¨ë“ ì¹´ë“œ ìƒíƒœ
 
-    public List<int> currentDeck; // ÇöÀç È°¼ºÈ­µÈ µ¦
-    public List<int> currentCollectionCards; // ÇöÀç ¸ğµç Ä«µå
-    public List<int> currentCardState; //ÇöÀç Ä«µå »óÅÂ
+    public List<int> currentDeck; // í˜„ì¬ í™œì„±í™”ëœ ë±
+    public List<int> currentCollectionCards; // í˜„ì¬ ëª¨ë“  ì¹´ë“œ
+    public List<int> currentCardState; //í˜„ì¬ ì¹´ë“œ ìƒíƒœ
 
 
-    public List<GameObject> allCardDeckCollect; // Ä«µåµé ³Ñ¹ö¸µÇØÁÖ±â À§ÇØ ´ãÀº Ä«µå ¿ÀºêÁ§Æ® ¸®½ºÆ®
-    public List<Button> deckButtons; // µ¦ ÀüÈ¯À» À§ÇÑ ¹öÆ° ¸®½ºÆ®
+    public List<GameObject> allCardDeckCollect; // ì¹´ë“œë“¤ ë„˜ë²„ë§í•´ì£¼ê¸° ìœ„í•´ ë‹´ì€ ì¹´ë“œ ì˜¤ë¸Œì íŠ¸ ë¦¬ìŠ¤íŠ¸
+    public List<Button> deckButtons; // ë± ì „í™˜ì„ ìœ„í•œ ë²„íŠ¼ ë¦¬ìŠ¤íŠ¸
+    public List<string> decknameList; // ë± ì´ë¦„ ë¦¬ìŠ¤íŠ¸
+
     private int previousindex = 0;
+    public AudioClip[] cardSound;
     public Sprite[] sprites;
+    public Button renameDeckButton;
+    public Button renameCheckButton;
+    public GameObject RenameView;
     public List<int> reciveCardIndex = new List<int> { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9 };
-    int num = 0; // Ä«µå ¼ø¼­±â·Ï¿ë
+    int num = 0; // ì¹´ë“œ ìˆœì„œê¸°ë¡ìš©
 
     void Start()
     {
-        SceneManager.sceneUnloaded += OnUnSceneloaded;
 
         int id = 1;
         RequestGetDeck deck = new RequestGetDeck
@@ -68,35 +75,34 @@ public class CardDeck : MonoBehaviour
         string json = JsonUtility.ToJson(deck);
         StartCoroutine(DeckAndCardGet(json));
     }
-    private void OnUnSceneloaded(Scene scene)
+    public void OnUnSceneloaded()
     {
+        
         Debug.Log("zzz");
         CardDeck carddeck = this;
         int id = 1;
         List<List<int>> ran = new List<List<int>>();
+        List<string> deckl = new List<string>();
         ran = carddeck.allDecks;
+        deckl = carddeck.decknameList;
 
         ResponseSendDeck deck = new ResponseSendDeck
         {
             userId = id,
-            deckList = ran
+            deckList = ran,
+            nameList = deckl
         };
 
         string json = JsonConvert.SerializeObject(deck);
         Debug.Log("json");
         StartCoroutine(DeckPost(json));
-        Debug.Log("ÄÚ·çÆ¾³¡");
+        Debug.Log("ì½”ë£¨í‹´ë");
     }
 
-    private void OnDestroy()
-    {
-        Debug.Log("¾À ¹Ù²ñ");
-        SceneManager.sceneUnloaded -= OnUnSceneloaded;
-    }
 
     IEnumerator DeckPost(string json)
     {
-        Debug.Log("ÄÚ·çÆ¾½ÃÀÛ");
+        Debug.Log("ì½”ë£¨í‹´ì‹œì‘");
         string url = GSP.http.saveDeck;
         using (UnityWebRequest request = UnityWebRequest.PostWwwForm(url, json))
         {
@@ -109,10 +115,11 @@ public class CardDeck : MonoBehaviour
             yield return request.SendWebRequest();
 
             Debug.Log(request.responseCode);
+            Debug.Log(json);
             if (request.responseCode == 200)
             {
                 string responseJson = request.downloadHandler.text;
-                Debug.Log("ÀüºÎ ¼º°ø");
+                Debug.Log("ì „ë¶€ ì„±ê³µ");
 
                 Debug.Log(responseJson);
 
@@ -120,17 +127,17 @@ public class CardDeck : MonoBehaviour
             }
             else if (request.responseCode == 400)
             {
-                Debug.Log("µ¦ÀÌ ¸ğÀß¶ó¼­ ÀÏºÎ¸¸ ¾÷µ¥ÀÌÆ®");
+                Debug.Log("ë±ì´ ëª¨ì˜ë¼ì„œ ì¼ë¶€ë§Œ ì—…ë°ì´íŠ¸");
             }
 
             else if (request.responseCode == 401)
             {
-                Debug.Log("½ÇÆĞ");
+                Debug.Log("ì‹¤íŒ¨");
             }
 
             else if (request.responseCode == 402)
             {
-                Debug.Log("json¿À·ù");
+                Debug.Log("jsonì˜¤ë¥˜");
             }
         }
     }
@@ -140,23 +147,23 @@ public class CardDeck : MonoBehaviour
         yield return StartCoroutine(DeckGet(json));
         yield return StartCoroutine(CardGet(json));
 
-        // µÎ ÄÚ·çÆ¾ÀÌ ¿Ï·áµÈ ÈÄ¿¡ ½ÇÇàÇÒ ÇÔ¼ö
+        // ë‘ ì½”ë£¨í‹´ì´ ì™„ë£Œëœ í›„ì— ì‹¤í–‰í•  í•¨ìˆ˜
         UpdateAllCardsUI();
-        Debug.Log("UpdateAllCardsUI ¼º°ø");
+        Debug.Log("UpdateAllCardsUI ì„±ê³µ");
     }
 
-    // µ¦ ÀüÈ¯ ÀÌº¥Æ® ÇÚµé·¯
+    // ë± ì „í™˜ ì´ë²¤íŠ¸ í•¸ë“¤ëŸ¬
     private void SwitchDeck(int deckIndex)
     {
         if (deckIndex >= 0 && deckIndex < deckButtons.Count)
         {
 
             deckButtons[previousindex].GetComponentInChildren<TextMeshProUGUI>().color = Color.gray;
-            // ÀÌÀü ¸®½ºÆ®¸¦ º¹»çÇÏ¿© »õ·Î¿î ¸®½ºÆ®¸¦ »ı¼º
+            // ì´ì „ ë¦¬ìŠ¤íŠ¸ë¥¼ ë³µì‚¬í•˜ì—¬ ìƒˆë¡œìš´ ë¦¬ìŠ¤íŠ¸ë¥¼ ìƒì„±
             List<int> newCardState = new List<int>(currentCardState);
             List<int> newCardDeck = new List<int>(currentDeck);
 
-            // ÀÌÀü ¸®½ºÆ®¿¡ »õ·Î¿î ¸®½ºÆ®¸¦ ÇÒ´ç
+            // ì´ì „ ë¦¬ìŠ¤íŠ¸ì— ìƒˆë¡œìš´ ë¦¬ìŠ¤íŠ¸ë¥¼ í• ë‹¹
             allCardState[previousindex] = newCardState;
             allDecks[previousindex] = newCardDeck;
 
@@ -168,7 +175,7 @@ public class CardDeck : MonoBehaviour
         }
         else
         {
-            Debug.LogError("À¯È¿ÇÏÁö ¾ÊÀº µ¦ ÀÎµ¦½ºÀÔ´Ï´Ù.");
+            Debug.LogError("ìœ íš¨í•˜ì§€ ì•Šì€ ë± ì¸ë±ìŠ¤ì…ë‹ˆë‹¤.");
         }
 
 
@@ -181,11 +188,11 @@ public class CardDeck : MonoBehaviour
         sprites = Resources.LoadAll<Sprite>("AllCard");
         if (sprites.Length > 0)
         {
-            // ¿øÇÏ´Â ½ºÇÁ¶óÀÌÆ®¸¦ »ç¿ëÇÒ ¼ö ÀÖÀ½
+            // ì›í•˜ëŠ” ìŠ¤í”„ë¼ì´íŠ¸ë¥¼ ì‚¬ìš©í•  ìˆ˜ ìˆìŒ
         }
         else
         {
-            Debug.LogError("½ºÇÁ¶óÀÌÆ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogError("ìŠ¤í”„ë¼ì´íŠ¸ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
         }
         for (int i = 0; i < currentCollectionCards.Count; i++)
         {
@@ -196,8 +203,8 @@ public class CardDeck : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             List<int> subList = new List<int>(new int[currentCollectionCards.Count]);
-            Debug.Log(string.Join("", subList));
-            Debug.Log(string.Join("", allDecks));
+            //Debug.Log(string.Join("", subList));
+            //Debug.Log(string.Join("", allDecks));
             subList = findState(allDecks[i], subList);
             allCardState.Add(subList);
         }
@@ -219,14 +226,25 @@ public class CardDeck : MonoBehaviour
             else
             {
                 setParentMyDeckCard(deckcard, allCardDeckCollect[i].name);
+                deckcard.transform.localScale = new Vector3(1f, 1f, 1f);
             }
         }
+
+        for(int i=0; i < decknameList.Count; i++)
+        {
+            deckButtons[i].GetComponentInChildren<TextMeshProUGUI>().text = decknameList[i];
+        } 
         for (int i = 0; i < deckButtons.Count; i++)
         {
             int index = i;
             deckButtons[i].onClick.AddListener(() => SwitchDeck(index));
         }
+
+        renameDeckButton.onClick.AddListener(() => SetDeckName());
+        renameCheckButton.onClick.AddListener(() => SetDeckNameSuccess());
     }
+
+
 
     private GameObject generateCard(int i, int num)
     {
@@ -236,16 +254,19 @@ public class CardDeck : MonoBehaviour
         rectTransform.localScale = new Vector3(3f, 3f, 3f);
         rectTransform.pivot = new Vector2(0f, 1f);
 
-        // CanvasRenderer ÄÄÆ÷³ÍÆ® Ãß°¡ (UI ¿ÀºêÁ§Æ®¿¡ ÇÊ¿äÇÑ ÄÄÆ÷³ÍÆ®)
+        // CanvasRenderer ì»´í¬ë„ŒíŠ¸ ì¶”ê°€ (UI ì˜¤ë¸Œì íŠ¸ì— í•„ìš”í•œ ì»´í¬ë„ŒíŠ¸)
         CanvasRenderer canvasRenderer = deckcard.AddComponent<CanvasRenderer>();
 
         CardClick cardclick = deckcard.AddComponent<CardClick>();
         cardclick.num = num;
 
-        // Image ÄÄÆ÷³ÍÆ® Ãß°¡
+        // Image ì»´í¬ë„ŒíŠ¸ ì¶”ê°€
         Image imageComponent = deckcard.AddComponent<Image>();
         imageComponent.sprite = sprites[i];
         deckcard.tag = i.ToString();
+
+        AudioSource audioSource = deckcard.AddComponent<AudioSource>();
+        audioSource.clip = cardSound[0];
 
         return deckcard;
     }
@@ -262,15 +283,29 @@ public class CardDeck : MonoBehaviour
 
     private void setParentMyDeckCard(GameObject deckcard, string i)
     {
-        if(i.Length == 2)
+        string k = i;
+        if (i.Length == 2)
         {
+            
             i = i[1].ToString();
         }
         GameObject cardin = GameObject.Find("card0/" + i);
         GameObject cardin2 = GameObject.Find("card1/" + i);
+
+        
         if (deckcard.transform.parent != cardin.transform && deckcard.transform.parent != cardin2.transform)
         {
-            deckcard.transform.localScale = new Vector3(1f, 1f, 1f);
+            if(cardin.transform.childCount != 0 && cardin2.transform.childCount != 0)
+            {
+                if (currentCardState[cardin.transform.GetChild(0).GetComponent<CardClick>().num] == 0)
+                {
+                    cardin.transform.GetChild(0).transform.SetParent(transform);
+                }
+                if (currentCardState[cardin2.transform.GetChild(0).GetComponent<CardClick>().num] == 0)
+                {
+                    cardin2.transform.GetChild(0).transform.SetParent(transform);
+                }
+            }   
             if (cardin.transform.childCount == 0)
             {
                 deckcard.transform.localScale = new Vector3(1f, 1f, 1f);
@@ -287,7 +322,7 @@ public class CardDeck : MonoBehaviour
             else
             {
                 deckcard.transform.localScale = new Vector3(1f, 1f, 1f);
-                Debug.Log(i + "¸øµé¾î°¨" + cardin.transform.childCount);
+                Debug.Log(k + "ëª»ë“¤ì–´ê°" + cardin.transform.childCount);
                 Debug.Log(cardin.transform.name);
             }
         }
@@ -320,15 +355,29 @@ public class CardDeck : MonoBehaviour
             if (sublist[indeck] == 0)
             {
                 sublist[indeck] = 1;
-                Debug.Log("Ã£´Â¼ıÀÚ"+i+  " ÀÎµ¦½º:"+ indeck);
+                //Debug.Log("ì°¾ëŠ”ìˆ«ì"+i+  " ì¸ë±ìŠ¤:"+ indeck);
             }
             else
             {
                 sublist[currentCollectionCards.IndexOf(i - 1, indeck + 1)] = 1;
-                Debug.Log("Ã£´Â¼ıÀÚ" + i + " ÀÎµ¦½º:" + currentCollectionCards.IndexOf(i - 1, indeck + 1));
+                //Debug.Log("ì°¾ëŠ”ìˆ«ì" + i + " ì¸ë±ìŠ¤:" + currentCollectionCards.IndexOf(i - 1, indeck + 1));
             }
         }
         return sublist;
+    }
+
+    private void SetDeckName()
+    {
+        RenameView.gameObject.SetActive(true);
+        TMP_InputField inputfield = RenameView.gameObject.transform.Find("InputField").GetComponent<TMP_InputField>();
+        inputfield.text = decknameList[previousindex];
+    }
+
+    private void SetDeckNameSuccess()
+    {
+        decknameList[previousindex] = RenameView.gameObject.transform.Find("InputField/Text Area/InPutText").GetComponent<TextMeshProUGUI>().text;
+        deckButtons[previousindex].GetComponentInChildren<TextMeshProUGUI>().text = decknameList[previousindex];
+        RenameView.gameObject.SetActive(false);
     }
 
     IEnumerator DeckGet(string json)
@@ -348,7 +397,7 @@ public class CardDeck : MonoBehaviour
             if (request.responseCode == 200)
             {
                 string responseJson = request.downloadHandler.text;
-                Debug.Log("µ¦ ¹Ş¾Æ¿À±â ¼º°ø");
+                Debug.Log("ë± ë°›ì•„ì˜¤ê¸° ì„±ê³µ");
 
                 Debug.Log(responseJson);
                 ResponseGetDeck response = JsonConvert.DeserializeObject<ResponseGetDeck>(responseJson);
@@ -356,12 +405,13 @@ public class CardDeck : MonoBehaviour
                 
                 Debug.Log(response.msg);
                 allDecks = response.deckList;
+                decknameList = response.nameList;
                 currentDeck = allDecks[0];
 
             }
             else if (request.responseCode == 400)
             {
-                Debug.Log("µ¦ ¹Ş¾Æ¿À±â ½ÇÆĞ");
+                Debug.Log("ë± ë°›ì•„ì˜¤ê¸° ì‹¤íŒ¨");
             }
         }
         yield return null;
@@ -384,7 +434,7 @@ public class CardDeck : MonoBehaviour
             if (request.responseCode == 200)
             {
                 string responseJson = request.downloadHandler.text;
-                Debug.Log("Ä«µå ¹Ş¾Æ¿À±â ¼º°ø");
+                Debug.Log("ì¹´ë“œ ë°›ì•„ì˜¤ê¸° ì„±ê³µ");
 
                 Debug.Log(responseJson);
                 ResponseGetCard response = JsonConvert.DeserializeObject<ResponseGetCard>(responseJson);
@@ -397,7 +447,7 @@ public class CardDeck : MonoBehaviour
             }
             else if (request.responseCode == 400)
             {
-                Debug.Log("Ä«µå ¹Ş¾Æ¿À±â ½ÇÆĞ");
+                Debug.Log("ì¹´ë“œ ë°›ì•„ì˜¤ê¸° ì‹¤íŒ¨");
             }
         }
         yield return null;
