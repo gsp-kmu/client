@@ -24,7 +24,8 @@ public class FallenAngle : Card
 
         StartCoroutine(FallenAngelSkill(GameController.GetInstance().opponent_ten_topCard, GameController.GetInstance().opponent_one_topCard));
 
-        SendServerMessage(GameController.GetInstance().playerID, (int)digit, 0, 0, 0);
+        int targetId = GameController.GetInstance().playerID == 0 ? 1 : 0;
+        SendServerMessage(GameController.GetInstance().playerID, (int)digit, targetId, 0, 0);
     }
 
     public override void BattleCryOpponent(Digit digit, int target, Digit target_digit, int targetCardIndex)
@@ -40,6 +41,8 @@ public class FallenAngle : Card
         {
             yield break;
         }
+
+        SoundController.PlaySound("jinz");
 
         GameController controller = GameController.GetInstance();
 

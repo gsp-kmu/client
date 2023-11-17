@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    public UIManager instance;
-    public UIManager GetInstance() { return instance; }
+    public static UIManager instance;
+    public static UIManager GetInstance() { return instance; }
 
-    public Text turn_font;
+    public TextMeshProUGUI turn_font;
 
     public bool pause = false;
     public GameObject pause_ui;
@@ -22,9 +24,19 @@ public class UIManager : MonoBehaviour
     public bool vibration = true;
     public Image vibration_icon;
 
+    public GameObject result;
+    public TextMeshProUGUI game_result;
+    public TextMeshProUGUI myScore;
+    public TextMeshProUGUI yourScore;
+
     public void Awake()
     {
         instance = this;
+    }
+
+    public void Update()
+    {
+        ChangeMenuScene();
     }
 
     public void UpdateTurn()
@@ -34,7 +46,7 @@ public class UIManager : MonoBehaviour
 
     public void Surrender()
     {
-
+        NetworkService.Instance.Send(NetworkEvent.INGAME_SURRENDER, "");
     }
 
     public void MusicButton(bool state)
@@ -68,5 +80,71 @@ public class UIManager : MonoBehaviour
     {
         pause = false;
         pause_ui.SetActive(pause);
+    }
+
+    public void Win()
+    {
+        Debug.Log("win");
+        result.SetActive(true);
+        game_result.text = "Win";
+
+        int score = 0;
+        Card ten_card = GameController.GetInstance().player_ten_topCard;
+        if (ten_card)
+            score += ten_card.num * 10;
+        Card one_card = GameController.GetInstance().player_one_topCard;
+        if (one_card)
+            score += one_card.num;
+
+        myScore.text = score.ToString();
+
+        score = 0;
+        Card o_ten_card = GameController.GetInstance().opponent_ten_topCard;
+        if (o_ten_card)
+            score += ten_card.num * 10;
+        Card o_one_card = GameController.GetInstance().opponent_one_topCard;
+        if (o_one_card)
+            score += one_card.num;
+
+        yourScore.text = score.ToString();
+
+    }
+
+    public void Lose()
+    {
+        Debug.Log("Lose");
+        result.SetActive(true);
+        game_result.text = "Loss";
+
+        int score = 0;
+        Card ten_card = GameController.GetInstance().player_ten_topCard;
+        if (ten_card)
+            score += ten_card.num * 10;
+        Card one_card = GameController.GetInstance().player_one_topCard;
+        if (one_card)
+            score += one_card.num;
+
+        myScore.text = score.ToString();
+
+        score = 0;
+        Card o_ten_card = GameController.GetInstance().opponent_ten_topCard;
+        if (o_ten_card)
+            score += ten_card.num * 10;
+        Card o_one_card = GameController.GetInstance().opponent_one_topCard;
+        if (o_one_card)
+            score += one_card.num;
+
+        yourScore.text = score.ToString();
+    }
+
+    void ChangeMenuScene()
+    {
+        if (result.active)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                SceneManager.LoadScene("02_MainScene");
+            }
+        }
     }
 }

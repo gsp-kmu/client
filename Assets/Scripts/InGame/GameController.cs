@@ -34,8 +34,9 @@ public class GameController : MonoBehaviour
 
     public int playerID = 0;
 
-    public Card player_one_topCard {
-        get 
+    public Card player_one_topCard
+    {
+        get
         {
             if (player_one.childCount == 0)
                 return null;
@@ -45,7 +46,7 @@ public class GameController : MonoBehaviour
     }
     public Card player_ten_topCard
     {
-        get 
+        get
         {
             if (player_ten.childCount == 0)
                 return null;
@@ -77,6 +78,8 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         instance = this;
+        NetworkService.Instance.Login("A");
+
     }
 
     void Update()
@@ -95,6 +98,20 @@ public class GameController : MonoBehaviour
         NetworkService.Instance.AddEvent(NetworkEvent.MATCH_SUCCESS, (string s) =>
         {
             Debug.Log("Matching Success");
+
+            NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_WIN, (string s) =>
+            {
+                UIManager.instance.Win();
+            });
+            NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_LOSE, (string s) =>
+            {
+                UIManager.instance.Lose();
+            });
+        });
+
+        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_END, (string s) =>
+        {
+            NetworkService.Instance.Send(NetworkEvent.INGAME_CLIENT_READY, "");
         });
 
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_INIT_ID, (int id) => {
@@ -105,7 +122,16 @@ public class GameController : MonoBehaviour
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TURN, (Data.InGameTurn turn) =>
         {
             myTurn = turn.turn == "1" ? true : false;
+            this.turn += 1;
+            UIManager.GetInstance().UpdateTurn();
             Debug.Log(turn.turn == "1" ? "내턴" : "상대방 턴");
+
+            if (turn.turn != "1")
+            {
+                GameObject opponent_card = Instantiate(Resources.Load<GameObject>("Prefebs/OpponentCard"));
+                opponent_card.transform.position = new Vector3(0, 100, 0);
+                opponent_card.transform.parent = opponent_hand;
+            }
         });
 
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_FIRST_CARD, (FirstCard cards) =>
@@ -128,25 +154,42 @@ public class GameController : MonoBehaviour
         mouse_point = new Vector3(mouse_point.x, mouse_point.y, 0);
 
         //마우스 클릭시 카드를 들기
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             if (!myTurn)
                 return;
 
             Collider2D hit = Physics2D.OverlapPoint(mouse_point);
 
-            if(!hit)
+            if (!hit)
                 return;
 
             if (player_hand.transform != hit.transform.parent)
                 return;
-            
+
             select_card = hit.GetComponent<Card>();
+
+            DevilIco dev1 = null;
+            DevilIco dev2 = null;
+
+            if (player_one_topCard)
+                dev1 = player_one_topCard.GetComponent<DevilIco>();
+            if (player_ten_topCard)
+                dev2 = player_ten_topCard.GetComponent<DevilIco>();
+
+
+            if ((dev1 != null || dev2 != null) && player_hand.transform.childCount - 1 != select_card.transform.GetSiblingIndex())
+            {
+                select_card = null;
+                return;
+            }
+
 
             //되돌아갈 인덱스 설정
             select_card_hand_idx = select_card.transform.GetSiblingIndex();
 
             select_card.transform.parent = transform;
+            select_card.GetComponent<SpriteRenderer>().sortingOrder = 10005;
 
             //select_card 선택 타이밍 위치 저장 (카드 확대 하기 위함)
             click_out = false;
@@ -160,12 +203,13 @@ public class GameController : MonoBehaviour
                 return;
 
             select_card.transform.localScale = Vector3.one;
+            select_card.GetComponent<SpriteRenderer>().sortingOrder = 10000;
 
             Collider2D[] hits = Physics2D.OverlapPointAll(mouse_point);
 
             foreach (Collider2D hit in hits)
             {
-                if(hit.transform == player_one || hit.transform == player_ten)
+                if (hit.transform == player_one || hit.transform == player_ten)
                 {
                     int cardIndex = select_card.index;
                     player_hand.cards.RemoveAt(cardIndex); // hyeonseo;
@@ -192,7 +236,7 @@ public class GameController : MonoBehaviour
                 click_out = true;
 
             if (Time.time - click_time > 0.5f && !click_out) //카드 확대
-            { 
+            {
                 select_card.transform.position = Vector3.zero;
                 select_card.transform.localScale = Vector3.one * 5;
             }
@@ -211,7 +255,8 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < opponent_hand.childCount; i++)
         {
             Transform child = opponent_hand.GetChild(i);
-            child.transform.localPosition = Vector3.Lerp(child.transform.localPosition, new Vector3(i * 2 - 1, 0, 0), Time.deltaTime * 10);
+            child.transform.localPosition = Vector3.Lerp(child.transform.localPosition, new Vector3(i * 10, 0, 0), Time.deltaTime * 10);
+            child.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
 
@@ -220,7 +265,7 @@ public class GameController : MonoBehaviour
         Debug.Log("Draw card id : " + card_id.ToString());
         GameObject resources = Resources.Load<GameObject>("Prefebs/Card/" + card_id.ToString());
 
-        if(resources == null)
+        if (resources == null)
             resources = Resources.Load<GameObject>("Prefebs/Card/9");
         GameObject card = Instantiate(resources);
         player_hand.cards.Add(card.GetComponent<Card>());
@@ -312,7 +357,7 @@ public class GameController : MonoBehaviour
     //모든 필드 카드 순서 정렬
     public void FieldsCardOrganize()
     {
-        foreach(Transform field in new List<Transform>() { player_one,
+        foreach (Transform field in new List<Transform>() { player_one,
                                                            player_ten,
                                                            opponent_one,
                                                            opponent_ten,})
@@ -327,36 +372,34 @@ public class GameController : MonoBehaviour
         if (id == playerID)
             yield break;
 
-        Debug.Log("Play card id " + card_id.ToString());
+        Debug.Log("Play card id : " + card_id.ToString() + " target_digit : " + target_digit.ToString() + " targetCardIndex : " + targetCardIndex.ToString());
+
+
+        int val = UnityEngine.Random.Range(0, opponent_hand.childCount);
+        Transform select_card = opponent_hand.GetChild(val);
+        select_card.parent = digit == 0 ? opponent_one : opponent_ten;
+        select_card.DOLocalMove(Vector3.zero, 0.5f);
+        select_card.DOScale(Vector3.one * 2.2f, 0.5f);
 
         GameObject card = Instantiate(Resources.Load<GameObject>("Prefebs/Card/" + card_id.ToString()));
-        card.transform.parent = opponent_hand;
-        card.transform.localPosition = Vector3.zero;
-
-        card.transform.parent = digit == 0 ? opponent_one : opponent_ten;
-
-        card.transform.DOLocalMove(Vector3.zero, 0.5f);
-        card.transform.DOScale(Vector3.one * 2.2f, 0.5f);
+        card.transform.localScale = Vector3.zero;
+        select_card.GetComponent<SpriteRenderer>().sprite = card.GetComponent<SpriteRenderer>().sprite;
 
         yield return new WaitForSeconds(0.5f);
 
-        card.transform.DOScale(Vector3.one * 2.0f, 0.2f);
+        select_card.transform.DOScale(Vector3.one * 2.0f, 0.2f);
 
         yield return new WaitForSeconds(0.2f);
 
+        Destroy(select_card.gameObject);
+
+        card.transform.parent = digit == 0 ? opponent_one : opponent_ten;
+        card.transform.localPosition = Vector3.zero;
+        card.transform.localScale = Vector3.one * 2;
         FieldsCardOrganize();
 
         card.GetComponent<Card>().BattleCryOpponent((Digit)digit, target, (Digit)target_digit, targetCardIndex);
 
         yield return new WaitForSeconds(0);
-    }
-
-
-
-
-    ////// 서렌 서렌 서렌
-    public void Surrender()
-    {
-        NetworkService.Instance.Send(NetworkEvent.INGAME_SURRENDER, "");
     }
 }
