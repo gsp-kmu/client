@@ -34,7 +34,7 @@ public class Necromancer : Card
 
     public IEnumerator NecromancerSkill(Digit digit)
     {
-        SoundController.PlaySound("벡스대사");
+        SoundController.PlaySound("bex");
 
         GameController controller = GameController.GetInstance();
 
@@ -151,6 +151,8 @@ public class Necromancer : Card
     {
         if (targetCardIndex == -1)
             yield break;
+
+
         SoundController.PlaySound("bex");
 
         GameController controller = GameController.GetInstance();

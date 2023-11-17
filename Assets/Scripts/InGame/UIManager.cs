@@ -29,6 +29,9 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI myScore;
     public TextMeshProUGUI yourScore;
 
+    public Transform turn1_ts;
+    public Transform turn2_ts;
+
     public void Awake()
     {
         instance = this;
@@ -36,7 +39,22 @@ public class UIManager : MonoBehaviour
 
     public void Update()
     {
+        TurnAnimation();
         ChangeMenuScene();
+    }
+
+    public void TurnAnimation()
+    {
+        if (GameController.GetInstance().myTurn)
+        {
+            turn1_ts.rotation = Quaternion.Lerp(turn1_ts.rotation, Quaternion.Euler(0, 0, -90), Time.deltaTime * 45);
+            turn2_ts.rotation = Quaternion.Lerp(turn2_ts.rotation, Quaternion.Euler(0, 0, -90), Time.deltaTime * 45);
+        }
+        else
+        {
+            turn1_ts.rotation = Quaternion.Lerp(turn1_ts.rotation, Quaternion.Euler(0, 0, 90), Time.deltaTime * 45);
+            turn2_ts.rotation = Quaternion.Lerp(turn2_ts.rotation, Quaternion.Euler(0, 0, 90), Time.deltaTime * 45);
+        }
     }
 
     public void UpdateTurn()
@@ -129,10 +147,10 @@ public class UIManager : MonoBehaviour
         score = 0;
         Card o_ten_card = GameController.GetInstance().opponent_ten_topCard;
         if (o_ten_card)
-            score += ten_card.num * 10;
+            score += o_ten_card.num * 10;
         Card o_one_card = GameController.GetInstance().opponent_one_topCard;
         if (o_one_card)
-            score += one_card.num;
+            score += o_one_card.num;
 
         yourScore.text = score.ToString();
     }

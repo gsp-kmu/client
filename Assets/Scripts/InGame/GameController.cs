@@ -18,6 +18,7 @@ public class GameController : MonoBehaviour
     public Transform effect_ts;
 
     Card select_card;
+    Card search_card;
     public int select_card_hand_idx;
 
     public bool myTurn;
@@ -163,9 +164,6 @@ public class GameController : MonoBehaviour
         //마우스 클릭시 카드를 들기
         if (Input.GetMouseButtonDown(0))
         {
-            if (!myTurn)
-                return;
-
             Collider2D hit = Physics2D.OverlapPoint(mouse_point);
 
             if (!hit)
@@ -212,19 +210,22 @@ public class GameController : MonoBehaviour
             select_card.transform.localScale = Vector3.one;
             select_card.GetComponent<SpriteRenderer>().sortingOrder = 10000;
 
-            Collider2D[] hits = Physics2D.OverlapPointAll(mouse_point);
-
-            foreach (Collider2D hit in hits)
+            if (myTurn)
             {
-                if (hit.transform == player_one || hit.transform == player_ten)
+                Collider2D[] hits = Physics2D.OverlapPointAll(mouse_point);
+
+                foreach (Collider2D hit in hits)
                 {
-                    int cardIndex = select_card.index;
-                    player_hand.cards.RemoveAt(cardIndex); // hyeonseo;
-                    player_hand.RefreshAllCardIndex(); // hyeonseo;
-                    StartCoroutine(select_card.PlayCard(hit.transform));
-                    select_card.BattleCry(hit.transform == player_one ? Digit.One : Digit.Ten);
-                    select_card = null;
-                    break;
+                    if (hit.transform == player_one || hit.transform == player_ten)
+                    {
+                        int cardIndex = select_card.index;
+                        player_hand.cards.RemoveAt(cardIndex); // hyeonseo;
+                        player_hand.RefreshAllCardIndex(); // hyeonseo;
+                        StartCoroutine(select_card.PlayCard(hit.transform));
+                        select_card.BattleCry(hit.transform == player_one ? Digit.One : Digit.Ten);
+                        select_card = null;
+                        break;
+                    }
                 }
             }
 
@@ -251,6 +252,55 @@ public class GameController : MonoBehaviour
             {
                 select_card.transform.position = Vector3.Lerp(select_card.transform.position, mouse_point, Time.deltaTime * 10);
                 select_card.transform.localScale = Vector3.one * 1.2f;
+            }
+        }
+
+        if (Input.GetMouseButton(0) && select_card == null)
+        {
+            Collider2D hit = Physics2D.OverlapPoint(mouse_point);
+
+            if (hit == null)
+                return;
+            Card topCard = null;
+            if (hit.transform.parent == player_one)
+            {
+                topCard = player_one_topCard;
+            }
+            else if (hit.transform.parent == player_ten)
+            {
+                topCard = player_ten_topCard;
+            }
+            else if(hit.transform.parent == opponent_one)
+            {
+                topCard = opponent_one_topCard;
+            }
+            else if(hit.transform.parent == opponent_ten)
+            {
+                topCard = opponent_ten_topCard;
+            }
+
+            if (topCard != null && search_card != topCard)
+            {
+                if(search_card != null)
+                {
+                    search_card.transform.localPosition = Vector3.zero;
+                    search_card.transform.localScale = Vector3.one * 2;
+                    FieldsCardOrganize();
+                }
+                search_card = topCard;
+                search_card.transform.position = Vector3.zero;
+                search_card.transform.localScale = Vector3.one * 5;
+                search_card.GetComponent<SpriteRenderer>().sortingOrder = 10000;
+            }
+        }
+        else
+        {
+            if(search_card != null)
+            {
+                search_card.transform.localPosition = Vector3.zero;
+                search_card.transform.localScale = Vector3.one * 2;
+                search_card = null;
+                FieldsCardOrganize();
             }
         }
     }
