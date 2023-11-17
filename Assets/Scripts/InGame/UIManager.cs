@@ -101,10 +101,10 @@ public class UIManager : MonoBehaviour
         score = 0;
         Card o_ten_card = GameController.GetInstance().opponent_ten_topCard;
         if (o_ten_card)
-            score += ten_card.num * 10;
+            score += o_ten_card.num * 10;
         Card o_one_card = GameController.GetInstance().opponent_one_topCard;
         if (o_one_card)
-            score += one_card.num;
+            score += o_one_card.num;
 
         yourScore.text = score.ToString();
 

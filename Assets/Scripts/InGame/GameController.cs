@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System; using System.Collections; using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Data;
@@ -15,10 +13,7 @@ public class GameController : MonoBehaviour
 
     public PlayerHand player_hand;
     public Transform player_ten;
-    public Transform player_one;
-    public Transform opponent_hand;
-    public Transform opponent_ten;
-    public Transform opponent_one;
+    public Transform player_one; public Transform opponent_hand; public Transform opponent_ten; public Transform opponent_one;
 
     public Transform effect_ts;
 
@@ -78,42 +73,20 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         instance = this;
-        NetworkService.Instance.Login("A");
+        //NetworkService.Instance.Login("A");
 
     }
 
-    void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.M))
-            Mathcing();
-
-        ControllHandCard();
-        ControllOpponentHand();
-    }
-
-    void Mathcing()
-    {
-        Debug.Log("Matching Start");
-        NetworkService.Instance.Send(NetworkEvent.MATCH_START, "");
-        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_SUCCESS, (string s) =>
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_WIN, (string s) =>
         {
-            Debug.Log("Matching Success");
-
-            NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_WIN, (string s) =>
-            {
-                UIManager.instance.Win();
-            });
-            NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_LOSE, (string s) =>
-            {
-                UIManager.instance.Lose();
-            });
+            UIManager.instance.Win();
         });
-
-        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_END, (string s) =>
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_LOSE, (string s) =>
         {
-            NetworkService.Instance.Send(NetworkEvent.INGAME_CLIENT_READY, "");
+            UIManager.instance.Lose();
         });
-
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_INIT_ID, (int id) => {
             Debug.Log("ID : " + id.ToString());
             playerID = id;
@@ -146,6 +119,40 @@ public class GameController : MonoBehaviour
         });
 
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_DRAW_CARD, (Data.Card card) => DrawCard(card.id));
+        NetworkService.Instance.Send(NetworkEvent.INGAME_CLIENT_READY, "");
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+            Mathcing();
+
+        ControllHandCard();
+        ControllOpponentHand();
+    }
+
+    void Mathcing()
+    {
+        Debug.Log("Matching Start");
+        //NetworkService.Instance.Send(NetworkEvent.MATCH_START, "");
+        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_SUCCESS, (string s) =>
+        {
+            Debug.Log("Matching Success");
+
+            NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_WIN, (string s) =>
+            {
+                UIManager.instance.Win();
+            });
+            NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_LOSE, (string s) =>
+            {
+                UIManager.instance.Lose();
+            });
+        });
+
+        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_END, (string s) =>
+        {
+            NetworkService.Instance.Send(NetworkEvent.INGAME_CLIENT_READY, "");
+        });
     }
 
     void ControllHandCard()
