@@ -3047,6 +3047,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1602502ec1f71d047a1c360dac9b99bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  carddeck: {fileID: 2022674761}
 --- !u!4 &1037531555
 Transform:
   m_ObjectHideFlags: 0
@@ -3954,8 +3955,8 @@ RectTransform:
   m_Children:
   - {fileID: 1684056003}
   - {fileID: 367490830}
-  - {fileID: 588745452}
   - {fileID: 420908798}
+  - {fileID: 588745452}
   - {fileID: 1784864868}
   - {fileID: 1899035578}
   - {fileID: 433289664}
@@ -5635,6 +5636,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 2022674761}
+        m_TargetAssemblyTypeName: CardDeck, Assembly-CSharp
+        m_MethodName: OnUnSceneloaded
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1037531554}
         m_TargetAssemblyTypeName: ButtonChangeScreen, Assembly-CSharp
         m_MethodName: ClickCardGarcha
@@ -6057,6 +6070,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 2022674761}
+        m_TargetAssemblyTypeName: CardDeck, Assembly-CSharp
+        m_MethodName: OnUnSceneloaded
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1037531554}
         m_TargetAssemblyTypeName: ButtonChangeScreen, Assembly-CSharp
         m_MethodName: ClickMainMenu
