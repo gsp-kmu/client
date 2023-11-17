@@ -5,13 +5,9 @@ using DG.Tweening;
 
 public class Sol : Card
 {
-    static GameObject sol_effect = null;
-
     void Awake()
     {
-        if (sol_effect == null)
-            sol_effect = Resources.Load<GameObject>("Prefebs/Effect/SolEffect");
-        transform.name = "Sol";
+        transform.name = "솔";
     }
 
 
@@ -28,10 +24,11 @@ public class Sol : Card
                 StartCoroutine(SolSkill(card));
 
                 int target = 0;
-                if(card != null)
+                if (card != null)
                     target = card.transform.parent == controller.opponent_one ? 0 : 1;
 
-                SendServerMessage(controller.playerID, (int)digit, 1, target, 0);
+                int targetId = GameController.GetInstance().playerID == 0 ? 1 : 0;
+                SendServerMessage(controller.playerID, (int)digit, targetId, target, 0);
             }));
 
     }
@@ -51,21 +48,22 @@ public class Sol : Card
         if (card == null)
             yield break;
 
-        GameObject effect = Instantiate(sol_effect, GameController.GetInstance().effect_ts);
-        effect.transform.position = card.transform.position + new Vector3(0, 0, -5);
+        SoundController.PlaySound("reona");
 
-        effect.GetComponent<SpriteRenderer>().sprite = card.GetComponent<SpriteRenderer>().sprite;
-        Material material = effect.GetComponent<SpriteRenderer>().material;
-        float value = 0;
+        Material dissolve = Resources.Load<Material>("Shader/Dissolve");
+        card.GetComponent<SpriteRenderer>().material = dissolve;
 
-        Destroy(effect, 2f);
-        Destroy(card.gameObject);
+        dissolve.SetTexture("_MainTexture", card.GetComponent<SpriteRenderer>().sprite.texture);
+        dissolve.SetFloat("_DissolveValue", -0.2f);
 
-        while (value < 1)
+        float value = -0.2f;
+        while (value <= 1.2)
         {
-            material.SetFloat("_SliceAmount", value);
             value += Time.deltaTime * 0.5f;
+            dissolve.SetFloat("_DissolveValue", value);
             yield return new WaitForSeconds(0);
         }
+
+        Destroy(card.gameObject);
     }
 }

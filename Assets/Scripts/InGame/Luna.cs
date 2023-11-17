@@ -11,7 +11,7 @@ public class Luna : Card
 
         GameController controller = GameController.GetInstance();
 
-        SendServerMessage(controller.playerID, (int)digit, 1, 0, 0);
+        SendServerMessage(controller.playerID, (int)digit, GameController.GetInstance().playerID, 0, 0);
 
         if (digit == Digit.Ten)
             StartCoroutine(Move(controller.player_ten.transform, controller.player_one.transform));
@@ -30,6 +30,8 @@ public class Luna : Card
 
     static IEnumerator Move(Transform give, Transform take)
     {
+        SoundController.PlaySound("ari");
+
         GameController instance = GameController.GetInstance();
 
         GameObject lunaEffect_go = Resources.Load<GameObject>("Prefebs/Effect/LunaEffect");

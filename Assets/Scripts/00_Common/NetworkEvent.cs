@@ -8,6 +8,7 @@ public static class NetworkEvent
     public const string TEST_CARD = "test-card";
 
     //���� ����
+    public const string INGAME_CLIENT_READY = "ingame_client_ready";
     public const string INGAME_TURN = "ingame_turn";
     public const string INGAME_INIT_ID = "ingame_init_id";
     public const string INGAME_TURN_END = "ingame_turn_end";
