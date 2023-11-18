@@ -28,7 +28,7 @@ public class ClearGacha : MonoBehaviour
             randomSelect.cardUIs.Clear();
 
             //비활성화한 가챠버튼 다시 활성화
-            randomSelect.gachabutton.GetComponent<Button>().enabled = true;
+            randomSelect.gachaButton.GetComponent<Button>().enabled = true;
         }
     }
 
