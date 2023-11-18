@@ -82,11 +82,11 @@ public class GameController : MonoBehaviour
     {
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_WIN, (string s) =>
         {
-            UIManager.instance.Win();
+            StartCoroutine(UIManager.instance.Result("Win"));
         });
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_LOSE, (string s) =>
         {
-            UIManager.instance.Lose();
+            StartCoroutine(UIManager.instance.Result("Loss"));
         });
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_INIT_ID, (int id) => {
             Debug.Log("ID : " + id.ToString());
@@ -125,35 +125,19 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
-            Mathcing();
-
         ControllHandCard();
         ControllOpponentHand();
     }
 
-    void Mathcing()
+    private void OnDestroy()
     {
-        Debug.Log("Matching Start");
-        //NetworkService.Instance.Send(NetworkEvent.MATCH_START, "");
-        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_SUCCESS, (string s) =>
-        {
-            Debug.Log("Matching Success");
-
-            NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_WIN, (string s) =>
-            {
-                UIManager.instance.Win();
-            });
-            NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_LOSE, (string s) =>
-            {
-                UIManager.instance.Lose();
-            });
-        });
-
-        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_END, (string s) =>
-        {
-            NetworkService.Instance.Send(NetworkEvent.INGAME_CLIENT_READY, "");
-        });
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_END_WIN);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_END_LOSE);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_INIT_ID);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_TURN);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_FIRST_CARD);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_PLAY_RECV);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_DRAW_CARD);
     }
 
     void ControllHandCard()

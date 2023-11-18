@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class UIManager : MonoBehaviour
 {
@@ -32,6 +33,8 @@ public class UIManager : MonoBehaviour
     public Transform turn1_ts;
     public Transform turn2_ts;
 
+    bool menuTrigger = false;
+
     public void Awake()
     {
         instance = this;
@@ -40,7 +43,9 @@ public class UIManager : MonoBehaviour
     public void Update()
     {
         TurnAnimation();
-        ChangeMenuScene();
+
+        if(menuTrigger && Input.GetMouseButton(0))
+            StartCoroutine(ChangeMenuScene());
     }
 
     public void TurnAnimation()
@@ -71,12 +76,19 @@ public class UIManager : MonoBehaviour
     {
         music = !music;
 
+        if (music)
+            SoundController.GetInstance().background.Play();
+        else
+            SoundController.GetInstance().background.Stop();
+
         music_icon.color = music ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0.5f);
     }
 
     public void SoundButton(bool state)
     {
         sound = !sound;
+
+        SoundController.GetInstance().effect_able = sound;
 
         sound_icon.color = sound ? new Color(1, 1, 1, 1) : new Color(1, 1, 1, 0.5f);
     }
@@ -100,69 +112,70 @@ public class UIManager : MonoBehaviour
         pause_ui.SetActive(pause);
     }
 
-    public void Win()
+    public IEnumerator Result(string what)
     {
-        Debug.Log("win");
+        yield return new WaitForSeconds(1f);
+
+        Debug.Log(what);
+        game_result.text = what;
+
         result.SetActive(true);
-        game_result.text = "Win";
 
-        int score = 0;
-        Card ten_card = GameController.GetInstance().player_ten_topCard;
-        if (ten_card)
-            score += ten_card.num * 10;
-        Card one_card = GameController.GetInstance().player_one_topCard;
-        if (one_card)
-            score += one_card.num;
-
-        myScore.text = score.ToString();
-
-        score = 0;
-        Card o_ten_card = GameController.GetInstance().opponent_ten_topCard;
-        if (o_ten_card)
-            score += o_ten_card.num * 10;
-        Card o_one_card = GameController.GetInstance().opponent_one_topCard;
-        if (o_one_card)
-            score += o_one_card.num;
-
-        yourScore.text = score.ToString();
-
-    }
-
-    public void Lose()
-    {
-        Debug.Log("Lose");
-        result.SetActive(true);
-        game_result.text = "Loss";
-
-        int score = 0;
-        Card ten_card = GameController.GetInstance().player_ten_topCard;
-        if (ten_card)
-            score += ten_card.num * 10;
-        Card one_card = GameController.GetInstance().player_one_topCard;
-        if (one_card)
-            score += one_card.num;
-
-        myScore.text = score.ToString();
-
-        score = 0;
-        Card o_ten_card = GameController.GetInstance().opponent_ten_topCard;
-        if (o_ten_card)
-            score += o_ten_card.num * 10;
-        Card o_one_card = GameController.GetInstance().opponent_one_topCard;
-        if (o_one_card)
-            score += o_one_card.num;
-
-        yourScore.text = score.ToString();
-    }
-
-    void ChangeMenuScene()
-    {
-        if (result.active)
+        Image[] images = result.GetComponentsInChildren<Image>();
+        foreach(Image image in images)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                SceneManager.LoadScene("02_MainScene");
-            }
+            Color curColor = image.color;
+            image.color = new Color(curColor.r, curColor.g, curColor.b, 0);
+            image.DOColor(curColor, 1f);
         }
+
+        int score = 0;
+
+        float t = Time.time;
+
+        if (what == "Win")
+            SoundController.PlaySound("Win");
+        else
+            SoundController.PlaySound("Lose");
+
+        while (Time.time - t < 1.5f)
+        {
+            score = Random.Range(0, 99);
+            myScore.text = score.ToString();
+            yourScore.text = score.ToString();
+            yield return new WaitForSeconds(0);
+        }
+
+        score = 0;
+        Card ten_card = GameController.GetInstance().player_ten_topCard;
+        if (ten_card)
+            score += ten_card.num * 10;
+        Card one_card = GameController.GetInstance().player_one_topCard;
+        if (one_card)
+            score += one_card.num;
+
+        myScore.text = score.ToString();
+
+        score = 0;
+        Card o_ten_card = GameController.GetInstance().opponent_ten_topCard;
+        if (o_ten_card)
+            score += o_ten_card.num * 10;
+        Card o_one_card = GameController.GetInstance().opponent_one_topCard;
+        if (o_one_card)
+            score += o_one_card.num;
+
+        yourScore.text = score.ToString();
+
+        menuTrigger = true;
+
+    }
+
+    IEnumerator ChangeMenuScene()
+    {
+        GameObject effect = Instantiate(Resources.Load<GameObject>("Prefebs/SceneTransObject"));
+        effect.GetComponent<SceneCardTrans>().FadeIn();
+
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("02_MainScene");
     }
 }
