@@ -1,68 +1,34 @@
-using Newtonsoft.Json;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Networking;
-using UnityEngine.UI;
 
-public class DeckSelect : MonoBehaviour
+namespace GSP
 {
-    public int currentId = 1;
-    public Image[] decks;
-    public List<string> decknameList;
-    private string getDeckUrl = GSP.http.getDeck;
-
-    // Start is called before the first frame update
-    void Start()
+    public static class Info
     {
-        int id = 1;
-        RequestGetDeck deck = new RequestGetDeck
-        {
-            userId = id
-        };
-        string json = JsonUtility.ToJson(deck);
-        yield return StartCoroutine(DeckGet(json));
+        //public const string ip = "http://localhost:8000";
+        public const string ip = "http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000";
     }
 
-    // Update is called once per frame
-    void Update()
+    public static class http
     {
-
+        private static string ip { get { return Info.ip; } }
+        public static string getDeck { get { return ip + "/getDeck"; } }
+        public static string getCard { get { return ip + "/getcard"; } }
+        public static string saveDeck { get { return ip + "/savedeck"; } }
+        public static string random { get { return ip + "/random"; } }
+        public static string register { get { return ip + "/register"; } }
+        public static string login { get { return ip + "/login"; } }
     }
 
-    IEnumerator DeckGet(string json)
+    public static class Scene
     {
-
-        using (UnityWebRequest request = UnityWebRequest.PostWwwForm(getDeckUrl, json))
-        {
-
-            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
-            request.uploadHandler = new UploadHandlerRaw(jsonToSend);
-            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-            request.SetRequestHeader("Content-Type", "application/json");
-
-            yield return request.SendWebRequest();
-
-            Debug.Log(request.responseCode);
-            if (request.responseCode == 200)
-            {
-                string responseJson = request.downloadHandler.text;
-                Debug.Log("? ???? ??");
-
-                Debug.Log(responseJson);
-                ResponseGetDeck response = JsonConvert.DeserializeObject<ResponseGetDeck>(responseJson);
-
-
-                Debug.Log(response.msg);
-                decknameList = response.nameList;
-            }
-            else if (request.responseCode == 400)
-            {
-                Debug.Log("? ???? ??");
-            }
-        }
-        yield return null;
+        public const string title = "00_TitleScene";
+        public const string login = "01_LoginScene";
+        public const string main = "02_MainScene";
+        public const string ingame = "03_GameScene";
+        public const string mycard = "04_MyCardScene";
+        public const string garcha = "05_CardGachaScene";
     }
 }
+
