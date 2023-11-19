@@ -48,6 +48,7 @@ public class NetworkService : MonoBehaviour
 
             AddEvent("login_fail", (string data) =>
             {
+                io.D.RemoveAllListeners();
                 failCallback();
             });
 

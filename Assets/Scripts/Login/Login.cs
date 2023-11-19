@@ -22,6 +22,7 @@ public class Login : MonoBehaviour
     public TMP_InputField passwordField;
     public NetworkService networkService;
     public userData userData;
+    public GameObject loading;
 
     public void LoginButtonClick()
     {
@@ -52,15 +53,16 @@ public class Login : MonoBehaviour
             Debug.Log(request.responseCode);
             if (request.responseCode == 200)
             {
-                Debug.Log("로그인 성공");
+                loading.SetActive(true);
                 NetworkService.Instance.Login(id, () =>
                 {
+                    Debug.Log("로그인 성공");
                     Invoke("MoveSceneMainMenu", 1.0f);
                 }, () =>
                 {
+                    loading.SetActive(false);
+                    canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Login, CanvasManager.errorInfo.multipleError);
                 });
-
-                canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Login, CanvasManager.errorInfo.multipleError);
             }
             else
             {

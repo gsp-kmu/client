@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -56,6 +57,7 @@ public class Register : MonoBehaviour
             if (request.responseCode == 200)
             {
                 Debug.Log("굳 ");
+                canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Register, CanvasManager.errorInfo.success);
             }
             else
             {

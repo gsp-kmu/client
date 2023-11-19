@@ -24,7 +24,8 @@ public class CanvasManager : MonoBehaviour
         NetworkError,
         patternError,
         duplicateError,
-        multipleError
+        multipleError,
+        success
     }
 
     private mPageInfo CurrentPageInfo;
@@ -61,7 +62,11 @@ public class CanvasManager : MonoBehaviour
     {
         Popup.SetActive(true);
 
-        if (pageInfo == mPageInfo.Login)
+        if(error == errorInfo.success)
+        {
+            typeError.text = "회원가입 성공";
+        }
+        else if (pageInfo == mPageInfo.Login)
         {
             typeError.text = "로그인 실패";
         }
@@ -74,6 +79,10 @@ public class CanvasManager : MonoBehaviour
         if (error == errorInfo.NetworkError)
         {
             errorDescript.text = "네트워크 오류입니다";
+        }
+        else if (error == errorInfo.success)
+        {
+            errorDescript.text = "성공적으로 회원가입 되었습니다";
         }
         else if (error == errorInfo.passwordError)
         {
