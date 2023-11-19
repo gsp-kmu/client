@@ -30,7 +30,8 @@ public class NetworkService : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
-    public void Login(string id, UnityAction callback)
+
+    public void Login(string id, UnityAction successCallback, UnityAction failCallback)
     {
         Debug.Log(io.serverAddress);
         io.Connect();
@@ -39,7 +40,22 @@ public class NetworkService : MonoBehaviour
             Debug.Log("connect");
             io.D.Emit("들어왔습니다");
             Send("login", id);
-            callback();
+            
+            AddEvent("login_success", (string data) =>
+            {
+                successCallback();
+            });
+
+            AddEvent("login_fail", (string data) =>
+            {
+                failCallback();
+            });
+
+            AddEvent("initid", (string id) =>
+            {
+                Debug.Log(id);
+                this.id = id;
+            });
 
             AddEvent("initid", (string id) =>
             {
@@ -54,6 +70,12 @@ public class NetworkService : MonoBehaviour
         });
 
         eventHandler = new NetworkEventHandler(io, eventCallback);
+    }
+
+    [Obsolete("옛날 버전 이니까 되도록 fail callback 추가된 새로운 로그인 쓰세요.(이것도 작동되긴함)")]
+    public void Login(string id, UnityAction successCallback)
+    {
+        Login(id, successCallback, () => { });
     }
     public void Login(string id)
     {
