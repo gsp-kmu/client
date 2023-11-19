@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ public class MatchingController : MonoBehaviour
 {
     public GameObject matchingWindow;
     public LoadingAnimation loadingAnimation;
+    public MatchingSoundController matchingSoundController;
+
     public TMPro.TextMeshProUGUI machingText;
     public TMPro.TextMeshProUGUI timeText;
     private const string matching_text = "매칭 중";
@@ -36,9 +39,20 @@ public class MatchingController : MonoBehaviour
 
     public void onMatchingSuccess()
     {
-        StopCoroutine(matchingCoroutine);
-        StopCoroutine(timeTextCoroutine);
+        //StopCoroutine(matchingCoroutine);
+        //StopCoroutine(timeTextCoroutine);
         machingText.SetText("매칭 되었습니다.!!");
+
+
+        Sequence sequence = DOTween.Sequence();
+        sequence
+            .Append(machingText.rectTransform.DOScale(1.12f, 0.46f).SetEase(Ease.InQuad))
+            .Append(machingText.rectTransform.DOScale(0.9f, 0.5f).SetEase(Ease.InQuad))
+            .Append(machingText.rectTransform.DOScale(1.12f, 0.46f).SetEase(Ease.InQuad))
+            .Append(machingText.rectTransform.DOScale(0.9f, 0.5f).SetEase(Ease.InQuad))
+            .Append(machingText.rectTransform.DOScale(1.0f, 0.25f).SetEase(Ease.InQuad));
+        sequence.Play();
+        matchingSoundController.StartMatchingEnd();
     }
 
     public void onMatchingEnd()
