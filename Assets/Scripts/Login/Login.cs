@@ -3,6 +3,7 @@ using Firesplash.GameDevAssets.SocketIOPlus;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -55,7 +56,11 @@ public class Login : MonoBehaviour
                 NetworkService.Instance.Login(id, () =>
                 {
                     Invoke("MoveSceneMainMenu", 1.0f);
+                }, () =>
+                {
                 });
+
+                canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Login, CanvasManager.errorInfo.multipleError);
             }
             else
             {

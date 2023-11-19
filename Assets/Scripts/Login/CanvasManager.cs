@@ -23,7 +23,8 @@ public class CanvasManager : MonoBehaviour
         nonuserError,
         NetworkError,
         patternError,
-        duplicateError
+        duplicateError,
+        multipleError
     }
 
     private mPageInfo CurrentPageInfo;
@@ -90,7 +91,11 @@ public class CanvasManager : MonoBehaviour
         {
             errorDescript.text = "이미 존재하는 계정입니다";
         }
-        
+        else if (error == errorInfo.multipleError)
+        {
+            errorDescript.text = "이미 로그인중인 계정입니다";
+        }
+
     }
 
     public void okClick()
