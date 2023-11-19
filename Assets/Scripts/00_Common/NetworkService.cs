@@ -11,6 +11,7 @@ public class NetworkService : MonoBehaviour
     public static NetworkService Instance { get { return instance; } }
 
     public SocketIOClient io;
+    public string id;
     public NetworkEventCallback eventCallback;
     private NetworkEventHandler eventHandler;
 
@@ -26,7 +27,7 @@ public class NetworkService : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
-        
+
         DontDestroyOnLoad(gameObject);
     }
     public void Login(string id, UnityAction callback)
@@ -39,6 +40,12 @@ public class NetworkService : MonoBehaviour
             io.D.Emit("들어왔습니다");
             Send("login", id);
             callback();
+
+            AddEvent("initid", (string id) =>
+            {
+                Debug.Log(id);
+                this.id = id;
+            });
 
             AddEvent("notice", (string data) =>
             {
