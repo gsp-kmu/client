@@ -52,10 +52,24 @@ public class Login : MonoBehaviour
             if (request.responseCode == 200)
             {
                 Debug.Log("로그인 성공");
-                NetworkService.Instance.Login(id, MoveSceneMainMenu);;
+                NetworkService.Instance.Login(id, () =>
+                {
+                    Invoke("MoveSceneMainMenu", 1.0f);
+                });
             }
             else
             {
+                CanvasManager.errorInfo error = CanvasManager.errorInfo.NetworkError;
+                if(request.responseCode == 400)
+                {
+                    error = CanvasManager.errorInfo.passwordError;
+                }
+                else if(request.responseCode == 401)
+                {
+                    error = CanvasManager.errorInfo.nonuserError;
+                }
+
+                canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Login, error);
                 Debug.Log("로그인 실패");
             }
         }

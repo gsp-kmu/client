@@ -59,7 +59,17 @@ public class Register : MonoBehaviour
             }
             else
             {
-                Debug.Log("높 ");
+                CanvasManager.errorInfo error = CanvasManager.errorInfo.NetworkError;
+                if (request.responseCode == 400)
+                {
+                    error = CanvasManager.errorInfo.patternError;
+                }
+                else if (request.responseCode == 401)
+                {
+                    error = CanvasManager.errorInfo.duplicateError;
+                }
+
+                canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Register, error);
             }
         }
     }

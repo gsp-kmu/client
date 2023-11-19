@@ -40,9 +40,15 @@ public class AnimationController : MonoBehaviour
 
         if(idx1 == 1 || idx1 == 2)
         {
+            //characterImage1.SetNativeSize();
             characterImage1.transform.localScale = new Vector3((float)7.622005, (float)9.087746, (float)3.709587);
         }
-        
+        if (idx2 == 2)
+        {
+            //characterImage1.SetNativeSize();
+            characterImage2.transform.localScale = new Vector3((float)7.622005, (float)9.087746, (float)3.709587);
+        }
+
 
         StartCoroutine(Moveit());
     }

@@ -19,6 +19,8 @@ namespace GSP
         public static string random { get { return ip + "/random"; } }
         public static string register { get { return ip + "/register"; } }
         public static string login { get { return ip + "/login"; } }
+
+        public static string getCoin { get { return ip + "/getcoin"; } }
     }
 
     public static class Scene
