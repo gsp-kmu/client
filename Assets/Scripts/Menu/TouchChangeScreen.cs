@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class TouchChangeScreen : MonoBehaviour
 {
+    public GameObject loading;
     public string SceneToLoad;
     // Start is called before the first frame update
     void Start()
@@ -17,6 +18,7 @@ public class TouchChangeScreen : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            loading.SetActive(true);
             SceneManager.LoadScene(SceneToLoad);
         }
     }
