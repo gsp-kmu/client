@@ -57,6 +57,7 @@ public class Login : MonoBehaviour
                 NetworkService.Instance.Login(id, () =>
                 {
                     Debug.Log("로그인 성공");
+                    GameObject.FindObjectOfType<AudioContinue>().DestroyOnSceneChange();
                     Invoke("MoveSceneMainMenu", 1.0f);
                 }, () =>
                 {

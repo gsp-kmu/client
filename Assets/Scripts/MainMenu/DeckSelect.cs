@@ -139,17 +139,11 @@ public class DeckSelect : MonoBehaviour
 
     IEnumerator moveLeft()
     {
-        Debug.Log(currentIdx);
-        if (currentIdx == 0)
+        if (currentIdx != 4)
         {
+            Debug.Log(currentIdx + " OK");
             rectTransforms[currentIdx].DOAnchorPos3D(moveleft, moveTime);
             rectTransforms[currentIdx + 1].DOAnchorPos3D(movecenter, moveTime);
-            currentIdx++;
-        }
-        else if (currentIdx != 5)
-        {
-            rectTransforms[currentIdx - 1].DOAnchorPos3D(moveleft, moveTime);
-            rectTransforms[currentIdx].DOAnchorPos3D(movecenter, moveTime);
             currentIdx++;
         }
 
@@ -158,17 +152,11 @@ public class DeckSelect : MonoBehaviour
 
     IEnumerator moveRight()
     {
-        if (currentIdx == 5)
+        if (currentIdx != 0)
         {
-            currentIdx--;
             rectTransforms[currentIdx].DOAnchorPos3D(moveright, moveTime);
-            rectTransforms[currentIdx - 1].DOAnchorPos3D(movecenter, moveTime);    
-        }
-        else if (currentIdx != 1 && currentIdx != 0)
-        {
+            rectTransforms[currentIdx - 1].DOAnchorPos3D(movecenter, moveTime);
             currentIdx--;
-            rectTransforms[currentIdx].DOAnchorPos3D(moveright, moveTime);
-            rectTransforms[currentIdx-1].DOAnchorPos3D(movecenter, moveTime);
         }
 
         yield return null;
