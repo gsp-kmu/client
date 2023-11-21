@@ -19,11 +19,13 @@ public class MatchingController : MonoBehaviour
     private Coroutine matchingCoroutine;
     private Coroutine timeTextCoroutine;
 
+    public DeckSelect deckSelect;
+
     public void MatchingStart()
     {
         matchingWindow.gameObject.SetActive(true);
         gameObject.GetComponent<MatchingTipController>().StartTip();
-        NetworkService.Instance.Send(NetworkEvent.MATCH_START, "");
+        NetworkService.Instance.Send(NetworkEvent.MATCH_START, deckSelect.currentIdx + 1);
         loadingAnimation.Play();
         matchingCoroutine = StartCoroutine(MatchingTextAnimation());
         timeTextCoroutine = StartCoroutine(MatchingTImeAnimation());

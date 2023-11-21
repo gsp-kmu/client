@@ -1446,6 +1446,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -50
       objectReference: {fileID: 0}
+    - target: {fileID: 8717243289826739405, guid: 301feb8afe210384398d5ef32842e6ad, type: 3}
+      propertyPath: deckSelect
+      value: 
+      objectReference: {fileID: 1132463989}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
