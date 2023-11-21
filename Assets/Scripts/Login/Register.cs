@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -56,10 +57,21 @@ public class Register : MonoBehaviour
             if (request.responseCode == 200)
             {
                 Debug.Log("굳 ");
+                canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Register, CanvasManager.errorInfo.success);
             }
             else
             {
-                Debug.Log("높 ");
+                CanvasManager.errorInfo error = CanvasManager.errorInfo.NetworkError;
+                if (request.responseCode == 400)
+                {
+                    error = CanvasManager.errorInfo.patternError;
+                }
+                else if (request.responseCode == 401)
+                {
+                    error = CanvasManager.errorInfo.duplicateError;
+                }
+
+                canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Register, error);
             }
         }
     }

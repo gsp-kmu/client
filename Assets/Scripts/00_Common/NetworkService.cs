@@ -40,7 +40,7 @@ public class NetworkService : MonoBehaviour
             Debug.Log("connect");
             io.D.Emit("들어왔습니다");
             Send("login", id);
-            
+
             AddEvent("login_success", (string data) =>
             {
                 successCallback();
@@ -48,6 +48,7 @@ public class NetworkService : MonoBehaviour
 
             AddEvent("login_fail", (string data) =>
             {
+                io.D.RemoveAllListeners();
                 failCallback();
             });
 
