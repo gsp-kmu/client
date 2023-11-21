@@ -42,6 +42,7 @@ public class CardDeck : MonoBehaviour
 {
     private string getDeckUrl = GSP.http.getDeck;
     private string getCardUrl = GSP.http.getCard;
+    private string getCoinUrl = GSP.http.getCoin;
 
     public List<List<int>> allDecks; // 여러 덱을 저장하는 리스트의 리스트
     public List<List<int>> allCardState; // 모든카드 상태
@@ -56,6 +57,8 @@ public class CardDeck : MonoBehaviour
     public List<string> decknameList; // 덱 이름 리스트
 
     private int previousindex = 0;
+    private int mycoin;
+    public GameObject coinText;
     public AudioClip[] cardSound;
     public Sprite[] sprites;
     public Button renameDeckButton;
@@ -66,13 +69,20 @@ public class CardDeck : MonoBehaviour
 
     void Start()
     {
-
+        //// id 입력받는곳/////
         int id = 1;
         RequestGetDeck deck = new RequestGetDeck
         {
             userId = id
         };
+        RequestSendCoin coin = new RequestSendCoin
+        {
+            userId = id,
+        };
         string json = JsonUtility.ToJson(deck);
+        string json2 = JsonUtility.ToJson(coin);
+
+        StartCoroutine(GetCoin(json2));
         StartCoroutine(DeckAndCardGet(json));
     }
     public void OnUnSceneloaded()
@@ -80,6 +90,7 @@ public class CardDeck : MonoBehaviour
         
         Debug.Log("zzz");
         CardDeck carddeck = this;
+        //// id 입력받는곳/////
         int id = 1;
         List<List<int>> ran = new List<List<int>>();
         List<string> deckl = new List<string>();
@@ -453,6 +464,38 @@ public class CardDeck : MonoBehaviour
         yield return null;
     }
 
+
+    IEnumerator GetCoin(string json)
+    {
+
+        using (UnityWebRequest request = UnityWebRequest.PostWwwForm(getCoinUrl, json))
+        {
+
+            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+            request.uploadHandler = new UploadHandlerRaw(jsonToSend);
+            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            Debug.Log(request.responseCode);
+            if (request.responseCode == 200)
+            {
+                string responseJson = request.downloadHandler.text;
+                Debug.Log("코인 받아오기 성공");
+
+                Debug.Log(responseJson);
+                ResponseGetCoin response = JsonConvert.DeserializeObject<ResponseGetCoin>(responseJson);
+                mycoin = response.coin;
+                coinText.GetComponent<TextMeshProUGUI>().text = mycoin.ToString();
+
+            }
+            else if (request.responseCode == 400)
+            {
+                Debug.Log("받아오기 실패");
+            }
+        }
+    }
 
 
 

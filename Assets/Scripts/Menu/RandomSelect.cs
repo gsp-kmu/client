@@ -20,13 +20,27 @@ public class ResponseGetRandomCard
 {
     public string msg;
     public List<int> cardList;
+    public List<bool> duplicate;
+    public int coin;
 }
-
+public class RequestSendCoin
+{
+    public int userId;
+}
+public class ResponseGetCoin
+{
+    public int coin;
+}
 
 
 public class RandomSelect : MonoBehaviour
 {
     private string getCardRandomUrl = GSP.http.random;
+    
+
+    public int mycoin;
+    public GameObject coinText;
+
     public List<Card_> deck = new List<Card_>();  // 카드 덱
     private List<int> deckIndex = new List<int>();
     public int total = 0;  // 카드들의 가중치 총 합
@@ -49,23 +63,30 @@ public class RandomSelect : MonoBehaviour
     // 원하는 만큼 Vector3 리스트를 추가할 수 있습니다.
 };
 
+    
     public void OnEnable()
     {
         gachaButton.GetComponent<Button>().enabled = false;
+
+        //// id 입력받는곳/////
         int id = 1;
         RequestGetDeck deck = new RequestGetDeck
         {
             userId = id
         };
+        
 
-        string json = JsonUtility.ToJson(deck);
+        string json1 = JsonUtility.ToJson(deck);
+        
+        //local test
+        //deckIndex = randomRecieve;
+        //ResultSelect();
+        //failButton.SetActive(false);
 
-        //StartCoroutine(CardRandomGet(json));
-        deckIndex = randomRecieve;
-        ResultSelect();
-        failButton.SetActive(false);
+        StartCoroutine(CardRandomGet(json1));
 
     }
+
 
     public void OnDisable()
     {
@@ -146,11 +167,10 @@ public class RandomSelect : MonoBehaviour
 
 
                 Debug.Log(response.msg);
-                foreach (var sub in response.cardList)
-                {
-                    Debug.Log(sub);
-                }
                 deckIndex = response.cardList;
+                cardSamebool = response.duplicate;
+                mycoin = response.coin;
+                coinText.GetComponent<TextMeshProUGUI>().text = mycoin.ToString();
                 failButton.SetActive(false);
                 ResultSelect();
 
@@ -159,10 +179,19 @@ public class RandomSelect : MonoBehaviour
             else if (request.responseCode == 400)
             {
 
-                Debug.Log("로그인 실패");
+                Debug.Log("코인부족");
+                succesButton.SetActive(false);
+            }
+            else if (request.responseCode == 401)
+            {
+
+                Debug.Log("Unexpected Error");
             }
         }
     }
+
+    
+
 
 
 }

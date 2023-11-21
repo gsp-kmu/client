@@ -15,6 +15,7 @@ namespace GSP
         private static string ip {get{ return Info.ip; } }
         public static string getDeck { get { return ip + "/getDeck"; } }
         public static string getCard { get { return ip + "/getcard"; } }
+        public static string getCoin { get { return ip + "/getcoin"; } }
         public static string saveDeck { get { return ip + "/savedeck"; } }
         public static string random { get { return ip + "/random"; } }
         public static string register { get { return ip + "/register"; } }
