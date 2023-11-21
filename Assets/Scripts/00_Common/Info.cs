@@ -6,8 +6,8 @@ namespace GSP
 {
     public static class Info
     {
-        //public const string ip = "http://localhost:8000";
-        public const string ip = "http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000";
+        public const string ip = "http://localhost:8000";
+        //public const string ip = "http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000";
     }
 
     public static class http
@@ -15,12 +15,11 @@ namespace GSP
         private static string ip { get { return Info.ip; } }
         public static string getDeck { get { return ip + "/getDeck"; } }
         public static string getCard { get { return ip + "/getcard"; } }
+        public static string getCoin { get { return ip + "/getcoin"; } }
         public static string saveDeck { get { return ip + "/savedeck"; } }
         public static string random { get { return ip + "/random"; } }
         public static string register { get { return ip + "/register"; } }
         public static string login { get { return ip + "/login"; } }
-
-        public static string getCoin { get { return ip + "/getcoin"; } }
     }
 
     public static class Scene

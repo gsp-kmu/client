@@ -4,43 +4,89 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using static System.Net.WebRequestMethods;
+using DG.Tweening;
+using TMPro;
+using Sequence = DG.Tweening.Sequence;
+using System.Linq;
 
 [System.Serializable]
 public class ResponseGetRandomCard
 {
     public string msg;
     public List<int> cardList;
+    public List<bool> duplicate;
+    public int coin;
 }
-
+public class RequestSendCoin
+{
+    public int userId;
+}
 
 
 public class RandomSelect : MonoBehaviour
 {
     private string getCardRandomUrl = GSP.http.random;
+    
+
+    public int mycoin;
+    public GameObject coinText;
+
     public List<Card_> deck = new List<Card_>();  // 카드 덱
     private List<int> deckIndex = new List<int>();
     public int total = 0;  // 카드들의 가중치 총 합
-    public GameObject gachabutton;
-    public List<Vector3> cardpo = new List<Vector3>(); //카드 위치
+    public GameObject gachaButton;
+    public GameObject succesButton;
+    public GameObject failButton;
+    List<int> randomRecieve = new List<int>(){ 1, 2, 3, 4, 5 };
+    public List<bool> cardSamebool = new List<bool>() { true, false, true, false, false };
 
+    public List<Vector3> cardpo = new List<Vector3>(); //카드 위치
+    public float radius = 10f;
+    public float duration = 5f;
+    List<List<Vector3>> pathS = new List<List<Vector3>>
+{
+    new List<Vector3> { new Vector3(-150, -300, 0), new Vector3(-300, 100, 0) },
+    new List<Vector3> { new Vector3(300, -150, 0), new Vector3(-100, -300, 0) },
+    new List<Vector3> { new Vector3(250, 420, 0), new Vector3(300, -300, 0) },
+    new List<Vector3> { new Vector3(-250, 420, 0), new Vector3(300, 300, 0) },
+    new List<Vector3> { new Vector3(-300, 150, 0), new Vector3(100, 300, 0) }
+    // 원하는 만큼 Vector3 리스트를 추가할 수 있습니다.
+};
+
+    
     public void OnEnable()
     {
-        gachabutton.GetComponent<Button>().enabled = false;
+        gachaButton.GetComponent<Button>().enabled = false;
+
+        //// id 입력받는곳/////
         int id = 1;
         RequestGetDeck deck = new RequestGetDeck
         {
             userId = id
         };
-
-        string json = JsonUtility.ToJson(deck);
-
-        StartCoroutine(CardRandomGet(json));
         
+
+        string json1 = JsonUtility.ToJson(deck);
+        
+        //local test
+        //deckIndex = randomRecieve;
+        //ResultSelect();
+        //failButton.SetActive(false);
+
+        StartCoroutine(CardRandomGet(json1));
+
+    }
+
+
+    public void OnDisable()
+    {
+        gachaButton.GetComponent<Button>().enabled = true;
     }
     public List<Card_> result = new List<Card_>();  // 랜덤카드 리스트
 
@@ -57,13 +103,35 @@ public class RandomSelect : MonoBehaviour
             // 비어있는 카드를 생성
             GameObject card = Instantiate(cardprefab, parent);
             CardUI cardUI = card.GetComponent<CardUI>();
-            card.transform.localPosition = cardpo[i];
+            
+            Vector3 targetPosition = cardpo[i];
+            List<Vector3> path = pathS[i];
+            path.Add(targetPosition);
+            Vector3[] paths = path.ToArray();
+
+            // 카드가 나선 모양의 경로를 따라 움직이도록 설정
+            Tween cardMovement = card.transform.DOLocalPath(paths, 2f, PathType.CatmullRom)
+            .SetEase(Ease.OutCubic)
+            .SetDelay(i)
+            .OnComplete(() =>
+            {
+                // 카드가 움직인 후에 흔들림 효과 주기
+                
+            });
+
+            card.transform.rotation = Quaternion.Euler(0, 180, 0);
+            if (cardSamebool[i] == true)
+            {
+                card.transform.Find("중복").gameObject.GetComponent<TextMeshProUGUI>().text="same";
+            }
             // 카드에 각종정보 추가
             cardUI.CardUISet(result[i]);
             cardUIs.Add(card);
         }
         total = 0;
     }
+
+ 
     public Card_ RandomCard(int i)
     {
  
@@ -95,21 +163,31 @@ public class RandomSelect : MonoBehaviour
 
 
                 Debug.Log(response.msg);
-                foreach (var sub in response.cardList)
-                {
-                    Debug.Log(sub);
-                }
                 deckIndex = response.cardList;
+                cardSamebool = response.duplicate;
+                mycoin = response.coin;
+                coinText.GetComponent<TextMeshProUGUI>().text = mycoin.ToString();
+                failButton.SetActive(false);
                 ResultSelect();
 
 
             }
             else if (request.responseCode == 400)
             {
-                Debug.Log("로그인 실패");
+
+                Debug.Log("코인부족");
+                succesButton.SetActive(false);
+            }
+            else if (request.responseCode == 401)
+            {
+
+                Debug.Log("Unexpected Error");
             }
         }
     }
+
+    
+
 
 
 }

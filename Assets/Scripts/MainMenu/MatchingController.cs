@@ -39,8 +39,8 @@ public class MatchingController : MonoBehaviour
 
     public void onMatchingSuccess()
     {
-        //StopCoroutine(matchingCoroutine);
-        //StopCoroutine(timeTextCoroutine);
+        StopCoroutine(matchingCoroutine);
+        StopCoroutine(timeTextCoroutine);
         machingText.SetText("매칭 되었습니다.!!");
 
 
@@ -76,9 +76,9 @@ public class MatchingController : MonoBehaviour
         yield return null;
         while (true)
         {
-            yield return null;
             for (int i = 0; i < 4; i++)
             {
+                yield return null;
                 machingText.SetText(matching_text + new string('.', i));
                 yield return new WaitForSeconds(0.5f);
             }

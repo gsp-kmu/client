@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class SettingUIController : MonoBehaviour
@@ -11,6 +12,8 @@ public class SettingUIController : MonoBehaviour
     public Button UIOnButton;
     public Button CloseButton;
 
+    public GameObject UI;
+
     private void Start() {
         bgmToggle.isOn = SettingService.Instance.GetMuteBGM();
         sfxToggle.isOn = SettingService.Instance.GetMuteSFX();
@@ -20,12 +23,14 @@ public class SettingUIController : MonoBehaviour
 
         UIOnButton.onClick.AddListener(() =>
         {
-            gameObject.SetActive(true);
+            UI.SetActive(true);
         });
         CloseButton.onClick.AddListener(() =>
         {
-            gameObject.SetActive(false);
+            UI.SetActive(false);
         });
+
+        UI.SetActive(false);
     }
 
     public void ClickBGMToggle(bool isOn){
@@ -38,7 +43,9 @@ public class SettingUIController : MonoBehaviour
 
     public void Logout()
     {
-        NetworkService.Instance.io.Disconnect();
+        NetworkService.Instance.io.D.Emit("disconnect");
+        Destroy(NetworkService.Instance.gameObject);
+        SceneManager.LoadScene(GSP.Scene.title);
     }
 
 }

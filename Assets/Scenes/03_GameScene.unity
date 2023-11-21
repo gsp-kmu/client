@@ -1490,7 +1490,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC77C\uC2DC\uC815\uC9C0"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f136519a1d1214bd5940c8302cd91814, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3045b8728e7493745b71c0fcf6babe3d, type: 2}
   m_sharedMaterial: {fileID: -7454781965662459060, guid: 5d68dc5feac588e47bcaf2cfaa256266, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1624,7 +1624,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uD56D\uBCF5 "
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f136519a1d1214bd5940c8302cd91814, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3045b8728e7493745b71c0fcf6babe3d, type: 2}
   m_sharedMaterial: {fileID: -7454781965662459060, guid: 5d68dc5feac588e47bcaf2cfaa256266, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -8124,7 +8124,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC22B\uC790\uC785\uB825\uD6C4 C\uD0A4 \uB204\uB974\uBA74 draw cheatt"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f136519a1d1214bd5940c8302cd91814, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3045b8728e7493745b71c0fcf6babe3d, type: 2}
   m_sharedMaterial: {fileID: -7418865800469709782, guid: f136519a1d1214bd5940c8302cd91814, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -8188,7 +8188,7 @@ MonoBehaviour:
   m_margin: {x: -208.57727, y: 0, z: -746.3159, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1217973772
@@ -9081,7 +9081,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u200B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f136519a1d1214bd5940c8302cd91814, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3045b8728e7493745b71c0fcf6babe3d, type: 2}
   m_sharedMaterial: {fileID: -7418865800469709782, guid: f136519a1d1214bd5940c8302cd91814, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -9145,7 +9145,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1572443842
@@ -10163,7 +10163,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uB2EB\uAE30"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: f136519a1d1214bd5940c8302cd91814, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3045b8728e7493745b71c0fcf6babe3d, type: 2}
   m_sharedMaterial: {fileID: -7454781965662459060, guid: 5d68dc5feac588e47bcaf2cfaa256266, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
