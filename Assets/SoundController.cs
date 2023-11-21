@@ -8,9 +8,11 @@ public class SoundController : MonoBehaviour
     public static SoundController GetInstance() { return instance; }
 
     [SerializeField]
-    AudioSource background;
+    public AudioSource background;
     [SerializeField]
-    AudioSource effect;
+    public AudioSource effect;
+
+    public bool effect_able = true;
 
 
     void Awake()
@@ -20,6 +22,9 @@ public class SoundController : MonoBehaviour
 
     public static void PlaySound(string s)
     {
+        if (!instance.effect_able)
+            return;
+
         instance.effect.clip = Resources.Load<AudioClip>("Sound/Ingame/" + s);
         instance.effect.Play();
     }

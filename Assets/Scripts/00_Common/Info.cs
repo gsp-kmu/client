@@ -12,7 +12,7 @@ namespace GSP
 
     public static class http
     {
-        private static string ip {get{ return Info.ip; } }
+        private static string ip { get { return Info.ip; } }
         public static string getDeck { get { return ip + "/getDeck"; } }
         public static string getCard { get { return ip + "/getcard"; } }
         public static string saveDeck { get { return ip + "/savedeck"; } }

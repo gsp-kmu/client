@@ -36,6 +36,8 @@ public class Medusa : Card
     static IEnumerator Stun(Transform tf)
     {
         SoundController.PlaySound("akal");
+        GameController.GetInstance().turn++;
+        UIManager.GetInstance().UpdateTurn();
 
         yield return new WaitForSeconds(0.5f);
         GameObject effect_obj = Instantiate(effect, tf);

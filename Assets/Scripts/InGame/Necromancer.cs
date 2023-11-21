@@ -34,7 +34,7 @@ public class Necromancer : Card
 
     public IEnumerator NecromancerSkill(Digit digit)
     {
-        SoundController.PlaySound("벡스대사");
+        SoundController.PlaySound("bex");
 
         GameController controller = GameController.GetInstance();
 
@@ -75,7 +75,7 @@ public class Necromancer : Card
             startPos.GetChild(i).transform.position = ghosts[i].transform.position;
             startPos.GetChild(i).transform.localScale = Vector3.zero;
             startPos.GetChild(i).transform.DOScale(Vector3.one, 0.5f);
-            startPos.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 1500;
+            startPos.GetChild(i).GetComponent<SpriteRenderer>().sortingOrder = 10050;
         }
 
         yield return new WaitForSeconds(0.5f);
@@ -151,6 +151,8 @@ public class Necromancer : Card
     {
         if (targetCardIndex == -1)
             yield break;
+
+
         SoundController.PlaySound("bex");
 
         GameController controller = GameController.GetInstance();
