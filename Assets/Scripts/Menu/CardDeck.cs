@@ -91,7 +91,6 @@ public class CardDeck : MonoBehaviour
         Debug.Log("zzz");
         CardDeck carddeck = this;
         //// id 입력받는곳/////
-        int id = 1;
         List<List<int>> ran = new List<List<int>>();
         List<string> deckl = new List<string>();
         ran = carddeck.allDecks;
@@ -99,7 +98,7 @@ public class CardDeck : MonoBehaviour
 
         ResponseSendDeck deck = new ResponseSendDeck
         {
-            userId = id,
+            userId = int.Parse(NetworkService.Instance.id),
             deckList = ran,
             nameList = deckl
         };
@@ -447,7 +446,6 @@ public class CardDeck : MonoBehaviour
                 string responseJson = request.downloadHandler.text;
                 Debug.Log("카드 받아오기 성공");
 
-                Debug.Log(responseJson);
                 ResponseGetCard response = JsonConvert.DeserializeObject<ResponseGetCard>(responseJson);
 
 

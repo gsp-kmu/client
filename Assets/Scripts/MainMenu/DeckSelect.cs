@@ -75,6 +75,7 @@ public class DeckSelect : MonoBehaviour
 
                 Debug.Log(response.msg);
                 decknameList = response.nameList;
+                Debug.Log(response);
                 for (int i = 0; i < 5; i++)
                 {
                     TextMeshProUGUI text = decks[i].GetComponentInChildren<TextMeshProUGUI>();
