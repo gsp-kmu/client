@@ -70,7 +70,7 @@ public class CardDeck : MonoBehaviour
     void Start()
     {
         //// id 입력받는곳/////
-        int id = 1;
+        int id = int.Parse(NetworkService.Instance.id);
         RequestGetDeck deck = new RequestGetDeck
         {
             userId = id

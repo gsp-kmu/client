@@ -112,10 +112,9 @@ public class GameController : MonoBehaviour
             }
         });
 
-        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_FIRST_CARD, (FirstCard cards) =>
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_FIRST_CARD, (Data.Card card) =>
         {
-            DrawCard(cards.card1.id);
-            DrawCard(cards.card2.id);
+            DrawCard(card.id);
         });
 
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_PLAY_RECV, (Data.RecvPlayCard card) => {

@@ -18,10 +18,12 @@ public class SettingService : MonoBehaviour
             isMuteSFX = false;
 
             instance = this;
+            ApplySoundMuteSetting();
             DontDestroyOnLoad(gameObject);
         }
         else
         {
+            ApplySoundMuteSetting();
             Destroy(this);
         }
     }
@@ -51,12 +53,12 @@ public class SettingService : MonoBehaviour
 
         foreach (AudioSource audioSource in audioSources)
         {
-            audioSource.mute = isMuteSFX;
+            audioSource.mute = SettingService.instance.isMuteSFX;
         }
 
         foreach (GameObject audioSource in bgmSources)
         {
-            audioSource.GetComponent<AudioSource>().mute = isMuteBGM;
+            audioSource.GetComponent<AudioSource>().mute = SettingService.instance.isMuteBGM; ;
         }
 
     }

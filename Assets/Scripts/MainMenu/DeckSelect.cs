@@ -79,6 +79,7 @@ public class DeckSelect : MonoBehaviour
                 {
                     TextMeshProUGUI text = decks[i].GetComponentInChildren<TextMeshProUGUI>();
                     if(response.deckList[i].Count != 20){
+                        text.color = new Color(0.66f, 0.66f, 0.66f);
                         cardShaderSelector.SetAtiveBlackWhiteCardShader(decks[i]);
                     }
                     if (text != null)
