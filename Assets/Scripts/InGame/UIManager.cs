@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
     {
         TurnAnimation();
 
-        if(menuTrigger && Input.GetMouseButton(0))
+        if(menuTrigger && Input.GetMouseButtonUp(0))
             StartCoroutine(ChangeMenuScene());
     }
 
