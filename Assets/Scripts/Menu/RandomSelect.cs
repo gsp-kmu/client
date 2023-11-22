@@ -49,6 +49,7 @@ public class RandomSelect : MonoBehaviour
     public List<Vector3> cardpo = new List<Vector3>(); //카드 위치
     public float radius = 10f;
     public float duration = 5f;
+    public AudioClip[] cardGachaSound;
     List<List<Vector3>> pathS = new List<List<Vector3>>
 {
     new List<Vector3> { new Vector3(-150, -300, 0), new Vector3(-300, 100, 0) },
@@ -103,13 +104,18 @@ public class RandomSelect : MonoBehaviour
             // 비어있는 카드를 생성
             GameObject card = Instantiate(cardprefab, parent);
             CardUI cardUI = card.GetComponent<CardUI>();
-            
+
+            AudioSource cardSound = card.GetComponent<AudioSource>().AddComponent<AudioSource>();
+            cardSound.clip = cardGachaSound[0];
+            cardSound.PlayDelayed(0.5f * i);
+
             Vector3 targetPosition = cardpo[i];
             List<Vector3> path = pathS[i];
             path.Add(targetPosition);
             Vector3[] paths = path.ToArray();
 
             // 카드가 나선 모양의 경로를 따라 움직이도록 설정
+            
             Tween cardMovement = card.transform.DOLocalPath(paths, 1f, PathType.CatmullRom)
             .SetEase(Ease.OutCubic)
             .SetDelay(i*0.5f)
@@ -117,6 +123,7 @@ public class RandomSelect : MonoBehaviour
             {
                 // 카드가 움직인 후에 흔들림 효과 주기
                 
+
             });
 
             card.transform.rotation = Quaternion.Euler(0, 180, 0);
