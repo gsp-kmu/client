@@ -803,7 +803,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 77.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &302927018
@@ -6290,7 +6290,27 @@ MonoBehaviour:
   coinText: {fileID: 2056780795}
   cardSound:
   - {fileID: 8300000, guid: c629a5d03ba49a54bbba806b0f659905, type: 3}
-  sprites: []
+  sprites:
+  - {fileID: -572673169, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: -1736936770, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: -387148028, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: -1095959130, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: 2091115314, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: -1483869517, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: 710534540, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: 218634989, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: -1964869424, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: 1335604245, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: 1044835973, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: 1724256474, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: -987875349, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: -1095959130, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: 1697652432, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: -1483869517, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: 2031964584, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: 759861669, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: 218697413, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: 1818650359, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
   renameDeckButton: {fileID: 420908799}
   renameCheckButton: {fileID: 519679678}
   RenameView: {fileID: 143297376}

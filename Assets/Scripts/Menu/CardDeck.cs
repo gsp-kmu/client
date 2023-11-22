@@ -195,7 +195,6 @@ public class CardDeck : MonoBehaviour
 
     private void UpdateAllCardsUI()
     {
-        sprites = Resources.LoadAll<Sprite>("AllCard");
         if (sprites.Length > 0)
         {
             // 원하는 스프라이트를 사용할 수 있음

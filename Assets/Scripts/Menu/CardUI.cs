@@ -14,7 +14,7 @@ public class CardUI : MonoBehaviour, IPointerDownHandler
     public GameObject gachaParticle;
     public GameObject gachaParticlebg;
     // id 에서 -1한 값을 이용함
-    public List<int> rareCarList = new List<int>{0, 4, 6, 9};
+    public List<int> rareCarList = new List<int>{10, 14, 16, 19};
     Animator animator;
     private void Start()
     {
@@ -29,7 +29,7 @@ public class CardUI : MonoBehaviour, IPointerDownHandler
     {
         chr.sprite = card.cardImage;
         cardId = card.cardId;
-        if (cardId == 0 || cardId == 4 || cardId == 6 || cardId ==9)
+        if (cardId == 10 || cardId == 14 || cardId == 16 || cardId ==19)
         {
             gachaParticlebg.SetActive(true);
         }
@@ -44,7 +44,7 @@ public class CardUI : MonoBehaviour, IPointerDownHandler
             animator.enabled = true;
             // 흔들리고 나서 Flip 애니메이션 실행
             animator.SetTrigger("Flip");
-            if(cardId == 0 || cardId == 4 || cardId == 6 || cardId == 9)
+            if(cardId == 10 || cardId == 14 || cardId == 16 || cardId == 19)
             {
                 gachaParticle.SetActive(true);
             }
