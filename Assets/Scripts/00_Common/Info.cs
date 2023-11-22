@@ -6,8 +6,8 @@ namespace GSP
 {
     public static class Info
     {
-        public const string ip = "http://localhost:8000";
-        //public const string ip = "http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000";
+        //public const string ip = "http://localhost:8000";
+        public const string ip = "http://ec2-43-201-164-245.ap-northeast-2.compute.amazonaws.com:8000";
     }
 
     public static class http

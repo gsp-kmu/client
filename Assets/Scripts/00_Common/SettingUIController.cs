@@ -19,7 +19,9 @@ public class SettingUIController : MonoBehaviour
         sfxToggle.isOn = SettingService.Instance.GetMuteSFX();
         bgmToggle.onValueChanged.AddListener(ClickBGMToggle);
         sfxToggle.onValueChanged.AddListener(ClickSFXToggle);
-        LogoutButton.onClick.AddListener(Logout);
+        
+        if(LogoutButton != null)
+            LogoutButton.onClick.AddListener(Logout);
 
         UIOnButton.onClick.AddListener(() =>
         {
