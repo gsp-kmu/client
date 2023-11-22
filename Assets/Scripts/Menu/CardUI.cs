@@ -38,7 +38,7 @@ public class CardUI : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData eventData)
     {
 
-        transform.DOShakePosition(3.0f, new Vector3(10.0f, 10.3f, 0f), 10, 90).OnComplete(() =>
+        transform.DOShakePosition(0.8f, new Vector3(10.0f, 10.3f, 0f), 10, 90).OnComplete(() =>
         {
 
             animator.enabled = true;

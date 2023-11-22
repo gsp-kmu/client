@@ -298,6 +298,7 @@ MonoBehaviour:
   sameText: {fileID: 376841999623677874}
   gachaParticle: {fileID: 4113709174117542079}
   gachaParticlebg: {fileID: 8880237016326347337}
+  rareCarList: 0a0000000e0000001000000013000000
 --- !u!1 &878384543982072108
 GameObject:
   m_ObjectHideFlags: 0

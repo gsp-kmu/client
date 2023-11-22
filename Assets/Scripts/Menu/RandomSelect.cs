@@ -65,7 +65,7 @@ public class RandomSelect : MonoBehaviour
         gachaButton.GetComponent<Button>().enabled = false;
 
         //// id 입력받는곳/////
-        int id = 1;
+        int id = int.Parse(NetworkService.Instance.id);
         RequestGetDeck deck = new RequestGetDeck
         {
             userId = id
@@ -110,9 +110,9 @@ public class RandomSelect : MonoBehaviour
             Vector3[] paths = path.ToArray();
 
             // 카드가 나선 모양의 경로를 따라 움직이도록 설정
-            Tween cardMovement = card.transform.DOLocalPath(paths, 2f, PathType.CatmullRom)
+            Tween cardMovement = card.transform.DOLocalPath(paths, 1f, PathType.CatmullRom)
             .SetEase(Ease.OutCubic)
-            .SetDelay(i)
+            .SetDelay(i*0.5f)
             .OnComplete(() =>
             {
                 // 카드가 움직인 후에 흔들림 효과 주기

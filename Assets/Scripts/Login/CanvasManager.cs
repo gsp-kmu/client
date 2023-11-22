@@ -64,45 +64,45 @@ public class CanvasManager : MonoBehaviour
 
         if(error == errorInfo.success)
         {
-            typeError.text = "È¸¿ø°¡ÀÔ ¼º°ø";
+            typeError.text = "íšŒì›ê°€ì… ì„±ê³µ";
         }
         else if (pageInfo == mPageInfo.Login)
         {
-            typeError.text = "·Î±×ÀÎ ½ÇÆĞ";
+            typeError.text = "ë¡œê·¸ì¸ ì‹¤íŒ¨";
         }
         else if(pageInfo == mPageInfo.Register)
         {
-            typeError.text = "È¸¿ø°¡ÀÔ ½ÇÆĞ";
+            typeError.text = "íšŒì›ê°€ì… ì‹¤íŒ¨";
         }
 
         
         if (error == errorInfo.NetworkError)
         {
-            errorDescript.text = "³×Æ®¿öÅ© ¿À·ùÀÔ´Ï´Ù";
+            errorDescript.text = "ë„¤íŠ¸ì›Œí¬ ì˜¤ë¥˜ì…ë‹ˆë‹¤";
         }
         else if (error == errorInfo.success)
         {
-            errorDescript.text = "¼º°øÀûÀ¸·Î È¸¿ø°¡ÀÔ µÇ¾ú½À´Ï´Ù";
+            errorDescript.text = "ì„±ê³µì ìœ¼ë¡œ íšŒì›ê°€ì… ë˜ì—ˆìŠµë‹ˆë‹¤";
         }
         else if (error == errorInfo.passwordError)
         {
-            errorDescript.text = "¾ÆÀÌµğ È¤Àº ºñ¹Ğ¹øÈ£\n¿À·ùÀÔ´Ï´Ù";
+            errorDescript.text = "ì•„ì´ë”” í˜¹ì€ ë¹„ë°€ë²ˆí˜¸\nì˜¤ë¥˜ì…ë‹ˆë‹¤";
         }
         else if (error == errorInfo.nonuserError)
         {
-            errorDescript.text = "Á¸ÀçÇÏÁö ¾Ê´Â °èÁ¤ÀÔ´Ï´Ù";
+            errorDescript.text = "ì¡´ì¬í•˜ì§€ ì•ŠëŠ” ê³„ì •ì…ë‹ˆë‹¤";
         }
         else if(error == errorInfo.patternError)
         {
-            errorDescript.text = "ºñ¹Ğ¹øÈ£ Çü½ÄÀÌ Àß¸øµÆ½À´Ï´Ù\nºñ¹Ğ¹øÈ£´Â ¿µ¹® ¼ıÀÚ Æ¯¼ö±âÈ£ Á¶ÇÕ 8ÀÚ¸® ÀÌ»ó\n µÇ¾î¾ß ÇÕ´Ï´Ù";
+            errorDescript.text = "ë¹„ë°€ë²ˆí˜¸ í˜•ì‹ì´ ì˜ëª»ëìŠµë‹ˆë‹¤\në¹„ë°€ë²ˆí˜¸ëŠ” ì˜ë¬¸ ìˆ«ì íŠ¹ìˆ˜ê¸°í˜¸ ì¡°í•© 8ìë¦¬ ì´ìƒ\n ë˜ì–´ì•¼ í•©ë‹ˆë‹¤";
         }
         else if(error == errorInfo.duplicateError)
         {
-            errorDescript.text = "ÀÌ¹Ì Á¸ÀçÇÏ´Â °èÁ¤ÀÔ´Ï´Ù";
+            errorDescript.text = "ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ê³„ì •ì…ë‹ˆë‹¤";
         }
         else if (error == errorInfo.multipleError)
         {
-            errorDescript.text = "ÀÌ¹Ì ·Î±×ÀÎÁßÀÎ °èÁ¤ÀÔ´Ï´Ù";
+            errorDescript.text = "ì´ë¯¸ ë¡œê·¸ì¸ì¤‘ì¸ ê³„ì •ì…ë‹ˆë‹¤";
         }
 
     }

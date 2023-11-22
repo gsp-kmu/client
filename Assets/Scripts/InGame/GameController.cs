@@ -30,6 +30,8 @@ public class GameController : MonoBehaviour
 
     public int playerID = 0;
 
+    public TurnController turnController;
+
     public Card player_one_topCard
     {
         get
@@ -99,7 +101,9 @@ public class GameController : MonoBehaviour
             this.turn += 1;
             UIManager.GetInstance().UpdateTurn();
             Debug.Log(turn.turn == "1" ? "내턴" : "상대방 턴");
-
+            if(turn.turn == "1"){
+                turnController.StartMyTurn();
+            }
             if (turn.turn != "1")
             {
                 GameObject opponent_card = Instantiate(Resources.Load<GameObject>("Prefebs/OpponentCard"));

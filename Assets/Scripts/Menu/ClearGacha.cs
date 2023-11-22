@@ -16,8 +16,8 @@ public class ClearGacha : MonoBehaviour
     // Start is called before the first frame update
     public void Awake()
     {
-        /// id ÀÔ·Â ¹Þ´Â°÷ /////
-        int id = 1;
+        /// id ï¿½Ô·ï¿½ ï¿½Þ´Â°ï¿½ /////
+        int id = int.Parse(NetworkService.Instance.id);
         RequestSendCoin coinid = new RequestSendCoin
         {
             userId = id
@@ -45,7 +45,7 @@ public class ClearGacha : MonoBehaviour
             if (request.responseCode == 200)
             {
                 string responseJson = request.downloadHandler.text;
-                Debug.Log("ÄÚÀÎ ¹Þ¾Æ¿À±â ¼º°ø");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 
                 Debug.Log(responseJson);
                 ResponseGetCoin response = JsonConvert.DeserializeObject<ResponseGetCoin>(responseJson);
@@ -55,7 +55,7 @@ public class ClearGacha : MonoBehaviour
             }
             else if (request.responseCode == 400)
             {
-                Debug.Log("¹Þ¾Æ¿À±â ½ÇÆÐ");
+                Debug.Log("ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             }
         }
     }
@@ -64,10 +64,10 @@ public class ClearGacha : MonoBehaviour
     {
         if(randomSelect != null)
         {
-            //·£´ýÄ«µå¸®½ºÆ® Áö¿ì±â
+            //ï¿½ï¿½ï¿½ï¿½Ä«ï¿½å¸®ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½
             randomSelect.result.Clear();
 
-            //·£´ýÄ«µå¸®½ºÆ®uiÁö¿ì±â
+            //ï¿½ï¿½ï¿½ï¿½Ä«ï¿½å¸®ï¿½ï¿½Æ®uiï¿½ï¿½ï¿½ï¿½ï¿½
             foreach(GameObject card in randomSelect.cardUIs)
             {
                 card.GetComponent<CardUI>().DestoryCard();
@@ -75,7 +75,7 @@ public class ClearGacha : MonoBehaviour
 
             randomSelect.cardUIs.Clear();
 
-            //ºñÈ°¼ºÈ­ÇÑ °¡Ã­¹öÆ° ´Ù½Ã È°¼ºÈ­
+            //ï¿½ï¿½È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½Ã­ï¿½ï¿½Æ° ï¿½Ù½ï¿½ È°ï¿½ï¿½È­
             randomSelect.gachaButton.GetComponent<Button>().enabled = true;
         }
     }

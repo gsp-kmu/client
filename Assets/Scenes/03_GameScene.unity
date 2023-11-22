@@ -10063,6 +10063,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1689538180}
   - component: {fileID: 1689538179}
+  - component: {fileID: 1689538181}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -10096,6 +10097,7 @@ MonoBehaviour:
   click_pos: {x: 0, y: 0, z: 0}
   click_time: 0
   playerID: 0
+  turnController: {fileID: 1689538181}
 --- !u!4 &1689538180
 Transform:
   m_ObjectHideFlags: 0
@@ -10118,6 +10120,19 @@ Transform:
   - {fileID: 769038505}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1689538181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689538178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47f4176656c254a9b913a2c515507c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myTurnSound: {fileID: 8300000, guid: 13505983b54e41e448d3d6f5c3cb6b78, type: 3}
 --- !u!1 &1709741250
 GameObject:
   m_ObjectHideFlags: 0

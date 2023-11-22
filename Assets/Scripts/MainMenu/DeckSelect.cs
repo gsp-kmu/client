@@ -27,6 +27,8 @@ public class DeckSelect : MonoBehaviour
     public RectTransform[] rectTransforms;
     private List<string> decknameList;
     public TextMeshProUGUI coinGUI;
+
+    public CardShaderSelector cardShaderSelector;
     private string getDeckUrl = GSP.http.getDeck;
     private string getCoinUrl = GSP.http.getCoin;
 
@@ -66,18 +68,19 @@ public class DeckSelect : MonoBehaviour
             if (request.responseCode == 200)
             {
                 string responseJson = request.downloadHandler.text;
-                Debug.Log("µ¦ ¹Þ¾Æ¿À±â ¼º°ø");
+                Debug.Log("ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 
                 Debug.Log(responseJson);
                 ResponseGetDeck response = JsonConvert.DeserializeObject<ResponseGetDeck>(responseJson);
 
                 Debug.Log(response.msg);
                 decknameList = response.nameList;
-
                 for (int i = 0; i < 5; i++)
                 {
                     TextMeshProUGUI text = decks[i].GetComponentInChildren<TextMeshProUGUI>();
-         
+                    if(response.deckList[i].Count != 20){
+                        cardShaderSelector.SetAtiveBlackWhiteCardShader(decks[i]);
+                    }
                     if (text != null)
                     {
                         text.text = decknameList[i];
@@ -86,7 +89,7 @@ public class DeckSelect : MonoBehaviour
             }
             else if (request.responseCode == 400)
             {
-                Debug.Log("µ¦ ¹Þ¾Æ¿À±â ½ÇÆÐ");
+                Debug.Log("ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             }
         }
         yield return null;
@@ -109,7 +112,7 @@ public class DeckSelect : MonoBehaviour
             if (request.responseCode == 200)
             {
                 string responseJson = request.downloadHandler.text;
-                Debug.Log("ÄÚÀÎ ¹Þ¾Æ¿À±â ¼º°ø");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 
                 Debug.Log(responseJson);
                 ResponseGetCoin response = JsonConvert.DeserializeObject<ResponseGetCoin>(responseJson);
@@ -120,7 +123,7 @@ public class DeckSelect : MonoBehaviour
             }
             else if (request.responseCode == 400)
             {
-                Debug.Log("µ¦ ¹Þ¾Æ¿À±â ½ÇÆÐ");
+                Debug.Log("ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             }
 
             coinGUI.text = coin.ToString();

@@ -20,6 +20,10 @@ public class SoundController : MonoBehaviour
         instance = this;
     }
 
+    public static void PlaySound(AudioClip clip){
+        instance.effect.PlayOneShot(clip);
+    }
+
     public static void PlaySound(string s)
     {
         if (!instance.effect_able)
