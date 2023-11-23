@@ -184,6 +184,7 @@ public class RandomSelect : MonoBehaviour
 
                 Debug.Log("코인부족");
                 succesButton.SetActive(false);
+                failButton.SetActive(true);
             }
             else if (request.responseCode == 401)
             {
