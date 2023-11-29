@@ -120,7 +120,6 @@ public class Necromancer : Card
             yield return new WaitForSeconds(0);
         }
 
-        controller.CardExpendLock = false;
 
         for(int i = 0; i < ghosts.Count; i++)
         {
@@ -148,6 +147,7 @@ public class Necromancer : Card
             transform.GetChild(i).localScale = Vector3.one * 2;
         }
 
+        controller.CardExpendLock = false;
         yield return new WaitForSeconds(0);
     }
 

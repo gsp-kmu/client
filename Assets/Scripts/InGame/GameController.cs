@@ -133,6 +133,10 @@ public class GameController : MonoBehaviour
 
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_DRAW_CARD, (Data.Card card) => DrawCard(card.id));
         NetworkService.Instance.Send(NetworkEvent.INGAME_CLIENT_READY, "");
+
+
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TIME_START, (int time) => { Debug.Log(time); });
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TIME_END, () => { Debug.Log("시간끝"); });
     }
 
     void Update()
@@ -150,6 +154,11 @@ public class GameController : MonoBehaviour
         NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_FIRST_CARD);
         NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_PLAY_RECV);
         NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_DRAW_CARD);
+
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_TIME_START);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_TIME_END);
+
+
     }
 
     void ControllHandCard()
@@ -333,6 +342,7 @@ public class GameController : MonoBehaviour
     //적 카드 선택
     public IEnumerator OpponentCardSelect(Action<Card> callback)
     {
+
         Card oneCard = opponent_one_topCard;
         Card tenCard = opponent_ten_topCard;
 
@@ -352,6 +362,21 @@ public class GameController : MonoBehaviour
         else
         {
             Card card = null;
+
+            GameObject follower1 = Instantiate(Resources.Load<GameObject>("Prefebs/Follower"));
+            GameObject follower2 = Instantiate(Resources.Load<GameObject>("Prefebs/Follower"));
+
+            follower1.transform.parent = oneCard.transform;
+            follower2.transform.parent = tenCard.transform;
+
+            follower1.transform.position = oneCard.transform.position;
+            follower2.transform.position = tenCard.transform.position;
+
+            follower1.transform.localScale = Vector3.one * 1.05f;
+            follower2.transform.localScale = Vector3.one * 1.05f;
+
+            follower1.GetComponent<SpriteRenderer>().sortingOrder = oneCard.GetComponent<SpriteRenderer>().sortingOrder - 1;
+            follower2.GetComponent<SpriteRenderer>().sortingOrder = tenCard.GetComponent<SpriteRenderer>().sortingOrder - 1;
 
             oneCard.transform.DOScale(Vector3.one * 2.2f, 0.1f);
             tenCard.transform.DOScale(Vector3.one * 2.2f, 0.1f);
@@ -392,6 +417,9 @@ public class GameController : MonoBehaviour
             }
 
             CardExpendLock = false;
+
+            Destroy(follower1);
+            Destroy(follower2);
 
             yield return new WaitForSeconds(0.2f);
 

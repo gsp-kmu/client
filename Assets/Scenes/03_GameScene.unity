@@ -1128,6 +1128,7 @@ MonoBehaviour:
   yourScore: {fileID: 1315569072}
   turn1_ts: {fileID: 938135923}
   turn2_ts: {fileID: 1349453746}
+  coinText: {fileID: 0}
 --- !u!1 &472767567
 GameObject:
   m_ObjectHideFlags: 0

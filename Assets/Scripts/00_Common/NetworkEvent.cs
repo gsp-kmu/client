@@ -19,6 +19,8 @@ public static class NetworkEvent
     public const string INGAME_END_WIN = "ingame_end_win";
     public const string INGAME_END_LOSE = "ingame_end_lose";
     public const string INGAME_SURRENDER = "ingame_surrender";
+    public const string INGAME_TIME_START = "ingame_time_start";
+    public const string INGAME_TIME_END = "ingame_time_end";
     //����
     public const string SHOP_RANDOM_DRAWCARD = "shop_random_drawcard";
 

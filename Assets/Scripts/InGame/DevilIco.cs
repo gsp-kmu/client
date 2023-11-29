@@ -48,7 +48,7 @@ public class DevilIco : Card
 
                 Card[] cards = controller.player_hand.GetComponentsInChildren<Card>();
 
-                for (int i = 0; i < cards.Length - 1; i++)
+                for (int i = 0; i < cards.Length; i++)
                 {
                     cards[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
                 }
