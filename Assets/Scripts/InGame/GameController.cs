@@ -13,7 +13,10 @@ public class GameController : MonoBehaviour
 
     public PlayerHand player_hand;
     public Transform player_ten;
-    public Transform player_one; public Transform opponent_hand; public Transform opponent_ten; public Transform opponent_one;
+    public Transform player_one;
+    public Transform opponent_hand;
+    public Transform opponent_ten;
+    public Transform opponent_one;
 
     public Transform effect_ts;
 
@@ -31,6 +34,8 @@ public class GameController : MonoBehaviour
     public int playerID = 0;
 
     public TurnController turnController;
+
+    public bool CardExpendLock = false;
 
     public Card player_one_topCard
     {
@@ -103,6 +108,10 @@ public class GameController : MonoBehaviour
             Debug.Log(turn.turn == "1" ? "내턴" : "상대방 턴");
             if(turn.turn == "1"){
                 turnController.StartMyTurn();
+            }
+            else
+            {
+                turnController.StartOpponentTurn();
             }
             if (turn.turn != "1")
             {
@@ -230,7 +239,7 @@ public class GameController : MonoBehaviour
             if (Vector3.Distance(click_pos, mouse_point) > 1)
                 click_out = true;
 
-            if (Time.time - click_time > 0.5f && !click_out) //카드 확대
+            if (Time.time - click_time > 0.5f && !click_out && !CardExpendLock) //카드 확대
             {
                 select_card.transform.position = Vector3.zero;
                 select_card.transform.localScale = Vector3.one * 5;
@@ -242,12 +251,13 @@ public class GameController : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButton(0) && select_card == null)
+        if (Input.GetMouseButton(0) && select_card == null && !CardExpendLock)
         {
             Collider2D hit = Physics2D.OverlapPoint(mouse_point);
 
             if (hit == null)
                 return;
+
             Card topCard = null;
             if (hit.transform.parent == player_one)
             {
@@ -348,6 +358,8 @@ public class GameController : MonoBehaviour
 
             float oneDelta = UnityEngine.Random.Range(0, Mathf.PI);
             float tenDelta = UnityEngine.Random.Range(0, Mathf.PI);
+
+            CardExpendLock = true;
             while (true)
             {
                 yield return new WaitForSeconds(0);
@@ -378,6 +390,8 @@ public class GameController : MonoBehaviour
                         break;
                 }
             }
+
+            CardExpendLock = false;
 
             yield return new WaitForSeconds(0.2f);
 

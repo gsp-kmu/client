@@ -2,6 +2,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections.LowLevel.Unsafe;
 using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
@@ -9,13 +10,51 @@ using static UnityEngine.GraphicsBuffer;
 public class DevilIco : Card
 {
     GameObject loveletter_effect = null;
+    bool colorChange;
 
     void Awake()
     {
-
         if (loveletter_effect == null)
             loveletter_effect = Resources.Load<GameObject>("Prefebs/Effect/ghost");
         transform.name = "DevilIco";
+    }
+
+    private void Update()
+    {
+        ColorChange();
+    }
+
+    public void ColorChange()
+    {
+        GameController controller = GameController.GetInstance();
+        if(controller.player_one_topCard == this || controller.player_ten_topCard == this)
+        {
+            colorChange = true;
+            Card[] cards = controller.player_hand.GetComponentsInChildren<Card>();
+
+            for(int i = 0; i < cards.Length - 1; i++)
+            {
+                cards[i].GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 0.5f);
+            }
+
+            Debug.Log("lock");
+        }
+        else
+        {
+            if(colorChange)
+            {
+                Debug.Log("off");
+                colorChange = false;
+
+                Card[] cards = controller.player_hand.GetComponentsInChildren<Card>();
+
+                for (int i = 0; i < cards.Length - 1; i++)
+                {
+                    cards[i].GetComponent<SpriteRenderer>().color = new Color(1, 1, 1);
+                }
+            }
+        }
+        
     }
 
     public override void BattleCry(Digit digit)
@@ -78,10 +117,8 @@ public class DevilIco : Card
             effect.transform.up = new Vector3(Mathf.Cos(delta), Mathf.Sin(delta), 0);
             effect.transform.DOMove(effect.transform.position + new Vector3(Mathf.Cos(delta) * distance, Mathf.Sin(delta) * distance, 0), Random.Range(1.0f, 3.0f));
             effect.transform.DOScale(new Vector3(1, 1, 1), 0.2f);
-
         }
 
         yield return new WaitForSeconds(3.0f);
-
     }
 }

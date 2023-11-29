@@ -81,6 +81,8 @@ public class Necromancer : Card
         yield return new WaitForSeconds(0.5f);
 
         Card selectCard = null;
+        controller.CardExpendLock = true;
+
         while (true)
         {
             yield return new WaitForSeconds(0);
@@ -117,6 +119,8 @@ public class Necromancer : Card
 
             yield return new WaitForSeconds(0);
         }
+
+        controller.CardExpendLock = false;
 
         for(int i = 0; i < ghosts.Count; i++)
         {

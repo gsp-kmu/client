@@ -35,6 +35,8 @@ public class UIManager : MonoBehaviour
 
     bool menuTrigger = false;
 
+    public TextMeshProUGUI coinText;
+
     public void Awake()
     {
         instance = this;
