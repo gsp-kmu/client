@@ -37,13 +37,15 @@ public class RandomSelect : MonoBehaviour
     public int mycoin;
     public GameObject coinText;
 
+    private bool isSkipping = false;
+
     public List<Card_> deck = new List<Card_>();  // 카드 덱
     private List<int> deckIndex = new List<int>();
     public int total = 0;  // 카드들의 가중치 총 합
     public GameObject gachaButton;
     public GameObject succesButton;
     public GameObject failButton;
-    List<int> randomRecieve = new List<int>(){ 1, 2, 3, 4, 5 };
+    List<int> randomRecieve = new List<int>(){ 11, 2, 3, 4, 5 };
     public List<bool> cardSamebool = new List<bool>() { true, false, true, false, false };
 
     public List<Vector3> cardpo = new List<Vector3>(); //카드 위치
@@ -60,7 +62,24 @@ public class RandomSelect : MonoBehaviour
     // 원하는 만큼 Vector3 리스트를 추가할 수 있습니다.
 };
 
-    
+    public void SkipAnimations()
+    {
+        if (isSkipping == false)
+        {
+            int i = 0;
+            // 모든 카드 애니메이션 즉시 완료
+            foreach (var card in cardUIs)
+            {
+                card.transform.DOKill(); // 해당 카드의 모든 Tweens를 즉시 중지
+                                         // 트윈 애니메이션의 Complete를 호출하여 애니메이션을 즉시 완료
+                card.transform.DOLocalPath(pathS[i].ToArray(), 0.001f).Complete();
+                card.GetComponent<CardUI>().SkipAnimations();
+                i++;
+            }
+        }
+        isSkipping = true;
+    }
+
     public void OnEnable()
     {
         gachaButton.GetComponent<Button>().enabled = false;
@@ -88,6 +107,7 @@ public class RandomSelect : MonoBehaviour
     public void OnDisable()
     {
         gachaButton.GetComponent<Button>().enabled = true;
+        isSkipping = false;
     }
     public List<Card_> result = new List<Card_>();  // 랜덤카드 리스트
 
@@ -106,6 +126,7 @@ public class RandomSelect : MonoBehaviour
             CardUI cardUI = card.GetComponent<CardUI>();
 
             AudioSource cardSound = card.GetComponent<AudioSource>().AddComponent<AudioSource>();
+            
             cardSound.clip = cardGachaSound[0];
             cardSound.PlayDelayed(0.5f * i);
 
@@ -113,6 +134,7 @@ public class RandomSelect : MonoBehaviour
             List<Vector3> path = pathS[i];
             path.Add(targetPosition);
             Vector3[] paths = path.ToArray();
+            pathS[i] = path;
 
             // 카드가 나선 모양의 경로를 따라 움직이도록 설정
             
