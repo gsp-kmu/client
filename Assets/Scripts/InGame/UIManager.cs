@@ -28,8 +28,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI warringText;
 
     public float startTime;
-    public bool timerTrigger;
-    public bool timeSoundTrigger;
+    public bool timeout;
     public Image timeTool;
     public Image timer;
 
@@ -138,9 +137,27 @@ public class UIManager : MonoBehaviour
             timer.fillAmount = 1;
         }
     }
-    public void TimerPitch()
+    public IEnumerator TimerPitch()
     {
-        Debug.Log("빨리");
+        timeTool.rectTransform.DOShakePosition(20, 5, 5);
+        SoundController.PlayEnvironment("Ingame/Clock");
+
+        while (!timeout)
+        {
+            timeTool.rectTransform.DOShakePosition(2, 10, 10);
+            timer.DOColor(Color.red, 1f);
+            yield return new WaitForSeconds(1.5f);
+            timer.DOColor(Color.yellow, 1f);
+            yield return new WaitForSeconds(1.5f);
+        }
+
+        yield return new WaitForSeconds(0);
+    }
+
+    public void TimeOut()
+    {
+        timeout = true;
+        Surrender();
     }
 
     public void StartWarringText(string text)
