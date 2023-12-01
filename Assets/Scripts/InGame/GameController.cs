@@ -107,6 +107,7 @@ public class GameController : MonoBehaviour
             Debug.Log(turn.turn == "1" ? "내턴" : "상대방 턴");
             if(turn.turn == "1"){
                 turnController.StartMyTurn();
+                UIManager.GetInstance().startTime = Time.time;
             }
             else
             {
@@ -117,6 +118,7 @@ public class GameController : MonoBehaviour
                 GameObject opponent_card = Instantiate(Resources.Load<GameObject>("Prefebs/OpponentCard"));
                 opponent_card.transform.position = new Vector3(0, 100, 0);
                 opponent_card.transform.parent = opponent_hand;
+
             }
         });
 
@@ -136,7 +138,7 @@ public class GameController : MonoBehaviour
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TIME_START, (int time) =>
         {
             Debug.Log(time);
-            UIManager.GetInstance().startTime = Time.time;
+            UIManager.GetInstance().TimerPitch();
         }
         );
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TIME_END, () => { Debug.Log("시간끝"); });

@@ -128,32 +128,19 @@ public class UIManager : MonoBehaviour
 
     public void Timer()
     {
-        float curTime = Time.time - startTime;
-
-        if (curTime <= 20)
+        if (GameController.GetInstance().myTurn)
         {
-            curTime = 1;
-            timerTrigger = false;
-            timeSoundTrigger = false;
+            float curTime = 1 - ((Time.time - startTime) / 60);
+            timer.fillAmount = curTime;
         }
         else
         {
-            curTime = 1 - ((curTime - 20) / 40f);
+            timer.fillAmount = 1;
         }
-
-        if(curTime > 50 && !timeSoundTrigger)
-        {
-            SoundController.PlayEnvironment("Ingame/Clock");
-            timeSoundTrigger = true;
-        }
-
-
-        if (!timerTrigger)
-        {
-            timeTool.transform.DOShakePosition(10, 3, 1);
-            timerTrigger = true;
-        }
-        timer.fillAmount = curTime;
+    }
+    public void TimerPitch()
+    {
+        Debug.Log("빨리");
     }
 
     public void StartWarringText(string text)
