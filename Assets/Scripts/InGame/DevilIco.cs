@@ -36,8 +36,6 @@ public class DevilIco : Card
             {
                 cards[i].GetComponent<SpriteRenderer>().color = new Color(0.5f, 0.5f, 0.5f);
             }
-
-            Debug.Log("lock");
         }
         else
         {
@@ -89,6 +87,7 @@ public class DevilIco : Card
         SoundController.PlaySound("ani");
 
         yield return new WaitForSeconds(0.5f);
+        SoundController.PlayEnvironment("Ingame/Change");
         card.transform.DOMove(target.position, 0.5f);
 
         card.GetComponent<SpriteRenderer>().sortingOrder = 1500;

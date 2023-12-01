@@ -46,6 +46,7 @@ public class LoveLetter : Card
 
     public IEnumerator LoveLetterSkill(Card card, Transform target)
     {
+        SoundController.PlayEnvironment("Ingame/Change");
         SoundController.PlaySound("roro");
         
         yield return new WaitForSeconds(0.5f);

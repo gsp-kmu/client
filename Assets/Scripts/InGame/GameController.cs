@@ -82,7 +82,6 @@ public class GameController : MonoBehaviour
     {
         instance = this;
         //NetworkService.Instance.Login("A");
-
     }
 
     private void Start()
@@ -134,8 +133,12 @@ public class GameController : MonoBehaviour
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_DRAW_CARD, (Data.Card card) => DrawCard(card.id));
         NetworkService.Instance.Send(NetworkEvent.INGAME_CLIENT_READY, "");
 
-
-        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TIME_START, (int time) => { Debug.Log(time); });
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TIME_START, (int time) =>
+        {
+            Debug.Log(time);
+            UIManager.GetInstance().startTime = Time.time;
+        }
+        );
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TIME_END, () => { Debug.Log("시간끝"); });
     }
 
@@ -191,6 +194,7 @@ public class GameController : MonoBehaviour
             if ((dev1 != null || dev2 != null) && player_hand.transform.childCount - 1 != select_card.transform.GetSiblingIndex())
             {
                 select_card = null;
+                UIManager.GetInstance().StartWarringText("뽑은 카드만 선택 가능");
                 return;
             }
 
@@ -217,6 +221,8 @@ public class GameController : MonoBehaviour
 
             if (myTurn)
             {
+                SoundController.PlayEnvironment("Ingame/neda");
+
                 Collider2D[] hits = Physics2D.OverlapPointAll(mouse_point);
 
                 foreach (Collider2D hit in hits)
@@ -337,6 +343,8 @@ public class GameController : MonoBehaviour
         card.transform.position = new Vector3(0, 100, 0);
         card.transform.localScale = Vector3.one * 4;
         card.transform.DOScale(Vector3.one, 1.0f);
+
+        SoundController.PlayEnvironment("Ingame/Draw");
     }
 
     //적 카드 선택

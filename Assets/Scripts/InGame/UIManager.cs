@@ -25,6 +25,14 @@ public class UIManager : MonoBehaviour
     public bool vibration = true;
     public Image vibration_icon;
 
+    public TextMeshProUGUI warringText;
+
+    public float startTime;
+    public bool timerTrigger;
+    public bool timeSoundTrigger;
+    public Image timeTool;
+    public Image timer;
+
     public GameObject result;
     public TextMeshProUGUI game_result;
     public TextMeshProUGUI myScore;
@@ -48,6 +56,10 @@ public class UIManager : MonoBehaviour
 
         if(menuTrigger && Input.GetMouseButtonUp(0))
             StartCoroutine(ChangeMenuScene());
+
+        Timer();
+
+        warringText.color = new Color(warringText.color.r, warringText.color.g, warringText.color.b, warringText.color.a - Time.deltaTime * 0.5f);
     }
 
     public void TurnAnimation()
@@ -114,6 +126,44 @@ public class UIManager : MonoBehaviour
         pause_ui.SetActive(pause);
     }
 
+    public void Timer()
+    {
+        float curTime = Time.time - startTime;
+
+        if (curTime <= 20)
+        {
+            curTime = 1;
+            timerTrigger = false;
+            timeSoundTrigger = false;
+        }
+        else
+        {
+            curTime = 1 - ((curTime - 20) / 40f);
+        }
+
+        if(curTime > 50 && !timeSoundTrigger)
+        {
+            SoundController.PlayEnvironment("Ingame/Clock");
+            timeSoundTrigger = true;
+        }
+
+
+        if (!timerTrigger)
+        {
+            timeTool.transform.DOShakePosition(10, 3, 1);
+            timerTrigger = true;
+        }
+        timer.fillAmount = curTime;
+    }
+
+    public void StartWarringText(string text)
+    {
+        warringText.text = text;
+        warringText.rectTransform.localPosition = new Vector3(0, -650, 0);
+        warringText.color = new Color(warringText.color.r, warringText.color.g, warringText.color.b, 1);
+        warringText.rectTransform.DOLocalMove(new Vector3(0, -600, 0), 1f);
+    }
+
     public IEnumerator Result(string what)
     {
         yield return new WaitForSeconds(1f);
@@ -145,6 +195,7 @@ public class UIManager : MonoBehaviour
             score = Random.Range(0, 99);
             myScore.text = score.ToString();
             yourScore.text = score.ToString();
+            coinText.text = score.ToString();
             yield return new WaitForSeconds(0);
         }
 
@@ -167,6 +218,11 @@ public class UIManager : MonoBehaviour
             score += o_one_card.num;
 
         yourScore.text = score.ToString();
+
+        if (what == "Win")
+            coinText.text = "50";
+        else
+            coinText.text = "30";
 
         menuTrigger = true;
 
