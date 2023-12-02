@@ -141,7 +141,7 @@ public class GameController : MonoBehaviour
             StartCoroutine(UIManager.GetInstance().TimerPitch());
         }
         );
-        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TIME_END, () => {
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TIME_END, (string data) => {
             Debug.Log("시간끝");
             UIManager.GetInstance().TimeOut(); 
         });
