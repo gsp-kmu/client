@@ -27,6 +27,7 @@ public class DeckSelect : MonoBehaviour
     public RectTransform[] rectTransforms;
     private List<string> decknameList;
     public TextMeshProUGUI coinGUI;
+    public bool[] isDeckAtive = { false, false, false, false, false };
 
     public CardShaderSelector cardShaderSelector;
     private string getDeckUrl = GSP.http.getDeck;
@@ -82,6 +83,10 @@ public class DeckSelect : MonoBehaviour
                     if(response.deckList[i].Count != 20){
                         text.color = new Color(0.66f, 0.66f, 0.66f);
                         cardShaderSelector.SetAtiveBlackWhiteCardShader(decks[i]);
+                    }
+                    else
+                    {
+                        isDeckAtive[i] = true;
                     }
                     if (text != null)
                     {

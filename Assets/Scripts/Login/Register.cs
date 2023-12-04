@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class Register : MonoBehaviour
 {
@@ -11,6 +11,8 @@ public class Register : MonoBehaviour
     public TMP_InputField idField;
     public TMP_InputField passwordField;
     public GameObject canvasManager;
+
+    public Toggle isAgree;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +32,13 @@ public class Register : MonoBehaviour
 
     public void RegisterButtonClick()
     {
+        if (isAgree.isOn == false)
+        {
+            canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Register, 
+                CanvasManager.errorInfo.agreeError);
+            return;
+        }
+
         User user = new User
         {
             id = idField.text,

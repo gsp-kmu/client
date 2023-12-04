@@ -25,6 +25,13 @@ public class UIManager : MonoBehaviour
     public bool vibration = true;
     public Image vibration_icon;
 
+    public TextMeshProUGUI warringText;
+
+    public float startTime;
+    public bool timeout;
+    public Image timeTool;
+    public Image timer;
+
     public GameObject result;
     public TextMeshProUGUI game_result;
     public TextMeshProUGUI myScore;
@@ -34,6 +41,8 @@ public class UIManager : MonoBehaviour
     public Transform turn2_ts;
 
     bool menuTrigger = false;
+
+    public TextMeshProUGUI coinText;
 
     public void Awake()
     {
@@ -46,6 +55,10 @@ public class UIManager : MonoBehaviour
 
         if(menuTrigger && Input.GetMouseButtonUp(0))
             StartCoroutine(ChangeMenuScene());
+
+        Timer();
+
+        warringText.color = new Color(warringText.color.r, warringText.color.g, warringText.color.b, warringText.color.a - Time.deltaTime * 0.5f);
     }
 
     public void TurnAnimation()
@@ -112,6 +125,49 @@ public class UIManager : MonoBehaviour
         pause_ui.SetActive(pause);
     }
 
+    public void Timer()
+    {
+        if (GameController.GetInstance().myTurn)
+        {
+            float curTime = 1 - ((Time.time - startTime) / 60);
+            timer.fillAmount = curTime;
+        }
+        else
+        {
+            timer.fillAmount = 1;
+        }
+    }
+    public IEnumerator TimerPitch()
+    {
+        timeTool.rectTransform.DOShakePosition(20, 5, 5);
+        SoundController.PlayEnvironment("Ingame/Clock");
+
+        while (!timeout)
+        {
+            timeTool.rectTransform.DOShakePosition(2, 10, 10);
+            timer.DOColor(Color.red, 1f);
+            yield return new WaitForSeconds(1.5f);
+            timer.DOColor(Color.yellow, 1f);
+            yield return new WaitForSeconds(1.5f);
+        }
+
+        yield return new WaitForSeconds(0);
+    }
+
+    public void TimeOut()
+    {
+        timeout = true;
+        Surrender();
+    }
+
+    public void StartWarringText(string text)
+    {
+        warringText.text = text;
+        warringText.rectTransform.localPosition = new Vector3(0, -650, 0);
+        warringText.color = new Color(warringText.color.r, warringText.color.g, warringText.color.b, 1);
+        warringText.rectTransform.DOLocalMove(new Vector3(0, -600, 0), 1f);
+    }
+
     public IEnumerator Result(string what)
     {
         yield return new WaitForSeconds(1f);
@@ -143,6 +199,7 @@ public class UIManager : MonoBehaviour
             score = Random.Range(0, 99);
             myScore.text = score.ToString();
             yourScore.text = score.ToString();
+            coinText.text = score.ToString();
             yield return new WaitForSeconds(0);
         }
 
@@ -165,6 +222,11 @@ public class UIManager : MonoBehaviour
             score += o_one_card.num;
 
         yourScore.text = score.ToString();
+
+        if (what == "Win")
+            coinText.text = "50";
+        else
+            coinText.text = "30";
 
         menuTrigger = true;
 

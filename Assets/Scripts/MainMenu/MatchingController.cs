@@ -20,9 +20,24 @@ public class MatchingController : MonoBehaviour
     private Coroutine timeTextCoroutine;
 
     public DeckSelect deckSelect;
+    public TMPro.TextMeshProUGUI alertText;
 
     public void MatchingStart()
     {
+        Debug.LogWarning(deckSelect.isDeckAtive[deckSelect.currentIdx]);
+        if(deckSelect.isDeckAtive[deckSelect.currentIdx] == false)
+        {
+            alertText.text = "완성 되지 않은 덱 입니다.\n다른 덱을 선택해주세요.";
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(
+            alertText.rectTransform.DOShakePosition(1.2f))
+                .AppendCallback(() =>
+                {
+                    alertText.text = "덱을 선택해주세요.";
+                });
+            sequence.Play();
+            return;
+        }
         matchingWindow.gameObject.SetActive(true);
         gameObject.GetComponent<MatchingTipController>().StartTip();
         NetworkService.Instance.Send(NetworkEvent.MATCH_START, deckSelect.currentIdx + 1);

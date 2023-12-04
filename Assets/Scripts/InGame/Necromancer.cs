@@ -81,6 +81,25 @@ public class Necromancer : Card
         yield return new WaitForSeconds(0.5f);
 
         Card selectCard = null;
+        controller.CardExpendLock = true;
+
+        List<GameObject> followers = new List<GameObject>();
+
+        for(int i = 0; i < startPos.childCount - 1; i++)
+        {
+
+            Transform ts = startPos.GetChild(i).transform;
+
+            GameObject follower = Instantiate(Resources.Load<GameObject>("Prefebs/Follower"));
+
+            follower.transform.parent = ts;
+            follower.transform.position = ts.position;
+            follower.transform.localScale = ts.localScale * 1.05f;
+            follower.GetComponent<SpriteRenderer>().sortingOrder = 10049;
+
+            followers.Add(follower);
+        }
+
         while (true)
         {
             yield return new WaitForSeconds(0);
@@ -94,7 +113,6 @@ public class Necromancer : Card
 
                 foreach (Collider2D hit in hits)
                 {
-
                     if (!hit)
                         continue;
 
@@ -117,6 +135,12 @@ public class Necromancer : Card
 
             yield return new WaitForSeconds(0);
         }
+
+        for(int i = 0; i < followers.Count; i++)
+        {
+            Destroy(followers[i]);
+        }
+
 
         for(int i = 0; i < ghosts.Count; i++)
         {
@@ -144,6 +168,7 @@ public class Necromancer : Card
             transform.GetChild(i).localScale = Vector3.one * 2;
         }
 
+        controller.CardExpendLock = false;
         yield return new WaitForSeconds(0);
     }
 
@@ -154,6 +179,7 @@ public class Necromancer : Card
 
 
         SoundController.PlaySound("bex");
+        SoundController.PlayEnvironment("Ingame/Change");
 
         GameController controller = GameController.GetInstance();
         Transform start = targetDigit == Digit.One ? controller.opponent_one : controller.opponent_ten; 

@@ -25,7 +25,8 @@ public class CanvasManager : MonoBehaviour
         patternError,
         duplicateError,
         multipleError,
-        success
+        agreeError,
+        success,
     }
 
     private mPageInfo CurrentPageInfo;
@@ -103,6 +104,10 @@ public class CanvasManager : MonoBehaviour
         else if (error == errorInfo.multipleError)
         {
             errorDescript.text = "이미 로그인중인 계정입니다";
+        }
+        else if(error == errorInfo.agreeError)
+        {
+            errorDescript.text = "이용약관에 동의해 주세요.";
         }
 
     }

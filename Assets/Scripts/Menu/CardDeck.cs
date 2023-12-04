@@ -2,14 +2,9 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using System.Collections;
-using static System.Net.WebRequestMethods;
 using UnityEngine.Networking;
-using System;
-using UnityEditor.PackageManager.Requests;
 using Newtonsoft.Json;
-using UnityEngine.SceneManagement;
 
 public class RequestGetDeck
 {

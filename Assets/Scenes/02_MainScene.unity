@@ -1034,11 +1034,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 597395542}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 740}
-  m_SizeDelta: {x: 0, y: 200}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -534.78125}
+  m_SizeDelta: {x: 927.4151, y: 141.5473}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &389120075
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1061,15 +1061,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uB371\uC744 \uC120\uD0DD\uD574\uC8FC\uC138\uC694"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3045b8728e7493745b71c0fcf6babe3d, type: 2}
-  m_sharedMaterial: {fileID: -4694625222533056053, guid: 3045b8728e7493745b71c0fcf6babe3d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b0d37b15719ee754ab6026f429ae4e7e, type: 2}
+  m_sharedMaterial: {fileID: -7418865800469709782, guid: b0d37b15719ee754ab6026f429ae4e7e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1089,9 +1089,9 @@ MonoBehaviour:
   m_fontSize: 100
   m_fontSizeBase: 100
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 60
+  m_fontSizeMax: 100
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -1446,6 +1446,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -50
       objectReference: {fileID: 0}
+    - target: {fileID: 8717243289826739405, guid: 301feb8afe210384398d5ef32842e6ad, type: 3}
+      propertyPath: alertText
+      value: 
+      objectReference: {fileID: 389120075}
     - target: {fileID: 8717243289826739405, guid: 301feb8afe210384398d5ef32842e6ad, type: 3}
       propertyPath: deckSelect
       value: 
@@ -2261,6 +2265,7 @@ MonoBehaviour:
   - {fileID: 737045111}
   - {fileID: 1398707939}
   coinGUI: {fileID: 2074115989}
+  isDeckAtive: 0000000000
   cardShaderSelector: {fileID: 856178622}
 --- !u!4 &1132463990
 Transform:

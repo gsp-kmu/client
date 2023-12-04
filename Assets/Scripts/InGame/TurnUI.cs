@@ -12,7 +12,7 @@ public class TurnUI : MonoBehaviour
     public void StartMyTurnAnimation(int turn)
     {
         rectTransform.localScale = Vector3.zero;
-        turnText.SetText("ео " + turn + " / 20");
+        turnText.text = "Turn " + turn + " / 20";
 
         Sequence sequence = DOTween.Sequence()
             .Append(rectTransform.DOScale(1.0f, 0.15f))
