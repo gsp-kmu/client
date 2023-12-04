@@ -6299,26 +6299,26 @@ MonoBehaviour:
   cardSound:
   - {fileID: 8300000, guid: c629a5d03ba49a54bbba806b0f659905, type: 3}
   sprites:
-  - {fileID: -572673169, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: -1736936770, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: -387148028, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: -1095959130, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: 2091115314, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: -1483869517, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: 710534540, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: 218634989, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: -1964869424, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: 1335604245, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: 1044835973, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: 1724256474, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: -987875349, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: -1095959130, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: 1697652432, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: -1483869517, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: 2031964584, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: 759861669, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: 218697413, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
-  - {fileID: 1818650359, guid: 79f5b7622cc75434db731106fd205bbb, type: 3}
+  - {fileID: -1302596986, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -1375999417, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -2057994192, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -1961805931, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -330161380, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -369949198, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: 1022646539, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: 1837106341, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -110552303, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: 591747906, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -1511294346, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -1876083958, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -988786411, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -1063470363, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -985603643, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: 152009410, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: 1241637026, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -360872729, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: 361764450, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
+  - {fileID: -454336990, guid: eefdfa0194d2043408baa156ecba3f6c, type: 3}
   renameDeckButton: {fileID: 420908799}
   renameCheckButton: {fileID: 519679678}
   RenameView: {fileID: 143297376}
