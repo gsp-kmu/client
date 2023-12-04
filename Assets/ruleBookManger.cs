@@ -22,6 +22,7 @@ public class ruleBookManger : MonoBehaviour
     }
     public void leftChangePage()
     {
+        ButtonClick.instance.PlayButtonClick();
         pages[page - 1].gameObject.SetActive(false);
         if (page > 1)
         {
@@ -32,6 +33,7 @@ public class ruleBookManger : MonoBehaviour
     }
     public void rightChangePage()
     {
+        ButtonClick.instance.PlayButtonClick();
         pages[page-1].gameObject.SetActive(false);
         if(page< pages.Count)
         {

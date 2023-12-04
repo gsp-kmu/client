@@ -21,11 +21,30 @@ public class MatchingController : MonoBehaviour
 
     public DeckSelect deckSelect;
     public TMPro.TextMeshProUGUI alertText;
+    public AudioSource gameStartAudio;
+
+    private void Start()
+    {
+        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_START, (string data) =>
+        {
+            matchingWindow.gameObject.SetActive(true);
+            gameObject.GetComponent<MatchingTipController>().StartTip();
+            loadingAnimation.Play();
+            matchingCoroutine = StartCoroutine(MatchingTextAnimation());
+            timeTextCoroutine = StartCoroutine(MatchingTImeAnimation());
+        });
+        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_CANCEL, (string data) =>
+        {
+            StopCoroutine(matchingCoroutine);
+            StopCoroutine(timeTextCoroutine);
+            matchingWindow.gameObject.SetActive(false);
+        });
+    }
 
     public void MatchingStart()
     {
-        Debug.LogWarning(deckSelect.isDeckAtive[deckSelect.currentIdx]);
-        if(deckSelect.isDeckAtive[deckSelect.currentIdx] == false)
+        gameStartAudio.Play();
+        if (deckSelect.isDeckAtive[deckSelect.currentIdx] == false)
         {
             alertText.text = "완성 되지 않은 덱 입니다.\n다른 덱을 선택해주세요.";
             Sequence sequence = DOTween.Sequence();
@@ -38,20 +57,12 @@ public class MatchingController : MonoBehaviour
             sequence.Play();
             return;
         }
-        matchingWindow.gameObject.SetActive(true);
-        gameObject.GetComponent<MatchingTipController>().StartTip();
         NetworkService.Instance.Send(NetworkEvent.MATCH_START, deckSelect.currentIdx + 1);
-        loadingAnimation.Play();
-        matchingCoroutine = StartCoroutine(MatchingTextAnimation());
-        timeTextCoroutine = StartCoroutine(MatchingTImeAnimation());
     }
 
     public void MatchingCancel()
     {
         NetworkService.Instance.Send(NetworkEvent.MATCH_CANCEL, "");
-        StopCoroutine(matchingCoroutine);
-        StopCoroutine(timeTextCoroutine);
-        matchingWindow.gameObject.SetActive(false);
     }
 
     public void onMatchingSuccess()
@@ -136,5 +147,11 @@ public class MatchingController : MonoBehaviour
             return "" + time;
 
         return "0" + time;
+    }
+
+    private void OnDestroy()
+    {
+        NetworkService.Instance.RemoveEvent(NetworkEvent.MATCH_START);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.MATCH_CANCEL);
     }
 }

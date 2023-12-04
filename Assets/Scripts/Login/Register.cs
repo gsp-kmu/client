@@ -32,6 +32,7 @@ public class Register : MonoBehaviour
 
     public void RegisterButtonClick()
     {
+        ButtonClick.instance.PlayButtonClick();
         if (isAgree.isOn == false)
         {
             canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Register, 

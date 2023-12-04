@@ -25,26 +25,33 @@ public class SettingUIController : MonoBehaviour
 
         UIOnButton.onClick.AddListener(() =>
         {
+            ButtonClick.instance.PlayButtonClick();
             UI.SetActive(true);
         });
         CloseButton.onClick.AddListener(() =>
         {
+            ButtonClick.instance.PlayButtonClick();
             UI.SetActive(false);
         });
 
         UI.SetActive(false);
     }
 
-    public void ClickBGMToggle(bool isOn){
+    public void ClickBGMToggle(bool isOn)
+    {
+        ButtonClick.instance.PlayButtonClick();
         SettingService.Instance.SetMuteBGM(isOn);
     }
 
-    public void ClickSFXToggle(bool isOn){
+    public void ClickSFXToggle(bool isOn)
+    {
+        ButtonClick.instance.PlayButtonClick();
         SettingService.Instance.SetMuteSFX(isOn);
     }
 
     public void Logout()
     {
+        ButtonClick.instance.PlayButtonClick();
         NetworkService.Instance.io.D.Emit("disconnect");
         Destroy(NetworkService.Instance.gameObject);
         SceneManager.LoadScene(GSP.Scene.title);

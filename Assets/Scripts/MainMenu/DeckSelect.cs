@@ -139,11 +139,13 @@ public class DeckSelect : MonoBehaviour
     }
     public void ClickLeftCard()
     {
+        ButtonClick.instance.PlayButtonClick();
         StartCoroutine(moveRight());
     }
 
     public void ClickRightCard()
     {
+        ButtonClick.instance.PlayButtonClick();
         StartCoroutine(moveLeft());
     }
 

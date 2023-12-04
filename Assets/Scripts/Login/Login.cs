@@ -25,6 +25,7 @@ public class Login : MonoBehaviour
 
     public void LoginButtonClick()
     {
+        ButtonClick.instance.PlayButtonClick();
         string id = idField.text;
         User user = new User
         {
