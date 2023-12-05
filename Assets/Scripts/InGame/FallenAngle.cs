@@ -43,6 +43,7 @@ public class FallenAngle : Card
         }
 
         SoundController.PlaySound("jinz");
+        SoundController.PlayEnvironment("Ingame/Change");
 
         GameController controller = GameController.GetInstance();
 

@@ -10,7 +10,6 @@ public class Sol : Card
         transform.name = "솔";
     }
 
-
     void Update()
     {
 
@@ -48,6 +47,7 @@ public class Sol : Card
         if (card == null)
             yield break;
 
+        SoundController.PlayEnvironment("Ingame/HotHot");
         SoundController.PlaySound("reona");
 
         Material dissolve = Resources.Load<Material>("Shader/Dissolve");

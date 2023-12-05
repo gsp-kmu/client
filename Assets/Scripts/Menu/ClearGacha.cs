@@ -1,25 +1,73 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
+
 
 public class ClearGacha : MonoBehaviour
 {
     public RandomSelect randomSelect;
+    private int mycoin;
+    public GameObject coinText;
+    private string getCoinUrl = GSP.http.getCoin;
     // Start is called before the first frame update
-    void Start()
+    public void Awake()
     {
-        
+        /// id ï¿½Ô·ï¿½ ï¿½Þ´Â°ï¿½ /////
+        int id = int.Parse(NetworkService.Instance.id);
+        RequestSendCoin coinid = new RequestSendCoin
+        {
+            userId = id
+        };
+
+        string json = JsonUtility.ToJson(coinid);
+
+        StartCoroutine(GetCoin(json));
+
+    }
+    IEnumerator GetCoin(string json)
+    {
+
+        using (UnityWebRequest request = UnityWebRequest.PostWwwForm(getCoinUrl, json))
+        {
+
+            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+            request.uploadHandler = new UploadHandlerRaw(jsonToSend);
+            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            Debug.Log(request.responseCode);
+            if (request.responseCode == 200)
+            {
+                string responseJson = request.downloadHandler.text;
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+
+                Debug.Log(responseJson);
+                ResponseGetCoin response = JsonConvert.DeserializeObject<ResponseGetCoin>(responseJson);
+                mycoin = response.coin;
+                coinText.GetComponent<TextMeshProUGUI>().text = mycoin.ToString();
+
+            }
+            else if (request.responseCode == 400)
+            {
+                Debug.Log("ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
+            }
+        }
     }
 
     public void Destroygacha()
     {
         if(randomSelect != null)
         {
-            //·£´ýÄ«µå¸®½ºÆ® Áö¿ì±â
+            //ï¿½ï¿½ï¿½ï¿½Ä«ï¿½å¸®ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½
             randomSelect.result.Clear();
 
-            //·£´ýÄ«µå¸®½ºÆ®uiÁö¿ì±â
+            //ï¿½ï¿½ï¿½ï¿½Ä«ï¿½å¸®ï¿½ï¿½Æ®uiï¿½ï¿½ï¿½ï¿½ï¿½
             foreach(GameObject card in randomSelect.cardUIs)
             {
                 card.GetComponent<CardUI>().DestoryCard();
@@ -27,8 +75,8 @@ public class ClearGacha : MonoBehaviour
 
             randomSelect.cardUIs.Clear();
 
-            //ºñÈ°¼ºÈ­ÇÑ °¡Ã­¹öÆ° ´Ù½Ã È°¼ºÈ­
-            randomSelect.gachabutton.GetComponent<Button>().enabled = true;
+            //ï¿½ï¿½È°ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½Ã­ï¿½ï¿½Æ° ï¿½Ù½ï¿½ È°ï¿½ï¿½È­
+            randomSelect.gachaButton.GetComponent<Button>().enabled = true;
         }
     }
 

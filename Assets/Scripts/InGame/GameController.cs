@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System; using System.Collections; using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Data;
@@ -23,6 +21,7 @@ public class GameController : MonoBehaviour
     public Transform effect_ts;
 
     Card select_card;
+    Card search_card;
     public int select_card_hand_idx;
 
     public bool myTurn;
@@ -33,6 +32,10 @@ public class GameController : MonoBehaviour
     public float click_time;
 
     public int playerID = 0;
+
+    public TurnController turnController;
+
+    public bool CardExpendLock = false;
 
     public Card player_one_topCard
     {
@@ -78,42 +81,19 @@ public class GameController : MonoBehaviour
     void Awake()
     {
         instance = this;
-        NetworkService.Instance.Login("A");
-
+        //NetworkService.Instance.Login("A");
     }
 
-    void Update()
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.M))
-            Mathcing();
-
-        ControllHandCard();
-        ControllOpponentHand();
-    }
-
-    void Mathcing()
-    {
-        Debug.Log("Matching Start");
-        NetworkService.Instance.Send(NetworkEvent.MATCH_START, "");
-        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_SUCCESS, (string s) =>
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_WIN, (string s) =>
         {
-            Debug.Log("Matching Success");
-
-            NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_WIN, (string s) =>
-            {
-                UIManager.instance.Win();
-            });
-            NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_LOSE, (string s) =>
-            {
-                UIManager.instance.Lose();
-            });
+            StartCoroutine(UIManager.instance.Result("Win"));
         });
-
-        NetworkService.Instance.AddEvent(NetworkEvent.MATCH_END, (string s) =>
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_END_LOSE, (string s) =>
         {
-            NetworkService.Instance.Send(NetworkEvent.INGAME_CLIENT_READY, "");
+            StartCoroutine(UIManager.instance.Result("Loss"));
         });
-
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_INIT_ID, (int id) => {
             Debug.Log("ID : " + id.ToString());
             playerID = id;
@@ -125,19 +105,26 @@ public class GameController : MonoBehaviour
             this.turn += 1;
             UIManager.GetInstance().UpdateTurn();
             Debug.Log(turn.turn == "1" ? "내턴" : "상대방 턴");
-
+            if(turn.turn == "1"){
+                turnController.StartMyTurn();
+                UIManager.GetInstance().startTime = Time.time;
+            }
+            else
+            {
+                turnController.StartOpponentTurn();
+            }
             if (turn.turn != "1")
             {
                 GameObject opponent_card = Instantiate(Resources.Load<GameObject>("Prefebs/OpponentCard"));
                 opponent_card.transform.position = new Vector3(0, 100, 0);
                 opponent_card.transform.parent = opponent_hand;
+
             }
         });
 
-        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_FIRST_CARD, (FirstCard cards) =>
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_FIRST_CARD, (Data.Card card) =>
         {
-            DrawCard(cards.card1.id);
-            DrawCard(cards.card2.id);
+            DrawCard(card.id);
         });
 
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_PLAY_RECV, (Data.RecvPlayCard card) => {
@@ -146,6 +133,40 @@ public class GameController : MonoBehaviour
         });
 
         NetworkService.Instance.AddEvent(NetworkEvent.INGAME_DRAW_CARD, (Data.Card card) => DrawCard(card.id));
+        NetworkService.Instance.Send(NetworkEvent.INGAME_CLIENT_READY, "");
+
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TIME_START, (int time) =>
+        {
+            Debug.Log(time);
+            StartCoroutine(UIManager.GetInstance().TimerPitch());
+        }
+        );
+        NetworkService.Instance.AddEvent(NetworkEvent.INGAME_TIME_END, (string data) => {
+            Debug.Log("시간끝");
+            UIManager.GetInstance().TimeOut(); 
+        });
+    }
+
+    void Update()
+    {
+        ControllHandCard();
+        ControllOpponentHand();
+    }
+
+    private void OnDestroy()
+    {
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_END_WIN);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_END_LOSE);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_INIT_ID);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_TURN);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_FIRST_CARD);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_PLAY_RECV);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_DRAW_CARD);
+
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_TIME_START);
+        NetworkService.Instance.RemoveEvent(NetworkEvent.INGAME_TIME_END);
+
+
     }
 
     void ControllHandCard()
@@ -156,9 +177,6 @@ public class GameController : MonoBehaviour
         //마우스 클릭시 카드를 들기
         if (Input.GetMouseButtonDown(0))
         {
-            if (!myTurn)
-                return;
-
             Collider2D hit = Physics2D.OverlapPoint(mouse_point);
 
             if (!hit)
@@ -181,6 +199,7 @@ public class GameController : MonoBehaviour
             if ((dev1 != null || dev2 != null) && player_hand.transform.childCount - 1 != select_card.transform.GetSiblingIndex())
             {
                 select_card = null;
+                UIManager.GetInstance().StartWarringText("뽑은 카드만 선택 가능");
                 return;
             }
 
@@ -205,19 +224,24 @@ public class GameController : MonoBehaviour
             select_card.transform.localScale = Vector3.one;
             select_card.GetComponent<SpriteRenderer>().sortingOrder = 10000;
 
-            Collider2D[] hits = Physics2D.OverlapPointAll(mouse_point);
-
-            foreach (Collider2D hit in hits)
+            if (myTurn)
             {
-                if (hit.transform == player_one || hit.transform == player_ten)
+                SoundController.PlayEnvironment("Ingame/neda");
+
+                Collider2D[] hits = Physics2D.OverlapPointAll(mouse_point);
+
+                foreach (Collider2D hit in hits)
                 {
-                    int cardIndex = select_card.index;
-                    player_hand.cards.RemoveAt(cardIndex); // hyeonseo;
-                    player_hand.RefreshAllCardIndex(); // hyeonseo;
-                    StartCoroutine(select_card.PlayCard(hit.transform));
-                    select_card.BattleCry(hit.transform == player_one ? Digit.One : Digit.Ten);
-                    select_card = null;
-                    break;
+                    if (hit.transform == player_one || hit.transform == player_ten)
+                    {
+                        int cardIndex = select_card.index;
+                        player_hand.cards.RemoveAt(cardIndex); // hyeonseo;
+                        player_hand.RefreshAllCardIndex(); // hyeonseo;
+                        StartCoroutine(select_card.PlayCard(hit.transform));
+                        select_card.BattleCry(hit.transform == player_one ? Digit.One : Digit.Ten);
+                        select_card = null;
+                        break;
+                    }
                 }
             }
 
@@ -235,7 +259,7 @@ public class GameController : MonoBehaviour
             if (Vector3.Distance(click_pos, mouse_point) > 1)
                 click_out = true;
 
-            if (Time.time - click_time > 0.5f && !click_out) //카드 확대
+            if (Time.time - click_time > 0.5f && !click_out && !CardExpendLock) //카드 확대
             {
                 select_card.transform.position = Vector3.zero;
                 select_card.transform.localScale = Vector3.one * 5;
@@ -244,6 +268,56 @@ public class GameController : MonoBehaviour
             {
                 select_card.transform.position = Vector3.Lerp(select_card.transform.position, mouse_point, Time.deltaTime * 10);
                 select_card.transform.localScale = Vector3.one * 1.2f;
+            }
+        }
+
+        if (Input.GetMouseButton(0) && select_card == null && !CardExpendLock)
+        {
+            Collider2D hit = Physics2D.OverlapPoint(mouse_point);
+
+            if (hit == null)
+                return;
+
+            Card topCard = null;
+            if (hit.transform.parent == player_one)
+            {
+                topCard = player_one_topCard;
+            }
+            else if (hit.transform.parent == player_ten)
+            {
+                topCard = player_ten_topCard;
+            }
+            else if(hit.transform.parent == opponent_one)
+            {
+                topCard = opponent_one_topCard;
+            }
+            else if(hit.transform.parent == opponent_ten)
+            {
+                topCard = opponent_ten_topCard;
+            }
+
+            if (topCard != null && search_card != topCard)
+            {
+                if(search_card != null)
+                {
+                    search_card.transform.localPosition = Vector3.zero;
+                    search_card.transform.localScale = Vector3.one * 2;
+                    FieldsCardOrganize();
+                }
+                search_card = topCard;
+                search_card.transform.position = Vector3.zero;
+                search_card.transform.localScale = Vector3.one * 5;
+                search_card.GetComponent<SpriteRenderer>().sortingOrder = 10000;
+            }
+        }
+        else
+        {
+            if(search_card != null)
+            {
+                search_card.transform.localPosition = Vector3.zero;
+                search_card.transform.localScale = Vector3.one * 2;
+                search_card = null;
+                FieldsCardOrganize();
             }
         }
     }
@@ -274,11 +348,14 @@ public class GameController : MonoBehaviour
         card.transform.position = new Vector3(0, 100, 0);
         card.transform.localScale = Vector3.one * 4;
         card.transform.DOScale(Vector3.one, 1.0f);
+
+        SoundController.PlayEnvironment("Ingame/Draw");
     }
 
     //적 카드 선택
     public IEnumerator OpponentCardSelect(Action<Card> callback)
     {
+
         Card oneCard = opponent_one_topCard;
         Card tenCard = opponent_ten_topCard;
 
@@ -299,11 +376,28 @@ public class GameController : MonoBehaviour
         {
             Card card = null;
 
+            GameObject follower1 = Instantiate(Resources.Load<GameObject>("Prefebs/Follower"));
+            GameObject follower2 = Instantiate(Resources.Load<GameObject>("Prefebs/Follower"));
+
+            follower1.transform.parent = oneCard.transform;
+            follower2.transform.parent = tenCard.transform;
+
+            follower1.transform.position = oneCard.transform.position;
+            follower2.transform.position = tenCard.transform.position;
+
+            follower1.transform.localScale = Vector3.one * 1.05f;
+            follower2.transform.localScale = Vector3.one * 1.05f;
+
+            follower1.GetComponent<SpriteRenderer>().sortingOrder = oneCard.GetComponent<SpriteRenderer>().sortingOrder - 1;
+            follower2.GetComponent<SpriteRenderer>().sortingOrder = tenCard.GetComponent<SpriteRenderer>().sortingOrder - 1;
+
             oneCard.transform.DOScale(Vector3.one * 2.2f, 0.1f);
             tenCard.transform.DOScale(Vector3.one * 2.2f, 0.1f);
 
             float oneDelta = UnityEngine.Random.Range(0, Mathf.PI);
             float tenDelta = UnityEngine.Random.Range(0, Mathf.PI);
+
+            CardExpendLock = true;
             while (true)
             {
                 yield return new WaitForSeconds(0);
@@ -334,6 +428,11 @@ public class GameController : MonoBehaviour
                         break;
                 }
             }
+
+            CardExpendLock = false;
+
+            Destroy(follower1);
+            Destroy(follower2);
 
             yield return new WaitForSeconds(0.2f);
 

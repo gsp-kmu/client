@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class Register : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class Register : MonoBehaviour
     public TMP_InputField idField;
     public TMP_InputField passwordField;
     public GameObject canvasManager;
+
+    public Toggle isAgree;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +32,14 @@ public class Register : MonoBehaviour
 
     public void RegisterButtonClick()
     {
+        ButtonClick.instance.PlayButtonClick();
+        if (isAgree.isOn == false)
+        {
+            canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Register, 
+                CanvasManager.errorInfo.agreeError);
+            return;
+        }
+
         User user = new User
         {
             id = idField.text,
@@ -56,10 +67,21 @@ public class Register : MonoBehaviour
             if (request.responseCode == 200)
             {
                 Debug.Log("굳 ");
+                canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Register, CanvasManager.errorInfo.success);
             }
             else
             {
-                Debug.Log("높 ");
+                CanvasManager.errorInfo error = CanvasManager.errorInfo.NetworkError;
+                if (request.responseCode == 400)
+                {
+                    error = CanvasManager.errorInfo.patternError;
+                }
+                else if (request.responseCode == 401)
+                {
+                    error = CanvasManager.errorInfo.duplicateError;
+                }
+
+                canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Register, error);
             }
         }
     }

@@ -20,9 +20,12 @@ public class Login : MonoBehaviour
     public TMP_InputField idField;
     public TMP_InputField passwordField;
     public NetworkService networkService;
+    public userData userData;
+    public GameObject loading;
 
     public void LoginButtonClick()
     {
+        ButtonClick.instance.PlayButtonClick();
         string id = idField.text;
         User user = new User
         {
@@ -50,11 +53,31 @@ public class Login : MonoBehaviour
             Debug.Log(request.responseCode);
             if (request.responseCode == 200)
             {
-                Debug.Log("로그인 성공");
-                NetworkService.Instance.Login(id, MoveSceneMainMenu);
+                loading.SetActive(true);
+                NetworkService.Instance.Login(id, () =>
+                {
+                    Debug.Log("로그인 성공");
+                    GameObject.FindObjectOfType<AudioContinue>().DestroyOnSceneChange();
+                    Invoke("MoveSceneMainMenu", 1.0f);
+                }, () =>
+                {
+                    loading.SetActive(false);
+                    canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Login, CanvasManager.errorInfo.multipleError);
+                });
             }
             else
             {
+                CanvasManager.errorInfo error = CanvasManager.errorInfo.NetworkError;
+                if(request.responseCode == 400)
+                {
+                    error = CanvasManager.errorInfo.passwordError;
+                }
+                else if(request.responseCode == 401)
+                {
+                    error = CanvasManager.errorInfo.nonuserError;
+                }
+
+                canvasManager.GetComponent<CanvasManager>().SetPopup(CanvasManager.mPageInfo.Login, error);
                 Debug.Log("로그인 실패");
             }
         }
