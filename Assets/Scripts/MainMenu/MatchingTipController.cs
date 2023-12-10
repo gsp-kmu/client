@@ -58,7 +58,7 @@ public class MatchingTipController : MonoBehaviour
         while (true)
         {
             yield return null;
-            yield return new WaitForSeconds(5.0f);
+            yield return new WaitForSeconds(4.5f);
             yield return null;
             Next();
         }

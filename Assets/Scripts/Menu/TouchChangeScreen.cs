@@ -10,7 +10,7 @@ public class TouchChangeScreen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        Screen.SetResolution(360, 720, false);
     }
 
     // Update is called once per frame

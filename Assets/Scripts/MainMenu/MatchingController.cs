@@ -69,6 +69,7 @@ public class MatchingController : MonoBehaviour
     {
         StopCoroutine(matchingCoroutine);
         StopCoroutine(timeTextCoroutine);
+        loadingAnimation.Stop();
         machingText.SetText("매칭 되었습니다.!!");
 
 

@@ -93,7 +93,7 @@ public class SettingService : MonoBehaviour
 
         foreach (GameObject audioSource in bgmSources)
         {
-            audioSource.GetComponent<AudioSource>().mute = SettingService.instance.isMuteBGM; ;
+            audioSource.GetComponent<AudioSource>().mute = SettingService.instance.isMuteBGM;
         }
 
     }

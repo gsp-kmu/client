@@ -1247,7 +1247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turn_font: {fileID: 1044301050}
   pause: 0
-  pause_ui: {fileID: 1577747425}
+  pause_ui: {fileID: 901165946}
   music: 1
   music_icon: {fileID: 61810570}
   sound: 1
@@ -3545,19 +3545,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4605332522694233013, guid: bd12892c21b594c4581ce2b5f54607c6, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4605332522694233013, guid: bd12892c21b594c4581ce2b5f54607c6, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4605332522694233013, guid: bd12892c21b594c4581ce2b5f54607c6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 273
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4605332522694233013, guid: bd12892c21b594c4581ce2b5f54607c6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4780660846516667911, guid: bd12892c21b594c4581ce2b5f54607c6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -3605,25 +3605,30 @@ PrefabInstance:
       objectReference: {fileID: 961335056}
     - target: {fileID: 7251259054594406176, guid: bd12892c21b594c4581ce2b5f54607c6, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7251259054594406176, guid: bd12892c21b594c4581ce2b5f54607c6, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7251259054594406176, guid: bd12892c21b594c4581ce2b5f54607c6, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 679
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7251259054594406176, guid: bd12892c21b594c4581ce2b5f54607c6, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -50
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd12892c21b594c4581ce2b5f54607c6, type: 3}
+--- !u!1 &901165946 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4903348045135747456, guid: bd12892c21b594c4581ce2b5f54607c6, type: 3}
+  m_PrefabInstance: {fileID: 901165945}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &938135922
 GameObject:
   m_ObjectHideFlags: 0

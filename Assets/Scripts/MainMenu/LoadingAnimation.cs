@@ -14,7 +14,7 @@ public class LoadingAnimation : MonoBehaviour
     }
     public void Stop()
     {
-        StopCoroutine(PlayAnimation());
+        StopAnimation();
     }
     private IEnumerator PlayAnimation()
     {
@@ -23,6 +23,14 @@ public class LoadingAnimation : MonoBehaviour
         {
             loadingAnimator[i].SetBool("isLoading", true);
             yield return new WaitForSeconds(0.05f);
+        }
+    }
+
+    private void StopAnimation()
+    {
+        for (int i = 0; i < loadingAnimator.Count; i++)
+        {
+            loadingAnimator[i].SetBool("isLoading", false);
         }
     }
 }
